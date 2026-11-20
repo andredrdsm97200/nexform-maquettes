@@ -132,7 +132,7 @@ def render_step(data, rgb_of, step, done, W=1000, H=700, ss=2):
     parts, arrows = [], []
     for (n, c, i, tm, ex) in data:
         if n in done:
-            parts.append((tm, fade(rgb_of(c))))
+            parts.append((tm, rgb_of(c) if step.get("vif") else fade(rgb_of(c))))   # vif : rien d'estompe
         elif n in new:
             if ex_over.get(n) is not None:
                 e = np.asarray(ex_over[n], float)
@@ -143,6 +143,8 @@ def render_step(data, rgb_of, step, done, W=1000, H=700, ss=2):
             if np.linalg.norm(e) > 3:
                 cen = tm.bounds.mean(0)
                 arrows.append((cen + e, cen))
+    for a, b in step.get("fleches", ()):                          # fleches en plus (repere du rendu, mm) : montrer un detail
+        arrows.append((np.asarray(a, float), np.asarray(b, float)))
     cam = step["cam"]
     im = render(parts, eye=cam["eye"], target=cam["target"], fov=cam["fov"], W=W, H=H, ss=ss,
                 light=cam.get("light", (0.35, -0.5, 0.8))).convert("RGB")

@@ -1,9 +1,9 @@
-"""LISEZMOI du kit v24 (sans colle) : contenu, plateaux, reglages, principe d'emboitement, changements, pieces par plateau."""
+"""LISEZMOI du kit v25 (sans colle) : contenu, plateaux, reglages, principe d'emboitement, changements, pieces par plateau."""
 import os as _os
 ROOT = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))   # dossier bowen28 du depot
 import os, json, collections, re, textwrap
 HERE = ROOT + '/v25'
-KIT = os.path.join(HERE, 'kit', 'Bowen28_kit_impression_v24')
+KIT = os.path.join(HERE, 'kit', 'Bowen28_kit_impression_v25')
 meta = json.load(open(os.path.join(HERE, 'kit_meta.json')))
 plates, pieces = meta['plates'], meta['pieces']
 import sys; sys.path.insert(0, HERE)
@@ -21,14 +21,14 @@ def g(x): return f"{int(round(x / 5.0) * 5)}\u00a0g" if x >= 10 else f"{max(1, r
 main = [p for p in plates if not p['eprouvette']]; epr = [p for p in plates if p['eprouvette']]
 n_main = sum(len(p['inst']) for p in main); n_epr = sum(len(p['inst']) for p in epr)
 L = []
-title = "BOWEN 28 AU 1:19 – KIT D'IMPRESSION v24, MONTAGE SANS COLLE"
+title = "BOWEN 28 AU 1:19 – KIT D'IMPRESSION v25, MONTAGE SANS COLLE"
 L += [title, "=" * len(title), ""]
 L += wrap(f"Tout ce qu'il faut pour imprimer la maquette : {n_main} pièces réparties sur {len(main)} plateaux, une seule couleur de "
           f"filament par plateau, plus l'éprouvette de réglage P00 ({n_epr} petites pièces) à imprimer en premier. La maquette "
           "s'assemble entièrement par emboîtement, comme des Lego : ni colle, ni goupille, ni toile, uniquement du PLA ou du PLA+. "
           "Ce kit remplace le kit v23.1 : n'utilise plus ses fichiers, tout est ici.")
 L += ["", "CONTENU", "-------",
-      "Bowen28_kit_impression_v24/",
+      "Bowen28_kit_impression_v25/",
       "├── LISEZMOI.txt              ce fichier",
       "├── FICHE_IMPRESSION.pdf      la fiche à remettre à l'imprimeur : plateaux, réglages, éprouvette, aperçus",
       f"├── plateaux_3mf/             {len(plates)} fichiers 3MF (P00 à P{len(plates) - 1:02d}), pièces orientées et disposées sur le plateau de 256 mm",
@@ -44,7 +44,7 @@ for n, p in pieces.items():
 cols = ['blanc', 'alu', 'noir', 'teck', 'taupe']
 for k, c in enumerate(cols):
     L.append(f"│   {'└' if k == len(cols) - 1 else '├'}── {DIRS[c] + '/':20s}{cnt[c][0]:2d} fichiers, {cnt[c][1]:2d} impressions")
-L.append("└── notice_de_montage_v24.pdf la notice illustrée, sans colle")
+L.append("└── notice_de_montage_v25.pdf la notice illustrée, sans colle")
 L += [""]
 L += wrap("« _x2 », « _x3 » ou « _x4 » à la fin d'un nom de STL = imprimer la pièce 2, 3 ou 4 fois. Les plateaux 3MF "
           "contiennent déjà le bon nombre d'exemplaires.")
@@ -74,7 +74,8 @@ for t_ in ["Une couleur par plateau : pas de changement de bobine en cours d'imp
            "232 mm de long chacune, une par plateau) et P05 (les 2 embases moteur). Tous les autres plateaux s'impriment "
            "sans aucun support.",
            "Le noir a 2 plateaux : P06 en couches de 0,08 mm (filets de coque de 0,6 mm d'épaisseur, écrans, commandes) et "
-           "P07, le toit du taud seul, en 0,12 mm, imprimé à l'envers sans support (ses bords commencent par un chanfrein à 45°).",
+           "P07, le toit du taud et les 4 pare-battages, en 0,12 mm : le toit à l'envers sans support (ses bords commencent par un "
+           "chanfrein à 45°), les pare-battages debout.",
            "Sur chaque plateau, les pièces sont rangées en rangées, centrées, à 5 mm les unes des autres et à au moins "
            "8 mm du bord du plateau."]:
     L += wrap(t_, "- ", "  ")
@@ -94,7 +95,23 @@ for t_ in ["Un seul jeu pour tous les tenons, clés et logements : 0,1 mm par c�
            "s'impriment couchés : leurs faces à 45° tiennent sans support, comme le toit de leur logement.",
            "Les 2 moitiés de coque : 3 tenons losange de 3 mm guident la coque avant, puis 4 clés en forme d'os s'enfoncent "
            "par le dessus et tirent les 2 faces l'une contre l'autre (2 dans les plats-bords, 2 dans le plancher).",
-           "Les coussins s'enfilent sur les nervures blanches de la coque ou se posent sur des tenons : la pesanteur les tient."]:
+           "Les coussins s'enfilent sur les nervures blanches de la coque ou se posent sur des tenons : la pesanteur les tient.",
+           "Les petites pièces que leur poids ne tient pas (les 2 écrans, la manette, le tableau d'interrupteurs, la pompe du "
+           "volant, la barre de la console) ont en plus de fines côtes sur leur emboîtement : elles serrent en fin de course, "
+           "pousse-les franchement jusqu'au bout. Elles tiennent alors seules, quelle que soit l'imprimante."]:
+    L += wrap(t_, "- ", "  ")
+L += ["", "CE QUI CHANGE DEPUIS LA v24", "---------------------------"]
+for t_ in ["Caisson des fauteuils plus fin, comme sur le vrai bateau : 25 mm d'avant en arrière au lieu de 38, et 23 mm "
+           "d'écart avec la console. Les fauteuils reculent de 2 mm pour rester bien posés dessus.",
+           "Deux manettes des gaz, une par moteur, sur la même embase et le même tenon losange.",
+           "Échelle de bain repliée et tournée de 90° sur la plateforme ; la tôle larmée est refaite là où était l'ancienne.",
+           "4 pare-battages noirs (plateau P07), avec un œil en haut. Ils pendent à une ficelle fine nouée aux 4 anneaux "
+           "encastrés dans les parois du cockpit, entre le boudin et le coussin de plat-bord : 2 par bord.",
+           "Toutes les clés de jonction s'enfoncent : les 2 clés du plancher sont écartées du siège avant de console, qui les "
+           "recouvrait, et les 3 tenons losange de la jonction sont bien sur la coque arrière.",
+           "Les petites pièces accrochées à la console ont de fines côtes de serrage : elles ne tombent plus (voir plus haut).",
+           "Notice en 12 étapes : le volant se pose avant les fauteuils, et une étape de plus pour les pare-battages.",
+           f"La v25 compte {n_main} pièces sur {len(main)} plateaux, plus l'éprouvette : 4 de plus que la v24 (les pare-battages)."]:
     L += wrap(t_, "- ", "  ")
 L += ["", "CE QUI CHANGE DEPUIS LA v23.1", "-----------------------------"]
 for t_ in ["Plus de colle ni de goupille en filament : jonction de coque (4 clés + 3 tenons losange), moteurs (2 tenons losange "
@@ -107,10 +124,12 @@ for t_ in ["Plus de colle ni de goupille en filament : jonction de coque (4 clé
            "Tous les logements de tenons passent de 0,15–0,2 mm de jeu à 0,1 mm ; les coussins sont recalés sur la coque "
            "(plus aucun chevauchement) et les tenons sous la banquette avant passent à 2,1 mm.",
            "Nouvelles pièces : toit du taud, 4 clés de jonction, éprouvette P00. Toutes les autres pièces gardent leur forme.",
-           f"La v23.1 comptait 92 pièces (+ le taud en option) ; la v24 en compte {n_main}, sur {len(main)} plateaux, plus l'éprouvette."]:
+           "La v23.1 comptait 92 pièces (+ le taud en option) ; la v24 en comptait 91, sur 9 plateaux, plus l'éprouvette."]:
     L += wrap(t_, "- ", "  ")
 L += ["", "À PRÉVOIR POUR LE MONTAGE", "-------------------------"]
-for t_ in ["Rien d'autre que les pièces imprimées : ni colle, ni goupille, ni toile.",
+for t_ in ["Pour la maquette, rien d'autre que les pièces imprimées : ni colle, ni goupille, ni toile.",
+           "Pour pendre les pare-battages : de la ficelle fine (fil de coton ou de pêche, 1 mm au plus), 4 bouts d'une "
+           "quinzaine de centimètres. Une aiguille à coudre aide à la passer derrière la barrette des anneaux.",
            "En option, la planche d'autocollants du kit v22 (immatriculation, nom, drapeau), inchangée."]:
     L += wrap(t_, "- ", "  ")
 L += ["", "LES PIÈCES, PLATEAU PAR PLATEAU", "-------------------------------"]

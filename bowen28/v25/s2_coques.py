@@ -3,13 +3,18 @@ Repere de la visionneuse (mm, y vers le haut) : (x, z, -y) bateau x 52,63.
 
   1. les 5 trous de goupille de la jonction sont rebouches ;
   2. 4 cles de jonction en forme d'os, enfoncees par le dessus : 2 dans les plats-bords (tete arriere plus grosse :
-     detrompeur ; la tete arriere passe sous le tapis SeaDek n 4 qui la bloque), 2 dans le plancher ;
-  3. 3 tenons losange (cercle inscrit 3 mm) sur la face de la coque arriere, 3 logements dans la coque avant ;
+     detrompeur ; la tete arriere passe sous le tapis SeaDek n 4 qui la bloque), 2 dans le plancher, de part et
+     d'autre du siege avant de console (v25 : en v24 elles passaient sous le siege, impossibles a enfoncer) ;
+  3. 3 tenons losange (cercle inscrit 3 mm) sur la face de la coque arriere, 3 logements dans la coque avant
+     (v25 : en v24 la coupe au plan de joint effacait les tenons) ;
   4. chaise moteur : 4 logements losange a la place des trous de goupille ;
   5. filets noirs : mini-logements le long des rainures (flancs et tableau) ;
   6. banquette avant : les 18 tenons sous les coussins passent de 2,0 a 2,1 mm (leurs logements font 2,3 mm) ;
   7. console : trou d'axe du volant rebouche, tenon losange pour la pompe ; logement losange de la manette ;
-  8. dossier arriere : 3 mini-logements losange pour le dos taupe.
+  8. dossier arriere : 3 mini-logements losange pour le dos taupe ;
+  0. (v25) caisson des fauteuils refait : 25 mm de profondeur, a 23 mm de la console (voir poste25.py) ;
+  9. (v25) echelle repliee et tournee de 90 deg : ses 2 tenons et la tole larmee de la plateforme (voir echelle25.py) ;
+ 10. (v25) 4 anneaux de pare-battage encastres dans les parois du cockpit, pour la ficelle (pare_battages25.py).
 """
 import os as _os
 ROOT = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))   # dossier bowen28 du depot
@@ -19,6 +24,7 @@ import numpy as np, trimesh
 from manifold3d import Manifold, Mesh, OpType, CrossSection
 import model as M, fit as F
 import fit25 as G
+import poste25 as PO                                           # caisson des fauteuils v25 : cotes de model.py changees
 
 MM = M.MM
 B2V = [[MM, 0, 0, 0], [0, 0, MM, 0], [0, -MM, 0, 0]]          # bateau (m, z haut) -> visionneuse (mm, y haut)
@@ -37,6 +43,21 @@ REAR, FRONT = man(*H['blanc__coque_arriere__0']), man(*H['blanc__coque_avant__0'
 vol0 = (REAR.volume(), FRONT.volume())
 probe = trimesh.Trimesh(*map(np.asarray, H['blanc__coque_arriere__0']), process=False)
 probe_f = trimesh.Trimesh(*map(np.asarray, H['blanc__coque_avant__0']), process=False)
+
+
+# ---- 0. caisson des fauteuils (poste25.py) : on retire celui de la v24, on pose celui de la v25 (25 mm de profondeur,
+#         a 23 mm de la console), avec le logement du filet sur son dos et les 2 tenons des embases sur son dessus.
+def caisson(px, grow=0.0, z0=M.FLOOR - 0.06, z1=M.PLAT_TOP):
+    """Le caisson de model.interior_parts (coins verticaux arrondis), entre les abscisses px, de z0 a z1 (m)."""
+    cs = CrossSection.square([px[1] - px[0] - 0.12, 1.28 - 0.12]).translate([px[0] + 0.06, -0.64 + 0.06])
+    return Manifold.extrude(cs.offset(0.06 + grow, F.JoinType.Round, 2.0, 24), z1 - z0).translate([0, 0, z0])
+
+
+import pieces as PCS
+REAR = REAR - caisson(PO.V24_PLAT_X, M.mm2m(0.2), M.FLOOR, M.PLAT_TOP + M.mm2m(3.0)).transform(B2V)   # au ras du plancher
+REAR = Manifold.batch_boolean([REAR, caisson(PO.PLAT_X).transform(B2V)] + [F.stud(p).transform(B2V) for p in PCS.lego_points()[0]],
+                              OpType.Add)
+REAR = REAR - M.net_recess().transform(B2V)
 
 
 def top_y(tm, x, z):
@@ -96,10 +117,13 @@ for zk, nm in ((-57.2, 'babord'), (57.2, 'tribord')):
     KEYS.append(dict(name='cle_jonction_plat_bord', side=nm, local=key_l, asm=rot_local(key_l, XJ, y_bot, zk)))
     cut_r.append(chan); cut_f.append(chan)
     report.append(f"cle plat-bord {nm} : z {zk}, recess {y_rec:.2f} jusqu'a x {x_step:.2f}, dessus {y_top:.2f}, fond {y_bot:.2f}")
-# plancher
-for zk in (-22.0, 22.0):
+# plancher : de part et d'autre du siege avant de console (regle 1 de LIGNE_DE_CONDUITE.md, connecteurs accessibles).
+# En v24 (z = +-22 mm) la tete arriere de chaque cle passait sous l'avant du siege (x < 193,4 mm, |z| < 24,2 mm) :
+# impossible de l'enfoncer. A z = +-31 mm, la cheminee du doigt (3 mm autour de la cle) reste a 1 mm du siege ;
+# la carene remonte a cet endroit : logement de 9,5 mm (au lieu de 11) pour garder 2,6 mm de coque sous la cle.
+for zk in (-31.0, 31.0):
     y_top = min(top_y(probe, XJ - 3, zk), top_y(probe_f, XJ + 3, zk))
-    depth = 11.0
+    depth = 9.5
     y_bot = y_top - depth
     a, R, w = 5.5, 2.8, 1.4
     chan = rot_local(Manifold.extrude(bone_cs(a, R, R, w, grow=C), depth + 3.0), XJ, y_bot, zk)
@@ -108,10 +132,12 @@ for zk in (-22.0, 22.0):
     cut_r.append(chan); cut_f.append(chan)
     report.append(f"cle plancher z {zk} : dessus {y_top:.2f}, fond {y_bot:.2f}")
 
-# ---- 3. tenons losange de la jonction (coque arriere -> coque avant)
+# ---- 3. tenons losange de la jonction (coque arriere -> coque avant) ; les tenons sont ajoutes APRES la coupe au plan
+#         de joint (plus bas) : en v24 cette coupe les effacait, la coque avant avait ses 3 trous mais rien en face.
+JOINT_PEGS = []
 for (zz, yy) in ((-10.0, 17.0), (10.0, 17.0), (0.0, 7.5)):
     p = np.array([XJ, yy, zz])
-    add_r.append(G.diamond_peg(p, (1, 0, 0), (0, 1, 0), 1.5, 6.0, 0.4, 0.5))
+    JOINT_PEGS.append(G.diamond_peg(p, (1, 0, 0), (0, 1, 0), 1.5, 6.0, 0.4, 0.5))
     cut_f.append(G.diamond_hole(p, (1, 0, 0), (0, 1, 0), 1.5 + C, 6.5, 0.3))
 
 # ---- 4. chaise moteur : logements losange (les embases portent les tenons)
@@ -158,11 +184,32 @@ import back25 as BK
 for (p, d) in BK.peg_frames():
     cut_r.append(G.dhole(p + d * BK.GAP, d, (0, 0, 1), BK.RI, BK.DEPTH).transform(B2V))
 
+# ---- 9. echelle v25 (echelle25.py : repliee, montants paralleles au tableau) : tenons v24 retires, tole larmee refaite
+#         sous l'ancienne et la nouvelle place de l'echelle (meme grille que la v24), 2 tenons sous les pattes
+import echelle25 as EC
+rect = lambda r: CrossSection.square([r[1] - r[0], r[3] - r[2]]).translate([r[0], r[2]])
+zone_ech = (rect(EC.zone_v24()) + rect(EC.zone_v25())) - CrossSection.circle(M.HATCH[2] + 0.03, 48).translate([M.HATCH[0], M.HATCH[1]])
+REAR = REAR - Manifold.batch_boolean(
+    [Manifold.extrude(zone_ech, M.DIAMOND_H + M.mm2m(0.1)).translate([0, 0, M.PLATF_Z]).transform(B2V)]
+    + [Manifold.cylinder(M.LAD2_PIN_H + M.mm2m(0.5), M.LAD2_PIN_R + M.mm2m(0.3), M.LAD2_PIN_R + M.mm2m(0.3), 24)
+       .translate([x, y, M.PLATF_Z]).transform(B2V) for x, y in EC.V24_TENONS], OpType.Add)
+add_r.append(EC.tole_larmee(zone_ech).transform(B2V))
+add_r += [t.transform(B2V) for t in EC.tenons()]
+
+# ---- 10. (v25) anneaux de pare-battage (pare_battages25.py) : 4 anneaux encastres dans la paroi interieure, entre le
+#          boudin et le coussin de plat-bord, en face des pare-battages (x = 80 et 185 mm) : une poche barree par une
+#          barrette au ras de la paroi (rien ne depasse : les boudins se posent toujours par le dessus)
+import pare_battages25 as PB
+poches, barrettes = PB.anneaux()
+
 REAR = Manifold.batch_boolean([REAR] + add_r, OpType.Add) - Manifold.batch_boolean(cut_r, OpType.Add)
+REAR = (REAR - Manifold.batch_boolean(poches, OpType.Add)) + Manifold.batch_boolean(barrettes, OpType.Add)   # 10. anneaux
 FRONT = Manifold.batch_boolean([FRONT] + add_f, OpType.Add) - Manifold.batch_boolean(cut_f, OpType.Add)
 B = 9000.0
 REAR = REAR ^ Manifold.cube([B, B, B]).translate([-B + XJ, -B / 2, -B / 2])          # rien ne depasse du plan de joint
 FRONT = FRONT ^ Manifold.cube([B, B, B]).translate([XJ, -B / 2, -B / 2])
+REAR = Manifold.batch_boolean([REAR] + JOINT_PEGS, OpType.Add)                        # ... sauf les 3 tenons losange
+assert REAR.bounding_box()[3] > XJ + 5.9, "tenons de jonction absents"
 
 out = {}
 for k, m in (('blanc__coque_arriere__0', REAR), ('blanc__coque_avant__0', FRONT)):

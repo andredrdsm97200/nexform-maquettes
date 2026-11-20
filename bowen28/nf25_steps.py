@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Contenu de la notice v24 facon Lego, SANS COLLE (tutoiement, phrases courtes). L'ordre des pieces est l'ordre verifie."""
+"""Contenu de la notice v25 facon Lego, SANS COLLE (tutoiement, phrases courtes). L'ordre des pieces est l'ordre verifie."""
 BG = (242, 244, 250); PANEL = (255, 255, 255)
 GW = [f"seadeck_plat_bord_{k}_{s}" for k in (1, 2, 3, 4) for s in ("babord", "tribord")]
 AV = ["coussin_avant_retour_babord", "coussin_avant_retour_tribord", "coussin_avant_dossier_babord", "coussin_avant_dossier_tribord",
@@ -10,6 +10,10 @@ def S(title, parts=None, todo=(), glue=None, tip=None, subs=None, **kw):
     return dict(title=title, parts=parts, todo=list(todo), glue=glue, tip=tip, subs=subs, **kw)
 def sub(cap, *parts, **kw): return dict(cap=cap, parts=list(parts), **kw)
 FN = lambda seg: [f"filet_noir_{seg}_babord", f"filet_noir_{seg}_tribord"]
+# v25 : pare-battages pendus a une ficelle ; vue de l'anneau tribord arriere depuis le cockpit, puis vue de dessus
+CAM_ANNEAU = dict(eye=(50.0, 18.0, 64.0), target=(79.0, -48.0, 45.0), fov=34)
+FLECHE_ANNEAU = [((80.0, -30.0, 57.0), (80.0, -49.4, 44.2))]       # repere du rendu (x avant, y babord, z haut)
+CAM_PB = dict(eye=(-110.0, 0.0, 330.0), target=(150.0, 0.0, 30.0), fov=40)
 STEPS = [
     S("La coque", ["berceau_arriere", "berceau_avant", "coque_arriere", "coque_avant", "cle_jonction_fond", "cle_jonction_plat_bord"],
       ["Pousse la coque avant contre la coque arrière : ses 3 tenons losange entrent dans les trous de la coque avant.",
@@ -33,16 +37,16 @@ STEPS = [
       tip="Suis les numéros : dans un autre ordre, un coussin barre le passage du suivant.",
       subs=[sub("Coussin de l'assise basse, enfilé par le dessus sur les nervures blanches de la coque.", "coussin_banquette_basse_assise"),
             sub("Coussin du dossier bas, enfilé par l'avant.", "coussin_banquette_basse_dossier"),
-            sub("Coussin du dossier haut, par l'avant.", "coussin_banquette_haute_dossier"),
+            sub("Coussin du dossier haut, par le dessus.", "coussin_banquette_haute_dossier"),
             sub("Coussin de l'assise haute, par le dessus.", "coussin_banquette_haute_assise"),
             sub("Dos taupe derrière le dossier, poussé vers l'avant : ses 3 tenons losange dans les 3 trous.", "dos_dossier_arriere")]),
-    S("Le poste de pilotage",
-      tip="Monte le volant sur la table, pas dans le bateau : c'est bien plus facile.",
+    S("Le poste de pilotage", order=True,
+      tip="Monte le volant sur la table, puis pose-le avant les fauteuils : après, le fauteuil bâbord lui barre le passage.",
       subs=[sub("Filet noir au dos du caisson : ses 2 tenons dans les trous du haut.", "filet_caisson"),
-            sub("Embases alu sur les tenons du caisson, puis un fauteuil sur chaque embase.", "embase_fauteuil", "fauteuil"),
-            sub("2 bandes blanches par fauteuil, enfoncées dans leur rainure : l'assise d'abord, puis le dossier.", "bande_fauteuil"),
             sub("Pompe noire sur le tenon de la console. Croisillon sur le tenon de la pompe, jante sur les branches, moyeu au centre.", "pompe_direction", "branches_volant", "jante_volant", "moyeu_volant"),
-            sub("Manette : son tenon losange dans la console. Barre de console dans ses 2 trous.", "manette_gaz", "barre_console")]),
+            sub("Manette double (un levier par moteur) : son tenon losange dans la console. Barre de console dans ses 2 trous.", "manette_gaz", "barre_console"),
+            sub("Embases alu sur les tenons du caisson, puis un fauteuil sur chaque embase.", "embase_fauteuil", "fauteuil"),
+            sub("2 bandes blanches par fauteuil, enfoncées dans leur rainure : l'assise d'abord, puis le dossier.", "bande_fauteuil")]),
     S("La console et son siège", ["ecran_mfd", "ecran_tribord", "interrupteurs", "coussin_siege_console_assise", "coussin_siege_console_dossier"],
       ["Le pare-brise blanc fait partie de la coque : rien à poser.",
        "Grand écran debout à bâbord, sa semelle sur le tenon. Petit écran enfoncé dans son logement à tribord.",
@@ -74,5 +78,11 @@ STEPS = [
       ["Le toit est d'une seule pièce, arceaux compris. Pose-le sur les 2 cadres : ses 8 pieds descendent dans les encoches des rails.",
        "Appuie au-dessus de chaque arceau : les bords du toit viennent contre l'extérieur des rails.",
        "Mât de pavillon : à travers le tapis n° 1 bâbord, jusque dans le plat-bord."],
-      tip="Rien à coller, rien à couper : toute la maquette tient par emboîtement."),
+      tip="Rien à coller : toute la maquette tient par emboîtement."),
+    S("Les pare-battages", cols=2,
+      tip="Une aiguille à coudre aide à passer la ficelle derrière la barrette de l'anneau.",
+      subs=[sub("Les 4 anneaux blancs sont sur les parois du cockpit, entre le boudin et le coussin : 2 par bord, en face des pare-battages.",
+                vif=True, W=640, H=900, cam=CAM_ANNEAU, fleches=FLECHE_ANNEAU),
+            sub("Noue une ficelle fine (non fournie) dans l'œil de chaque pare-battage, passe-la par-dessus le plat-bord puis sous le coussin, et noue-la à l'anneau.",
+                "pare_battage", W=640, H=900, cam=CAM_PB, k=1.0)]),
 ]

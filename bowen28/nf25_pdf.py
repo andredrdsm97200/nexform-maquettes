@@ -12,8 +12,8 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.colors import HexColor, Color
 from nf25_steps import STEPS
 import guide as Gd
-src = open(ROOT + '/build_v22.py').read(); ns = {}
-exec(src[src.index("NICE = {"):src.index("def crop(")], ns); nice = ns['nice']
+sys.path.insert(0, ROOT + '/v25')
+from noms25 import nice                                        # noms affiches des pieces (build_v22.py n'est plus dans le depot)
 for n in ('DMSans-400', 'DMSans-700', 'DMMono-500'):
     pdfmetrics.registerFont(TTFont(n, f'{ROOT}/fonts/{n}.ttf'))
 pdfmetrics.registerFont(TTFont('Brico-800', ROOT + '/fonts/Exo2-800-italic.ttf'))
@@ -70,7 +70,7 @@ def footer(c, si):
     for i in range(n):
         if i == si: c.setFillColor(CYCLE[si % 4][0]); c.circle(x0 + i * 18, 25, 6, fill=1, stroke=0)
         else: c.setFillColor(INK if i < si else LINE); c.circle(x0 + i * 18, 25, 3, fill=1, stroke=0)
-    text(c, "BOWEN 28 · 1:19 · V24 SANS COLLE", W - M, 21, 'DMMono-500', 7.5, MUTED, 'r')
+    text(c, "BOWEN 28 · 1:19 · V25 SANS COLLE", W - M, 21, 'DMMono-500', 7.5, MUTED, 'r')
 def parts_box(c, names, x, ytop, w):
     cols = 4 if len(names) <= 12 else 5
     cell = (w - 16) / cols; rows = math.ceil(len(names) / cols); rh = cell + 11
@@ -103,7 +103,7 @@ def step_page(c, si, st):
     uniq = list(dict.fromkeys(st['parts']))
     y = parts_box(c, uniq, rx, top, rw) - 12
     if st.get('subs'):
-        subs = st['subs']; cols = 3; rows = math.ceil(len(subs) / cols); gap = 10
+        subs = st['subs']; cols = st.get('cols', 3); rows = math.ceil(len(subs) / cols); gap = 10
         cw = (lw - gap * (cols - 1)) / cols; ch = (top - bot - gap * (rows - 1)) / rows
         for j, sb in enumerate(subs):
             x0 = lx + (j % cols) * (cw + gap); y0 = top - (j // cols + 1) * ch - (j // cols) * gap
@@ -130,7 +130,7 @@ def cover(c):
     brand(c, M, H - M - 26, WHITE, FLUO, h=34)
     text(c, "BOWEN 28", M, H - 150, 'Brico-800', 96, WHITE)
     pill(c, "NOTICE DE MONTAGE", M + 4, H - 196, FLUO, INK, 'DMMono-500', 13, 14, rot=-2)
-    for (s1, s2, x, y, r, f, rot) in (("91", "pièces", 96, 190, 46, FLUO, -10), ("11", "étapes", 196, 120, 38, SUN, 8), ("1:19", "50 cm", 92, 82, 34, CORAL, -6)):
+    for (s1, s2, x, y, r, f, rot) in ((str(sum(counts.values())), "pièces", 96, 190, 46, FLUO, -10), (str(len(STEPS)), "étapes", 196, 120, 38, SUN, 8), ("1:19", "50 cm", 92, 82, 34, CORAL, -6)):
         c.saveState(); c.translate(x, y); c.rotate(rot); c.setFillColor(f); c.circle(0, 0, r, fill=1, stroke=0)
         text(c, s1, 0, -2, 'Brico-800', r * 0.62, INK, 'c'); text(c, s2.upper(), 0, -r * 0.42, 'DMMono-500', r * 0.2, INK, 'c'); c.restoreState()
     c.showPage()
@@ -144,7 +144,7 @@ def before(c):
     x1, x2 = M, M + gw + 14; y1, y2 = top - hh, 50
     card(c, x1, y1, gw, hh, "Tes outils", FLUO)
     yy = y1 + hh - 50
-    for t in ("Tes doigts : rien à couper, rien à coller", "Pince à épiler : pour les petites pièces", "L'éprouvette P00 : pour sentir le bon effort", "Papier de verre fin : si une pièce force"):
+    for t in ("Tes doigts : rien à coller", "Pince à épiler : pour les petites pièces", "L'éprouvette P00 : pour sentir le bon effort", "Papier de verre fin : si une pièce force", "Ficelle fine et aiguille : pour les pare-battages"):
         c.setFillColor(INK); c.circle(x1 + 22, yy + 3.5, 3, fill=1, stroke=0); text(c, t, x1 + 32, yy, 'DMSans-400', 12.5); yy -= 25
     card(c, x2, y1, gw, hh, "Les emboîtements, grandeur nature")
     mm = 72 / 25.4; yy = y1 + hh - 60; xs = x2 + 34
@@ -158,7 +158,8 @@ def before(c):
     para(c, "Page imprimée à 100 % : les formes sont à la taille réelle. Pas de colle, pas de goupille.", x2 + 18, yy - 2, gw - 36, 'DMSans-400', 10.5, 14, MUTED)
     card(c, x1, y2, gw, hh, "Tes 5 couleurs")
     yy = y2 + hh - 50
-    for (hexc, nm, det) in (('#F2EFE6', "Blanc cassé", "coque, capots, clés · 14 pièces"), ('#B8BEC4', "Gris alu", "moteurs, cadres, échelle · 20 pièces"), ('#26272B', "Noir", "toit, filets, écrans · 19 pièces"), ('#C29A6A', "Teck", "pont, volant · 13 pièces"), ('#8C7A6B', "Taupe", "coussins, fauteuils · 25 pièces")):
+    nc = json.load(open(IMG + 'couleurs.json'))
+    for (hexc, nm, det) in (('#F2EFE6', "Blanc cassé", f"coque, capots, clés · {nc['blanc']} pièces"), ('#B8BEC4', "Gris alu", f"moteurs, cadres, échelle · {nc['alu']} pièces"), ('#26272B', "Noir", f"toit, filets, pare-battages · {nc['noir']} pièces"), ('#C29A6A', "Teck", f"pont, volant · {nc['teck']} pièces"), ('#8C7A6B', "Taupe", f"coussins, fauteuils · {nc['taupe']} pièces")):
         c.setFillColor(HexColor(hexc)); c.setStrokeColor(LINE); c.setLineWidth(0.8); c.circle(x1 + 25, yy + 3.5, 7, fill=1, stroke=1)
         text(c, nm, x1 + 40, yy, 'DMSans-700', 12); text(c, det, x1 + 124, yy, 'DMSans-400', 11, MUTED); yy -= 24
     card(c, x2, y2, gw, hh, "La règle du jeu", WHITE)
@@ -166,7 +167,7 @@ def before(c):
     for (f, t) in ((FLUO, "Tenon, clé, nervure ou encoche : tout s'emboîte. Aucune colle."), (CORAL, "Ça force ? Vérifie le sens avant d'appuyer plus fort."), (SUN, "Appuie bien droit, dans l'axe du tenon, jusqu'à ce que la pièce affleure."), (BLUE, "Pièces en couleur : à poser. Pièces pâles : déjà posées. La flèche rouge montre le sens.")):
         c.setFillColor(f); c.circle(x2 + 24, yy + 3.5, 6, fill=1, stroke=0)
         yy = para(c, t, x2 + 38, yy, gw - 56, 'DMSans-400', 12, 15.5) - 9
-    brand(c, M, 16, INK, INK, h=20); text(c, "BOWEN 28 · 1:19 · V24 SANS COLLE", W - M, 21, 'DMMono-500', 7.5, MUTED, 'r'); c.showPage()
+    brand(c, M, 16, INK, INK, h=20); text(c, "BOWEN 28 · 1:19 · V25 SANS COLLE", W - M, 21, 'DMMono-500', 7.5, MUTED, 'r'); c.showPage()
 def fin(c):
     c.setFillColor(FLUO); c.rect(0, 0, W, H, fill=1, stroke=0)
     im = Image.open(IMG + 'fin.png'); c.drawImage(img_reader(im, 92), 110, 10, 720, 432)
@@ -174,8 +175,8 @@ def fin(c):
     text(c, "À l'eau !", M, H - 140, 'Brico-800', 88, INK)
     text(c, "Ta maquette est terminée. Pose-la sur ses berceaux, recule d'un pas, admire.", M + 4, H - 172, 'DMSans-700', 13, INK)
     c.showPage()
-out = ROOT + '/nf25/notice_de_montage_bowen28_v24.pdf'
-c = canvas.Canvas(out, pagesize=(W, H)); c.setTitle("Bowen 28 – notice de montage (v24, sans colle)"); c.setAuthor("Nexform 3D Marine")
+out = ROOT + '/nf25/notice_de_montage_bowen28_v25.pdf'
+c = canvas.Canvas(out, pagesize=(W, H)); c.setTitle("Bowen 28 – notice de montage (v25, sans colle)"); c.setAuthor("Nexform 3D Marine")
 cover(c); before(c)
 for si, st in enumerate(STEPS): step_page(c, si, st)
 fin(c); c.save(); print("ok", os.path.getsize(out))

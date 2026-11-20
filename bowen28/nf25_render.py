@@ -24,18 +24,23 @@ def offs(n):
     return [0, 0, 0]
 for n, (V, F) in V23.items():
     col, name, k = n.split('__'); ex = np.array(offs(n), float)
+    if name == 'pare_battage':                                   # v25 : ecarte du flanc, vers l'exterieur et le haut
+        ex = np.array([0.0, 6.0, 14.0 * np.sign(np.asarray(V)[:, 2].mean())])
     data.append((name, col, int(k), trimesh.Trimesh(conv(np.asarray(V, float)), F, process=False), (ex[0], -ex[2], ex[1])))
 IMG = ROOT + '/nf25/img/'
 counts = {}
 for d in data: counts[d[0]] = counts.get(d[0], 0) + 1
 json.dump(counts, open(IMG + 'counts.json', 'w'))
+couleurs = {}
+for d in data: couleurs[d[1]] = couleurs.get(d[1], 0) + 1
+json.dump(couleurs, open(IMG + 'couleurs.json', 'w'))           # pieces par couleur (page « Avant de commencer »)
 def lit(eye, target):
     v = np.asarray(eye, float) - np.asarray(target, float); v /= np.linalg.norm(v)
     side = np.cross(v, [0, 0, 1.0]); side /= np.linalg.norm(side)
     L = 0.75 * v + 0.35 * side + np.array([0, 0, 0.75]); return tuple(L / np.linalg.norm(L))
-def step_img(path, parts, done, cam, k, W, H):
+def step_img(path, parts, done, cam, k, W, H, vif=False, fleches=()):
     if os.path.exists(path): return
-    st = dict(parts=parts, cam=dict(cam, light=lit(cam['eye'], cam['target'])), k=k)
+    st = dict(parts=parts, cam=dict(cam, light=lit(cam['eye'], cam['target'])), k=k, vif=vif, fleches=fleches)
     # fond du panneau : on remplace le blanc par la couleur du panneau en rendant puis en recollant
     im = Gd.render_step(data, P.rgb_of, st, done, W=W, H=H, ss=2)
     im.save(path); print(os.path.basename(path), flush=True)
@@ -54,10 +59,12 @@ if not os.path.exists(IMG + 'fin.png'):
     render(allp, eye=(-330, -520, 260), target=(175, 0, 50), fov=30, W=1500, H=900, ss=2, bg=(149, 250, 5), light=lit((-330, -520, 260), (175, 0, 50))).save(IMG + 'fin.png')
 done = set()
 for si, st in enumerate(STEPS):
-    cam = st.get('cam') or Gd.STEPS[si]['cam']; k = st.get('k', Gd.STEPS[si].get('k', 1.0))
+    g = Gd.STEPS[si] if si < len(Gd.STEPS) else {}                # v25 : etape 12 (pare-battages) sans equivalent v23
+    cam = st.get('cam') or g.get('cam'); k = st.get('k', g.get('k', 1.0))   # etape 12 : cameras dans les sous-etapes
     if st.get('subs'):
         for j, sub in enumerate(st['subs']):
-            step_img(f"{IMG}s{si+1:02d}_{j+1}.png", sub['parts'], set(done), sub.get('cam', cam), sub.get('k', k), 900, 640)
+            step_img(f"{IMG}s{si+1:02d}_{j+1}.png", sub['parts'], set(done), sub.get('cam', cam), sub.get('k', k),
+                     sub.get('W', 900), sub.get('H', 640), sub.get('vif', False), sub.get('fleches', ()))
             done |= set(sub['parts'])
     else:
         step_img(f"{IMG}s{si+1:02d}.png", st['parts'], set(done), cam, k, 1300, 900)

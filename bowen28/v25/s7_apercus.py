@@ -12,7 +12,7 @@ from matplotlib import font_manager as fm
 import pieces as P
 
 HERE = ROOT + '/v25'
-KIT = os.path.join(HERE, 'kit', 'Bowen28_kit_impression_v24')
+KIT = os.path.join(HERE, 'kit', 'Bowen28_kit_impression_v25')
 for f in ('DMSans-400', 'DMSans-700', 'DMMono-500', 'Exo2-800-italic'):
     fm.fontManager.addfont(f'{ROOT}/fonts/{f}.ttf')
 FONT = 'DM Sans'

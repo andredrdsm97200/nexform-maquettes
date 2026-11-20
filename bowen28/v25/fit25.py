@@ -6,7 +6,9 @@ Une seule logique pour tout l'assemblage, un seul jeu : 0,1 mm par cote.
     tiennent sans support, comme le toit de son logement losange ;
   - cle de jonction en forme d'os (2 tetes rondes + col) pour les 2 moities de coque : elle tire les 2 faces
     l'une contre l'autre ; on l'enfonce par le dessus ;
-  - nervure / fente des coussins (inchangees, la pesanteur les tient).
+  - nervure / fente des coussins (inchangees, la pesanteur les tient) ;
+  - piece que son poids ne tient pas (ecrans, manette, interrupteurs, pompe, barre de console) : cotes d'ecrasement
+    en plus, cote petite piece (../../commun/emboitements.py, ajoutees dans s1_pieces.py ; LIGNE_DE_CONDUITE.md, regle 2).
 Les logements deja perces dans la coque v23 (jeu 0,15 ou 0,2 mm) sont gardes : ce sont les tenons des pieces
 qui y entrent qui grossissent, pour retrouver 0,1 mm.
 """

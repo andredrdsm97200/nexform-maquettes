@@ -21,20 +21,30 @@ sys.path.insert(0, ROOT); sys.path.insert(0, ROOT + '/v25')
 import numpy as np, trimesh
 import model as M, fit as F
 import fit25 as G
+import poste25 as PO                           # caisson des fauteuils v25 : fauteuils, embases et filet suivent
 import pieces as P
 from pieces import U, clean, lego_points
 import roof25 as RF, stripes25 as ST, back25 as BK
 from manifold3d import Manifold, OpType
+sys.path.insert(0, _os.path.join(_os.path.dirname(ROOT), 'commun'))
+import emboitements as E                       # cotes d'ecrasement (LIGNE_DE_CONDUITE.md, regle 2)
 
 mm = M.mm2m
 t0 = time.time()
 C = []
 
 
-def add(name, color, asm, proto=None, down=(0, 0, -1), note=""):
+def add(name, color, asm, proto=None, down=(0, 0, -1), note="", serre=None):
+    """serre : la piece imprimee (avec ses cotes d'ecrasement) a sa place dans la maquette, pour le controle de
+    maintien ; la maquette assemblee (asm) garde la piece nominale, au jeu standard."""
     asm = [clean(a) for a in (asm if isinstance(asm, list) else [asm])]
     proto = clean(proto) if proto is not None else asm[0]
-    C.append(dict(name=name, color=color, qty=len(asm), asm=asm, proto=proto, down=np.asarray(down, float), note=note, option=False))
+    serre = [clean(a) for a in serre] if serre else None
+    C.append(dict(name=name, color=color, qty=len(asm), asm=asm, proto=proto, down=np.asarray(down, float), note=note, option=False,
+                  serre=serre))
+
+
+MMU = mm(1.0)                                  # 1 mm de maquette, en metres reels (unite des cotes)
 
 
 def patched(fns, repl):
@@ -110,29 +120,75 @@ n = M.WHEEL_N
 pf = M.WHEEL_C - (M.RIM_ZC + M.PUMP_GAP) * n                         # face avant de la pompe
 t_face = (M.CON_AFT_X - M.WHEEL_C[0]) / (-n[0])
 pump = ns["build_helm_pump"]()
-pump = pump + F.stud(pf, n, F.STUD_R, M.PUMP_GAP + M.BOSS_H - mm(0.8) - mm(0.15))      # tenon rond dans le croisillon
+L_av = M.PUMP_GAP + M.BOSS_H - mm(0.8) - mm(0.15)
+pump = pump + F.stud(pf, n, F.STUD_R, L_av)                                          # tenon rond dans le croisillon
 pump = pump - G.dhole(M.WHEEL_C - (t_face + mm(1.2)) * n, n, (0, 0, 1), mm(1.0), mm(3.9 + 1.2))   # logement du tenon de la console
+q_f = M.WHEEL_C - t_face * n                                                         # face de la console
+pump_serre = (pump + E.cotes_logement(q_f, n, (0, 0, 1), mm(1.0), mm(0.4), mm(3.0), n=4, angle0=45.0, unite=MMU)
+              + E.cotes_tenon(pf, n, (0, 0, 1), F.STUD_R + mm(G.C), mm(0.3), L_av - F.STUD_TIP - mm(0.05), n=3, unite=MMU))
 add("jante_volant", "teck", M.place_wheel(rim), proto=rim)
 add("branches_volant", "alu", M.place_wheel(spokes), proto=spokes)
 add("moyeu_volant", "teck", M.place_cap(cap), proto=cap)
-add("pompe_direction", "noir", pump, down=(1, 0, 0), note="debout sur sa base")
-ns = patched([M.build_throttle], {"build_throttle": [("    return t - cyl_x(", "    return t\n    _ = (")]})
-thr = ns["build_throttle"]()
+add("pompe_direction", "noir", pump, proto=pump_serre, down=(1, 0, 0), note="debout sur sa base", serre=[pump_serre])
+def build_throttle_double():
+    """v25 (photos du bateau, 2 hors-bords) : commande double, 2 leviers sur la meme embase, un sur chaque flanc,
+    poignees vers l'interieur (1 mm entre elles). Meme embase et meme tenon losange que la manette v24 (meme logement
+    dans la console). Imprimee debout sur sa base : leviers inclines de 15 degres, poignees de 1 mm en porte-a-faux."""
+    h = M.THR["z1"] - M.THR["z0"]; wdt = M.THR["y1"] - M.THR["y0"]
+    t_arm, L_grip = 0.035, 0.05
+    parts = [M.extrude_xz([(0.0, 0.0), (0.12, 0.0), (0.12, h * 0.55), (0.07, h), (0.0, h)], 0.0, wdt)]
+    arm = [(0.055, h * 0.55), (0.105, h * 0.55), (0.165, h + 0.14), (0.125, h + 0.155)]
+    for y0, g0 in ((0.0, 0.0), (wdt - t_arm, wdt - L_grip)):
+        parts.append(M.extrude_xz(arm, y0, y0 + t_arm))                                                      # levier
+        parts.append(Manifold.cylinder(L_grip, 0.026, 0.026, 24).rotate([-90, 0, 0]).translate([0.145, g0, h + 0.15]))  # poignee
+        parts.append(Manifold.cylinder(t_arm, 0.045, 0.045, 24).rotate([-90, 0, 0]).translate([0.08, y0, h * 0.55]))   # moyeu
+    return Manifold.batch_boolean(parts, OpType.Add)
+
+
+thr = build_throttle_double()
 wdt, h = M.THR["y1"] - M.THR["y0"], M.THR["z1"] - M.THR["z0"]
 thr = thr + G.dpeg((0.0, wdt / 2, h / 2), (-1.0, 0.0, 0.0), (0, 0, 1), mm(1.0), mm(4.0))
-add("manette_gaz", "noir", M.place_throttle(thr), down=(0, 1, 0), note="couchée sur le flanc")
+thr_serre = thr + E.cotes_tenon((0.0, wdt / 2, h / 2), (-1.0, 0.0, 0.0), (0, 0, 1), mm(1.0 + G.C), mm(0.3), mm(3.4), n=4, angle0=45.0, unite=MMU)
+add("manette_gaz", "noir", M.place_throttle(thr), proto=M.place_throttle(thr_serre), down=(0, 0, -1), note="debout sur sa base",
+    serre=[M.place_throttle(thr_serre)])
 # barre de console : pattes grossies dans les trous de la console (jeu 0,2 -> 0,1 mm)
 x = M.CON_BACK_X
 bar = M.console_bar()
 sleeves = [M.tube_path([(x, yy, M.CB_Z), (x + 0.05, yy, M.CB_Z)], M.LAD_R + mm(0.1), 14) for yy in M.CB_Y]
-bar = (bar + U(sleeves)).trim_by_plane([0.0, 0.0, 1.0], M.CB_Z - M.LAD_R + mm(0.25))
-add("barre_console", "alu", bar)
-add("ecran_mfd", "noir", M.build_mfd(), down=M.mfd_down(), note="debout sur sa base")
+ribs = U([E.cotes_tenon((x, yy, M.CB_Z), (1.0, 0.0, 0.0), (0, 0, 1), M.LAD_R + M.CLR, mm(0.3), 0.05 - mm(0.3), angles=(0.0, 100.0, 260.0), unite=MMU)
+          for yy in M.CB_Y])
+trim = lambda m: m.trim_by_plane([0.0, 0.0, 1.0], M.CB_Z - M.LAD_R + mm(0.25))
+bar, bar_serre = trim(bar + U(sleeves)), trim(bar + U(sleeves) + ribs)
+add("barre_console", "alu", bar, proto=bar_serre, serre=[bar_serre])
+foot0 = M.MFD_FOOT
+M.MFD_FOOT = (foot0[0] + 2 * mm(G.C), foot0[1] + 2 * mm(G.C))      # empreinte de la coque v23 : jeu 0,2 -> 0,1 mm
+mfd = M.build_mfd()
+M.MFD_FOOT = foot0
+o_m, u_m, v_m, n_m = M.mfd_foot_frame()
+mfd_serre = mfd + E.cotes_logement(o_m + n_m * (-M.MFD_REC + mm(0.02)), n_m, u_m, F.STUD_R, mm(0.4), mm(1.75), n=3, unite=MMU)
+add("ecran_mfd", "noir", mfd, proto=mfd_serre, down=M.mfd_down(), note="debout sur sa base", serre=[mfd_serre])
+(dx0, dz0), (dx1, dz1) = M.DASH
 for i in range(len(M.SCREENS)):
+    # Empreinte de la coque v23 : paroi a 0,2 mm sur les 4 cotes jusqu'a 0,8 mm de profondeur ; plus bas, la paroi du
+    # haut de la pente rentre (0,06 mm a 1,1 mm). Ecran : +0,1 mm par cote (jeu standard), sauf vers le haut de la pente
+    # (+0,05 mm, comme en v24) ; une cote d'ecrasement par flanc, entre 0,1 et 0,75 mm de profondeur.
     xc, yc, lx, ly = M.SCREENS[i]
-    add("ecran_tribord", "noir", M.screen_box(i, mm(0.05)), proto=M.box(0, lx + 2 * mm(0.05), 0, ly + 2 * mm(0.05), 0, 0.032 + mm(0.05)))
-sw = M.build_switch_flat()
-add("interrupteurs", "noir", M.place_switch(sw), proto=sw)
+    g, g_haut, g_bas = mm(G.C), mm(0.05), mm(0.05)
+    loc = M.box(-lx / 2 - g, lx / 2 + g_haut, -ly / 2 - g, ly / 2 + g, -0.02 - g_bas, 0.012)     # repere de screen_box
+    ribs = U([E.cote_flanc((0, 0, 0), (0, 0, 1), nrm, half + M.CLR, -mm(0.75), -mm(0.1), unite=MMU)
+              for nrm, half in (((1, 0, 0), lx / 2), ((-1, 0, 0), lx / 2), ((0, 1, 0), ly / 2), ((0, -1, 0), ly / 2))])
+    ang = -np.degrees(np.arctan2(dz1 - dz0, dx1 - dx0))
+    place = lambda m: m.rotate([0, ang, 0]).translate([xc + M.DXC, yc, M.dash_z(xc)])
+    to_plate = lambda m: m.translate([lx / 2 + g, ly / 2 + g, 0.02 + g_bas])
+    add("ecran_tribord", "noir", place(loc), proto=to_plate(loc + ribs), serre=[place(loc + ribs)])
+ns = patched([M.build_switch_flat], {"build_switch_flat": [("parts = [box(0, W, 0, H, 0, SW_T)]", "parts = [box(-G_SW, W + G_SW, -G_SW, H + G_SW, 0, SW_T)]")]})
+ns["G_SW"] = mm(G.C)                                                  # empreinte de la coque v23 : jeu 0,2 -> 0,1 mm
+sw = ns["build_switch_flat"]()
+Wsw, Hsw = M.SW_Y[1] - M.SW_Y[0], M.SW_Z[1] - M.SW_Z[0]
+rb = lambda p, nrm, paroi: E.cote_flanc(p, (0, 0, 1), nrm, paroi, mm(0.15), M.SW_REC - mm(0.1), unite=MMU)
+sw_serre = sw + U([rb((uu, Hsw / 2, 0), (0, s, 0), Hsw / 2 + M.CLR) for uu in (Wsw / 4, 3 * Wsw / 4) for s in (1, -1)]
+                  + [rb((Wsw / 2, Hsw / 2, 0), (s, 0, 0), Wsw / 2 + M.CLR) for s in (1, -1)])
+add("interrupteurs", "noir", M.place_switch(sw), proto=sw_serre, serre=[M.place_switch(sw_serre)])
 
 # ---- taud : 2 cadres + toit rigide d'une piece
 frames = [RF.build_frame25(s) for s in (1, -1)]
@@ -141,7 +197,8 @@ roof = RF.build_roof()
 add("toit_taud", "noir", roof, down=(0, 0, 1), note="à l'envers, dessus sur le plateau, sans support")
 
 # ---- pont, plats-bords, tableau
-add("echelle_bain", "alu", M.build_ladder())
+import echelle25 as EC
+add("echelle_bain", "alu", EC.build(), note="à plat, repliée")              # v25 : repliee, tournee de 90 deg
 with hull_studs():
     cl = M.build_cleat()
     tiles = M.seadeck_tiles()
@@ -162,6 +219,9 @@ for s, sn in ((1, 'babord'), (-1, 'tribord')):
 for name, tile, surf in tiles:
     add(name, "teck", M.place_on_surface(tile, surf), proto=tile, down=(0, 0, 1), note="à l'envers : dessus sur le plateau, tenons vers le haut")
 add("dos_dossier_arriere", "taupe", BK.build(), note="debout")
+import pare_battages25 as PBT                  # v25 : 4 pare-battages pendus a une ficelle (anneaux dans la coque)
+for nom, (asm_pb, proto_pb, down_pb) in PBT.pieces().items():
+    add(nom, "noir", asm_pb, proto=proto_pb, down=down_pb, note="debout, œil en haut")
 light, dark = M.build_bolsters()
 light = light ^ M.build_cockpit_cutter()
 light = light - U([F.socket(p) for p in bol_pts])
@@ -184,7 +244,8 @@ for e in C:
     asm = [view(P.to_tm(a, welded=False)) for a in e['asm']]
     out.append(dict(name=e['name'], color=e['color'], qty=e['qty'], note=e['note'], option=False, V=np.asarray(tm.vertices), F=np.asarray(tm.faces),
                     watertight=bool(tm.is_watertight), bodies=int(tm.body_count), vol_print=float(tm.volume),
-                    vol_asm=sum(float(P.to_tm(a).volume) for a in e['asm']), asm=asm))
+                    vol_asm=sum(float(P.to_tm(a).volume) for a in e['asm']), asm=asm,
+                    serre=[view(P.to_tm(a, welded=False)) for a in e['serre']] if e.get('serre') else None))
     if not (tm.is_watertight and tm.body_count == 1):
         print('  ATTENTION', e['name'], tm.is_watertight, tm.body_count)
 pickle.dump(out, open(ROOT + '/v25/pieces.pkl', 'wb'))
