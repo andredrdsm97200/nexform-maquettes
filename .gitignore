@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.DS_Store
+# fichiers recalcules a chaque construction
+bowen28/v25/kit/
+bowen28/v25/*.pkl
+bowen28/v25/kit_meta.json
+bowen28/nf25/
+bowen28/*.zip
+whaler17/sorties/
+sunfish/sorties/
+bowen28/out/

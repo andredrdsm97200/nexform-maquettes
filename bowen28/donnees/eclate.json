@@ -1,0 +1,532 @@
+{
+"blanc__coque_arriere__0": [
+-25.0,
+0.0,
+0.0
+],
+"blanc__coque_avant__0": [
+25.0,
+0.0,
+0.0
+],
+"blanc__capot_moteur__0": [
+-70.0,
+22.0,
+0.0
+],
+"blanc__capot_moteur__1": [
+-70.0,
+22.0,
+0.0
+],
+"blanc__jupe_moteur__0": [
+-86.0,
+8.0,
+0.0
+],
+"blanc__jupe_moteur__1": [
+-86.0,
+8.0,
+0.0
+],
+"alu__embase_moteur__0": [
+-70.0,
+0.0,
+0.0
+],
+"alu__embase_moteur__1": [
+-70.0,
+0.0,
+0.0
+],
+"noir__aileron_moteur__0": [
+-70.0,
+-14.0,
+0.0
+],
+"noir__aileron_moteur__1": [
+-70.0,
+-14.0,
+0.0
+],
+"noir__gaine_moteur__0": [
+-30.0,
+10.0,
+0.0
+],
+"noir__gaine_moteur__1": [
+-30.0,
+10.0,
+0.0
+],
+"alu__flap__0": [
+-20.0,
+-10.0,
+0.0
+],
+"alu__flap__1": [
+-20.0,
+-10.0,
+0.0
+],
+"noir__verin_flap__0": [
+-24.0,
+-4.0,
+0.0
+],
+"noir__verin_flap__1": [
+-24.0,
+-4.0,
+0.0
+],
+"taupe__fauteuil__0": [
+0.0,
+30.0,
+0.0
+],
+"taupe__fauteuil__1": [
+0.0,
+30.0,
+0.0
+],
+"blanc__bande_fauteuil__0": [
+0.0,
+40.0,
+0.0
+],
+"blanc__bande_fauteuil__1": [
+0.0,
+40.0,
+0.0
+],
+"blanc__bande_fauteuil__2": [
+0.0,
+40.0,
+0.0
+],
+"blanc__bande_fauteuil__3": [
+0.0,
+40.0,
+0.0
+],
+"alu__embase_fauteuil__0": [
+0.0,
+14.0,
+0.0
+],
+"alu__embase_fauteuil__1": [
+0.0,
+14.0,
+0.0
+],
+"noir__filet_caisson__0": [
+-12.0,
+0.0,
+0.0
+],
+"teck__jante_volant__0": [
+-24.0,
+6.0,
+0.0
+],
+"alu__branches_volant__0": [
+-16.0,
+4.0,
+0.0
+],
+"teck__moyeu_volant__0": [
+-30.0,
+8.0,
+0.0
+],
+"noir__pompe_direction__0": [
+-8.0,
+2.0,
+0.0
+],
+"noir__manette_gaz__0": [
+-20.0,
+0.0,
+0.0
+],
+"alu__barre_console__0": [
+-20.0,
+0.0,
+0.0
+],
+"blanc__pare_brise__0": [
+0.0,
+22.0,
+0.0
+],
+"noir__ecran_mfd__0": [
+-6.0,
+16.0,
+0.0
+],
+"noir__ecran_tribord__0": [
+0.0,
+16.0,
+0.0
+],
+"noir__interrupteurs__0": [
+-14.0,
+0.0,
+0.0
+],
+"alu__cadre_taud__0": [
+0.0,
+45.0,
+0.0
+],
+"alu__cadre_taud__1": [
+0.0,
+45.0,
+0.0
+],
+"alu__arceau_taud__0": [
+0.0,
+75.0,
+0.0
+],
+"alu__arceau_taud__1": [
+0.0,
+75.0,
+0.0
+],
+"alu__arceau_taud__2": [
+0.0,
+75.0,
+0.0
+],
+"alu__arceau_avant_taud__0": [
+0.0,
+75.0,
+0.0
+],
+"blanc__boitier_echelle_babord__0": [
+0.0,
+45.0,
+14.0
+],
+"blanc__boitier_echelle_tribord__0": [
+0.0,
+45.0,
+-14.0
+],
+"alu__echelle_bain__0": [
+0.0,
+14.0,
+0.0
+],
+"alu__taquet__0": [
+0.0,
+12.0,
+0.0
+],
+"alu__taquet__1": [
+0.0,
+12.0,
+0.0
+],
+"alu__taquet__2": [
+0.0,
+12.0,
+0.0
+],
+"alu__taquet__3": [
+0.0,
+12.0,
+0.0
+],
+"alu__mat_pavillon__0": [
+0.0,
+40.0,
+0.0
+],
+"alu__anneau_tableau__0": [
+0.0,
+0.0,
+0.0
+],
+"alu__anneau_tableau__1": [
+0.0,
+0.0,
+0.0
+],
+"noir__filet_noir_arriere__0": [
+0.0,
+0.0,
+0.0
+],
+"noir__filet_noir_arriere__1": [
+0.0,
+0.0,
+0.0
+],
+"noir__filet_noir_avant__0": [
+0.0,
+0.0,
+0.0
+],
+"noir__filet_noir_avant__1": [
+0.0,
+0.0,
+0.0
+],
+"noir__filet_noir_tableau__0": [
+-12.0,
+0.0,
+0.0
+],
+"noir__filet_noir_tableau__1": [
+-12.0,
+0.0,
+0.0
+],
+"teck__seadeck_pointe_babord__0": [
+0.0,
+14.0,
+0.0
+],
+"teck__seadeck_pointe_tribord__0": [
+0.0,
+14.0,
+0.0
+],
+"teck__seadeck_passage_arriere__0": [
+0.0,
+14.0,
+0.0
+],
+"teck__seadeck_plat_bord_1_babord__0": [
+0.0,
+14.0,
+0.0
+],
+"teck__seadeck_plat_bord_2_babord__0": [
+0.0,
+14.0,
+0.0
+],
+"teck__seadeck_plat_bord_3_babord__0": [
+0.0,
+14.0,
+0.0
+],
+"teck__seadeck_plat_bord_4_babord__0": [
+0.0,
+14.0,
+0.0
+],
+"teck__seadeck_plat_bord_1_tribord__0": [
+0.0,
+14.0,
+0.0
+],
+"teck__seadeck_plat_bord_2_tribord__0": [
+0.0,
+14.0,
+0.0
+],
+"teck__seadeck_plat_bord_3_tribord__0": [
+0.0,
+14.0,
+0.0
+],
+"teck__seadeck_plat_bord_4_tribord__0": [
+0.0,
+14.0,
+0.0
+],
+"taupe__dos_dossier_arriere__0": [
+-14.0,
+0.0,
+0.0
+],
+"taupe__boudin_babord__0": [
+0.0,
+14.0,
+0.0
+],
+"taupe__boudin_tribord__0": [
+0.0,
+14.0,
+0.0
+],
+"taupe__coussin_banquette_basse_assise__0": [
+0.0,
+10.0,
+0.0
+],
+"blanc__bandes_banquette_basse_assise__0": [
+0.0,
+5.0,
+-0.0
+],
+"taupe__coussin_banquette_basse_dossier__0": [
+10.0,
+0.0,
+0.0
+],
+"blanc__bandes_banquette_basse_dossier__0": [
+5.0,
+0.0,
+-0.0
+],
+"taupe__coussin_banquette_haute_assise__0": [
+0.0,
+10.0,
+0.0
+],
+"blanc__bandes_banquette_haute_assise__0": [
+0.0,
+5.0,
+-0.0
+],
+"taupe__coussin_banquette_haute_dossier__0": [
+10.0,
+0.0,
+0.0
+],
+"blanc__bandes_banquette_haute_dossier__0": [
+5.0,
+0.0,
+-0.0
+],
+"taupe__coussin_siege_console_assise__0": [
+0.0,
+10.0,
+0.0
+],
+"blanc__bandes_siege_console_assise__0": [
+0.0,
+5.0,
+-0.0
+],
+"taupe__coussin_siege_console_dossier__0": [
+10.0,
+0.0,
+0.0
+],
+"blanc__bandes_siege_console_dossier__0": [
+5.0,
+0.0,
+-0.0
+],
+"taupe__coussin_avant_assise_babord__0": [
+0.0,
+10.0,
+0.0
+],
+"taupe__coussin_avant_assise_tribord__0": [
+0.0,
+10.0,
+0.0
+],
+"taupe__coussin_avant_assise_avant__0": [
+0.0,
+10.0,
+0.0
+],
+"taupe__coussin_avant_dossier_babord__0": [
+0.0,
+10.0,
+0.0
+],
+"taupe__coussin_avant_dossier_tribord__0": [
+0.0,
+10.0,
+0.0
+],
+"taupe__coussin_avant_dossier_avant__0": [
+0.0,
+10.0,
+0.0
+],
+"taupe__coussin_avant_retour_babord__0": [
+0.0,
+10.0,
+0.0
+],
+"taupe__coussin_avant_retour_tribord__0": [
+0.0,
+10.0,
+0.0
+],
+"taupe__coussin_plat_bord_1_babord__0": [
+0.30654791503009526,
+0.0,
+9.995300314437316
+],
+"blanc__bandes_plat_bord_1_babord__0": [
+0.15327395751504763,
+0.0,
+4.997650157218658
+],
+"taupe__coussin_plat_bord_1_tribord__0": [
+0.30654791503009526,
+-0.0,
+-9.995300314437316
+],
+"blanc__bandes_plat_bord_1_tribord__0": [
+0.15327395751504763,
+-0.0,
+-4.997650157218658
+],
+"taupe__coussin_plat_bord_2_babord__0": [
+0.12444731036038041,
+0.0,
+9.999225613363471
+],
+"blanc__bandes_plat_bord_2_babord__0": [
+0.062223655180190206,
+0.0,
+4.999612806681736
+],
+"taupe__coussin_plat_bord_2_tribord__0": [
+0.12444731036038041,
+-0.0,
+-9.999225613363471
+],
+"blanc__bandes_plat_bord_2_tribord__0": [
+0.062223655180190206,
+-0.0,
+-4.999612806681736
+],
+"taupe__coussin_plat_bord_3_babord__0": [
+-1.235264669105161,
+0.0,
+9.923412779747727
+],
+"blanc__bandes_plat_bord_3_babord__0": [
+-0.6176323345525805,
+0.0,
+4.961706389873863
+],
+"taupe__coussin_plat_bord_3_tribord__0": [
+-1.235264669105161,
+0.0,
+-9.923412779747727
+],
+"blanc__bandes_plat_bord_3_tribord__0": [
+-0.6176323345525805,
+0.0,
+-4.961706389873863
+],
+"alu__berceau_arriere__0": [
+0.0,
+-25.0,
+0.0
+],
+"alu__berceau_avant__0": [
+0.0,
+-25.0,
+0.0
+],
+"toile__tissu_taud__0": [
+0.0,
+110.0,
+0.0
+]
+}

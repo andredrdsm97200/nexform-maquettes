@@ -1,0 +1,12 @@
+# Python 3.11 ou plus recent (teste avec 3.13)
+numpy>=2.0
+scipy>=1.13
+trimesh==5.2.1
+manifold3d>=3.0
+shapely>=2.0
+matplotlib>=3.8
+reportlab>=4.0
+pillow>=10.0
+rtree>=1.2
+networkx>=3.0
+lxml>=5.0

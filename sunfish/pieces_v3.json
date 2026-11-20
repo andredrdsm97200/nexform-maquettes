@@ -1,0 +1,681 @@
+{
+ "echelle": "1:16,8 (coque de 4,19 m -> 250 mm)",
+ "version": "v3 (voile a bandes)",
+ "origine": "visionneuse publiee https://claude.ai/artifact/4cgnJsJqzX3YuC6bwLXywY",
+ "reperes": "millimetres, maquette assemblee (x vers l avant... comme la visionneuse)",
+ "bounds": [
+  [
+   0.5303030014038086,
+   -37.177650451660156,
+   0.0
+  ],
+  [
+   276.930068366256,
+   37.177650451660156,
+   327.91908793840355
+  ]
+ ],
+ "coloris": {
+  "bleu_blanc": {
+   "name": "Bleu et blanc (ta config SERO)",
+   "colors": [
+    [
+     246,
+     246,
+     242
+    ],
+    [
+     26,
+     50,
+     108
+    ],
+    [
+     246,
+     246,
+     242
+    ],
+    [
+     26,
+     50,
+     108
+    ],
+    [
+     246,
+     246,
+     242
+    ],
+    [
+     26,
+     50,
+     108
+    ]
+   ]
+  },
+  "jaune_bleu_blanc": {
+   "name": "Jaune, bleu et blanc (ta photo)",
+   "colors": [
+    [
+     60,
+     124,
+     200
+    ],
+    [
+     246,
+     196,
+     38
+    ],
+    [
+     246,
+     246,
+     242
+    ],
+    [
+     60,
+     124,
+     200
+    ],
+    [
+     246,
+     246,
+     242
+    ],
+    [
+     246,
+     196,
+     38
+    ]
+   ]
+  }
+ },
+ "pieces": [
+  {
+   "key": "coque",
+   "name": "Coque et pont",
+   "orient": "Pont vers le haut, en diagonale, supports arborescents sous la carène",
+   "file": "coque.stl",
+   "color": [
+    236,
+    236,
+    232
+   ],
+   "size": [
+    189.2,
+    189.2,
+    19.0
+   ],
+   "group": "Coque",
+   "explode": [
+    0,
+    0,
+    0
+   ],
+   "printed": true,
+   "stl": "pieces_v3/coque.stl",
+   "etanche": true,
+   "corps": 1,
+   "volume_mm3": 167510.2
+  },
+  {
+   "key": "pare_eclaboussures",
+   "name": "Pare-éclaboussures",
+   "orient": "Debout sur sa tranche plate, sans support",
+   "file": "pare_eclaboussures.stl",
+   "color": [
+    200,
+    48,
+    54
+   ],
+   "size": [
+    66.4,
+    30.4,
+    7.8
+   ],
+   "group": "Coque",
+   "explode": [
+    0,
+    0,
+    20
+   ],
+   "printed": true,
+   "stl": "pieces_v3/pare_eclaboussures.stl",
+   "etanche": true,
+   "corps": 1,
+   "volume_mm3": 664.7
+  },
+  {
+   "key": "bandes_etrave",
+   "name": "Bandes d'étrave (3 pièces)",
+   "orient": "À plat, face plane dessous, à coller dans leurs logements",
+   "file": "bandes_etrave.stl",
+   "color": [
+    200,
+    48,
+    54
+   ],
+   "size": [
+    40.5,
+    58.3,
+    2.5
+   ],
+   "group": "Coque",
+   "explode": [
+    0,
+    0,
+    14
+   ],
+   "printed": true,
+   "stl": "pieces_v3/bandes_etrave.stl",
+   "etanche": true,
+   "corps": 3,
+   "volume_mm3": 1044.7
+  },
+  {
+   "key": "derive",
+   "name": "Dérive",
+   "orient": "À plat, sans support",
+   "file": "derive.stl",
+   "color": [
+    196,
+    140,
+    82
+   ],
+   "size": [
+    61.8,
+    14.4,
+    1.6
+   ],
+   "group": "Dérive et safran",
+   "explode": [
+    0,
+    0,
+    -30
+   ],
+   "printed": true,
+   "stl": "pieces_v3/derive.stl",
+   "etanche": true,
+   "corps": 1,
+   "volume_mm3": 1272.1
+  },
+  {
+   "key": "derive_poignee",
+   "name": "Poignée de dérive",
+   "orient": "Retournée, sans support (en imprimer 2 ou 3)",
+   "file": "derive_poignee.stl",
+   "color": [
+    40,
+    40,
+    42
+   ],
+   "size": [
+    4.2,
+    3.2,
+    2.4
+   ],
+   "group": "Dérive et safran",
+   "explode": [
+    0,
+    0,
+    24
+   ],
+   "printed": true,
+   "stl": "pieces_v3/derive_poignee.stl",
+   "etanche": true,
+   "corps": 1,
+   "volume_mm3": 17.8
+  },
+  {
+   "key": "safran_lame",
+   "name": "Lame de safran",
+   "orient": "À plat, sans support",
+   "file": "safran_lame.stl",
+   "color": [
+    196,
+    140,
+    82
+   ],
+   "size": [
+    39.4,
+    13.1,
+    1.6
+   ],
+   "group": "Dérive et safran",
+   "explode": [
+    22,
+    0,
+    -18
+   ],
+   "printed": true,
+   "stl": "pieces_v3/safran_lame.stl",
+   "etanche": true,
+   "corps": 1,
+   "volume_mm3": 650.0
+  },
+  {
+   "key": "safran_tete",
+   "name": "Tête de safran",
+   "orient": "Retournée, sans support",
+   "file": "safran_tete.stl",
+   "color": [
+    178,
+    182,
+    188
+   ],
+   "size": [
+    17.4,
+    4.0,
+    10.6
+   ],
+   "group": "Dérive et safran",
+   "explode": [
+    22,
+    0,
+    8
+   ],
+   "printed": true,
+   "stl": "pieces_v3/safran_tete.stl",
+   "etanche": true,
+   "corps": 1,
+   "volume_mm3": 317.9
+  },
+  {
+   "key": "barre",
+   "name": "Barre et stick",
+   "orient": "À plat sur sa face plane, sans support",
+   "file": "barre.stl",
+   "color": [
+    178,
+    182,
+    188
+   ],
+   "size": [
+    51.7,
+    10.1,
+    2.0
+   ],
+   "group": "Dérive et safran",
+   "explode": [
+    12,
+    0,
+    26
+   ],
+   "printed": true,
+   "stl": "pieces_v3/barre.stl",
+   "etanche": true,
+   "corps": 1,
+   "volume_mm3": 274.3
+  },
+  {
+   "key": "mat",
+   "name": "Mât",
+   "orient": "Couché sur sa face plane, bordure 3 mm conseillée",
+   "file": "mat.stl",
+   "color": [
+    196,
+    200,
+    206
+   ],
+   "size": [
+    181.7,
+    4.5,
+    3.7
+   ],
+   "group": "Gréement",
+   "explode": [
+    0,
+    0,
+    34
+   ],
+   "printed": true,
+   "stl": "pieces_v3/mat.stl",
+   "etanche": true,
+   "corps": 1,
+   "volume_mm3": 1599.0
+  },
+  {
+   "key": "bome",
+   "name": "Bôme et vit-de-mulet",
+   "orient": "Face plane sur le plateau, bordure 3 mm conseillée",
+   "file": "bome.stl",
+   "color": [
+    196,
+    200,
+    206
+   ],
+   "size": [
+    248.9,
+    6.5,
+    7.6
+   ],
+   "group": "Gréement",
+   "explode": [
+    0,
+    -26,
+    50
+   ],
+   "printed": true,
+   "stl": "pieces_v3/bome.stl",
+   "etanche": true,
+   "corps": 1,
+   "volume_mm3": 1253.7
+  },
+  {
+   "key": "vergue",
+   "name": "Vergue haute",
+   "orient": "Face plane sur le plateau, bordure 3 mm conseillée",
+   "file": "vergue.stl",
+   "color": [
+    196,
+    200,
+    206
+   ],
+   "size": [
+    248.9,
+    2.9,
+    2.4
+   ],
+   "group": "Gréement",
+   "explode": [
+    0,
+    -26,
+    62
+   ],
+   "printed": true,
+   "stl": "pieces_v3/vergue.stl",
+   "etanche": true,
+   "corps": 1,
+   "volume_mm3": 1155.5
+  },
+  {
+   "key": "voile_bande_1",
+   "name": "Bande 1 (point d'écoute)",
+   "orient": "Telle quelle, sans support. Se retourne au montage",
+   "file": "voile/bande_1.stl",
+   "color": [
+    246,
+    246,
+    242
+   ],
+   "size": [
+    63.1,
+    83.5,
+    0.8
+   ],
+   "group": "Voile",
+   "explode": [
+    0,
+    -62,
+    56
+   ],
+   "printed": true,
+   "stl": "pieces_v3/voile_bande_1.stl",
+   "etanche": true,
+   "corps": 1,
+   "volume_mm3": 1765.1
+  },
+  {
+   "key": "voile_bande_2",
+   "name": "Bande 2",
+   "orient": "Telle quelle, sans support",
+   "file": "voile/bande_2.stl",
+   "color": [
+    26,
+    50,
+    108
+   ],
+   "size": [
+    59.5,
+    143.3,
+    0.8
+   ],
+   "group": "Voile",
+   "explode": [
+    0,
+    -66,
+    56
+   ],
+   "printed": true,
+   "stl": "pieces_v3/voile_bande_2.stl",
+   "etanche": true,
+   "corps": 1,
+   "volume_mm3": 3217.2
+  },
+  {
+   "key": "voile_bande_3",
+   "name": "Bande 3 (2 morceaux)",
+   "orient": "Telle quelle, sans support. Se retourne au montage. Le petit morceau va sous la fenêtre",
+   "file": "voile/bande_3.stl",
+   "color": [
+    246,
+    246,
+    242
+   ],
+   "size": [
+    65.6,
+    199.3,
+    0.8
+   ],
+   "group": "Voile",
+   "explode": [
+    0,
+    -70,
+    56
+   ],
+   "printed": true,
+   "stl": "pieces_v3/voile_bande_3.stl",
+   "etanche": true,
+   "corps": 2,
+   "volume_mm3": 4588.8
+  },
+  {
+   "key": "voile_bande_4",
+   "name": "Bande 4",
+   "orient": "Telle quelle, sans support",
+   "file": "voile/bande_4.stl",
+   "color": [
+    26,
+    50,
+    108
+   ],
+   "size": [
+    57.5,
+    204.4,
+    0.8
+   ],
+   "group": "Voile",
+   "explode": [
+    0,
+    -74,
+    56
+   ],
+   "printed": true,
+   "stl": "pieces_v3/voile_bande_4.stl",
+   "etanche": true,
+   "corps": 1,
+   "volume_mm3": 4971.3
+  },
+  {
+   "key": "voile_bande_5",
+   "name": "Bande 5 (insigne)",
+   "orient": "Telle quelle, sans support. Se retourne au montage",
+   "file": "voile/bande_5.stl",
+   "color": [
+    246,
+    246,
+    242
+   ],
+   "size": [
+    50.0,
+    153.8,
+    0.8
+   ],
+   "group": "Voile",
+   "explode": [
+    0,
+    -78,
+    56
+   ],
+   "printed": true,
+   "stl": "pieces_v3/voile_bande_5.stl",
+   "etanche": true,
+   "corps": 1,
+   "volume_mm3": 3498.9
+  },
+  {
+   "key": "voile_bande_6",
+   "name": "Bande 6 (pointe)",
+   "orient": "Telle quelle, sans support",
+   "file": "voile/bande_6.stl",
+   "color": [
+    26,
+    50,
+    108
+   ],
+   "size": [
+    57.4,
+    99.9,
+    0.8
+   ],
+   "group": "Voile",
+   "explode": [
+    0,
+    -82,
+    56
+   ],
+   "printed": true,
+   "stl": "pieces_v3/voile_bande_6.stl",
+   "etanche": true,
+   "corps": 1,
+   "volume_mm3": 2153.6
+  },
+  {
+   "key": "voile_fenetre",
+   "name": "Fenêtre transparente",
+   "orient": "PETG ou PLA transparent, 2 couches. Ou un film transparent de 0,2 mm",
+   "file": "voile/fenetre.stl",
+   "color": [
+    205,
+    225,
+    238
+   ],
+   "size": [
+    107.7,
+    15.3,
+    0.2
+   ],
+   "group": "Voile",
+   "explode": [
+    0,
+    -86,
+    56
+   ],
+   "printed": true,
+   "stl": "pieces_v3/voile_fenetre.stl",
+   "etanche": true,
+   "corps": 1,
+   "volume_mm3": 301.2
+  },
+  {
+   "key": "support",
+   "name": "Support d'exposition",
+   "orient": "Debout, semelle sur le plateau",
+   "file": "support.stl",
+   "color": [
+    120,
+    124,
+    130
+   ],
+   "size": [
+    205.0,
+    66.0,
+    56.1
+   ],
+   "group": "Support",
+   "explode": [
+    0,
+    0,
+    -42
+   ],
+   "printed": true,
+   "stl": "pieces_v3/support.stl",
+   "etanche": true,
+   "corps": 1,
+   "volume_mm3": 67110.2
+  },
+  {
+   "key": "fils",
+   "name": "Fils : drisse, écoute, bride",
+   "orient": "",
+   "file": "",
+   "color": [
+    40,
+    42,
+    48
+   ],
+   "size": null,
+   "group": "Accessoires",
+   "explode": [
+    0,
+    0,
+    0
+   ],
+   "printed": false
+  },
+  {
+   "key": "goupilles",
+   "name": "Goupilles en filament 1,75 mm",
+   "orient": "",
+   "file": "",
+   "color": [
+    226,
+    214,
+    170
+   ],
+   "size": null,
+   "group": "Accessoires",
+   "explode": [
+    0,
+    0,
+    0
+   ],
+   "printed": false
+  },
+  {
+   "key": "adhesif_voile",
+   "name": "Adhésif de l'insigne de voile",
+   "orient": "",
+   "file": "",
+   "color": [
+    240,
+    160,
+    80
+   ],
+   "size": null,
+   "group": "Emplacements des adhésifs",
+   "explode": [
+    0,
+    -78,
+    56
+   ],
+   "printed": false
+  },
+  {
+   "key": "adhesif_coque",
+   "name": "Adhésif du logo de coque",
+   "orient": "",
+   "file": "",
+   "color": [
+    240,
+    160,
+    80
+   ],
+   "size": null,
+   "group": "Emplacements des adhésifs",
+   "explode": [
+    0,
+    0,
+    0
+   ],
+   "printed": false
+  }
+ ]
+}
