@@ -7,7 +7,7 @@ import numpy as np, trimesh
 from PIL import Image
 from raster import render
 E = pickle.load(open(ROOT + '/v25/eprouvette.pkl', 'rb'))
-KIT = ROOT + '/v25/kit/Bowen28_kit_impression_v25.1'
+KIT = ROOT + '/v25/kit/Bowen28_kit_impression_v25.2'
 col = {'eprouvette_A': (0.93, 0.92, 0.88), 'eprouvette_B': (0.86, 0.85, 0.80), 'eprouvette_C': (0.95, 0.94, 0.90), 'eprouvette_cle': (0.80, 0.79, 0.74)}
 EX = {'eprouvette_A': (0, 0, 0), 'eprouvette_B': (9, 0, 0), 'eprouvette_C': (0, 0, 9), 'eprouvette_cle': (4.5, 0, 14)}
 ims = []

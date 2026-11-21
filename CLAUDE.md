@@ -18,7 +18,7 @@ quand elle se mesure.
 
 - Python 3.11+ (testé en 3.13). Module manquant : `pip install --break-system-packages -r requirements.txt`.
   Garder trimesh 5.2.1 : le kit sort alors identique au fichier près d'une construction à l'autre.
-- Bowen 28 : `./bowen28/construire.sh` (environ 1 min) → `bowen28/Bowen28_kit_impression_v25.1.zip`.
+- Bowen 28 : `./bowen28/construire.sh` (environ 1 min) → `bowen28/Bowen28_kit_impression_v25.2.zip`.
   `--notice` ajoute la notice illustrée (30 à 40 min : lancer en arrière-plan).
 - Whaler 17 : `python3 whaler17/build.py` → `whaler17/sorties/whaler.json` (format de la vitrine Nexform).
 - Sunfish : seulement les pièces finales v3 (`sunfish/pieces_v3/`) ; le programme est à reconstituer
@@ -35,7 +35,7 @@ quand elle se mesure.
 - Nouvelle maquette : brancher les contrôles communs de `commun/` dans son `construire.sh` (règle 1 : la direction
   de pose de chaque pièce et l'ordre de sa notice, comme `bowen28/v25/s3b_chemins.py` ; règle 2 : la liste des
   pièces que leur poids ne tient pas, comme `bowen28/v25/s3c_maintien.py`).
-- `bowen28/v25/` est la chaîne de fabrication actuelle ; le kit qu'elle produit s'appelle « v25.1 » côté client.
+- `bowen28/v25/` est la chaîne de fabrication actuelle ; le kit qu'elle produit s'appelle « v25.2 » côté client.
   Nouvelle version livrée : changer le numéro là où il nomme le kit livré (nom du zip, du dossier du kit et de la
   notice, titres, date de la fiche) : `construire.sh`, `nf25_pdf.py`, `nf25_steps.py`, `v25/s6_kit.py` à
   `v25/s10_controle.py`, `v25/kit_inputs.py`, `v25/noms25.py`. Ne pas remplacer à l'aveugle : les commentaires qui

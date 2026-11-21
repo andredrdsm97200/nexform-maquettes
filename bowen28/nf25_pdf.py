@@ -70,7 +70,7 @@ def footer(c, si):
     for i in range(n):
         if i == si: c.setFillColor(CYCLE[si % 4][0]); c.circle(x0 + i * 18, 25, 6, fill=1, stroke=0)
         else: c.setFillColor(INK if i < si else LINE); c.circle(x0 + i * 18, 25, 3, fill=1, stroke=0)
-    text(c, "BOWEN 28 · 1:19 · V25.1 SANS COLLE", W - M, 21, 'DMMono-500', 7.5, MUTED, 'r')
+    text(c, "BOWEN 28 · 1:19 · V25.2 SANS COLLE", W - M, 21, 'DMMono-500', 7.5, MUTED, 'r')
 def parts_box(c, names, x, ytop, w):
     cols = 4 if len(names) <= 12 else 5
     cell = (w - 16) / cols; rows = math.ceil(len(names) / cols); rh = cell + 11
@@ -167,7 +167,7 @@ def before(c):
     for (f, t) in ((FLUO, "Tenon, clé, nervure ou encoche : tout s'emboîte. Aucune colle."), (CORAL, "Ça force ? Vérifie le sens avant d'appuyer plus fort."), (SUN, "Appuie bien droit, dans l'axe du tenon, jusqu'à ce que la pièce affleure."), (BLUE, "Pièces en couleur : à poser. Pièces pâles : déjà posées. La flèche rouge montre le sens.")):
         c.setFillColor(f); c.circle(x2 + 24, yy + 3.5, 6, fill=1, stroke=0)
         yy = para(c, t, x2 + 38, yy, gw - 56, 'DMSans-400', 12, 15.5) - 9
-    brand(c, M, 16, INK, INK, h=20); text(c, "BOWEN 28 · 1:19 · V25.1 SANS COLLE", W - M, 21, 'DMMono-500', 7.5, MUTED, 'r'); c.showPage()
+    brand(c, M, 16, INK, INK, h=20); text(c, "BOWEN 28 · 1:19 · V25.2 SANS COLLE", W - M, 21, 'DMMono-500', 7.5, MUTED, 'r'); c.showPage()
 def fin(c):
     c.setFillColor(FLUO); c.rect(0, 0, W, H, fill=1, stroke=0)
     im = Image.open(IMG + 'fin.png'); c.drawImage(img_reader(im, 92), 110, 10, 720, 432)
@@ -175,8 +175,8 @@ def fin(c):
     text(c, "À l'eau !", M, H - 140, 'Brico-800', 88, INK)
     text(c, "Ta maquette est terminée. Pose-la sur ses berceaux, recule d'un pas, admire.", M + 4, H - 172, 'DMSans-700', 13, INK)
     c.showPage()
-out = ROOT + '/nf25/notice_de_montage_bowen28_v25.1.pdf'
-c = canvas.Canvas(out, pagesize=(W, H)); c.setTitle("Bowen 28 – notice de montage (v25.1, sans colle)"); c.setAuthor("Nexform 3D Marine")
+out = ROOT + '/nf25/notice_de_montage_bowen28_v25.2.pdf'
+c = canvas.Canvas(out, pagesize=(W, H)); c.setTitle("Bowen 28 – notice de montage (v25.2, sans colle)"); c.setAuthor("Nexform 3D Marine")
 cover(c); before(c)
 for si, st in enumerate(STEPS): step_page(c, si, st)
 fin(c); c.save(); print("ok", os.path.getsize(out))

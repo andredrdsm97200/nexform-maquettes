@@ -44,7 +44,9 @@ ne bloque pas.
 **Appliqué au Bowen 28** : clés du plancher déplacées de part et d'autre du siège (z = ±31 mm au lieu de
 ±22 mm ; logement de 9,5 mm pour garder 2,6 mm de coque dessous) ; dans la notice, le volant se pose avant les
 fauteuils (le fauteuil bâbord barrait son axe) ; les anneaux de pare-battage (v25) sont encastrés dans la paroi :
-en saillie, ils barraient la descente des boudins sur leurs tenons.
+en saillie, ils barraient la descente des boudins sur leurs tenons. Le crochet de pare-battage (v25.2) s'accroche en
+pivotant autour de la barrette de l'anneau : pas de ligne droite possible, son chemin est cherché en 2D
+(`chemin_crochet` dans `pare_battages25.py`, appelé par `s3b_chemins.py`).
 
 ## Règle 2 – Une petite pièce ne tombe pas toute seule
 

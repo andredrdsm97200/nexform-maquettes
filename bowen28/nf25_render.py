@@ -24,9 +24,10 @@ def offs(n):
     return [0, 0, 0]
 for n, (V, F) in V23.items():
     col, name, k = n.split('__'); ex = np.array(offs(n), float)
-    if name in ('pare_battage', 'crochet_pare_battage'):          # v25.1 : ecartes du flanc tribord (vue de l'etape 12) ;
-        tri = np.asarray(V)[:, 2].mean() > 0                     # a babord, caches par la coque : sur place, sans fleche
-        ex = np.array([0.0, -9.0, 10.0] if name == 'pare_battage' else [0.0, 5.0, 7.0]) if tri else np.zeros(3)
+    if name == 'pare_battage':                                   # v25.2 : ecartes du flanc, vers l'exterieur (vue de dessus)
+        ex = np.array([0.0, 4.0, 12.0 * np.sign(np.asarray(V)[:, 2].mean())])
+    if name == 'crochet_pare_battage':                           # v25.2 : tires vers le cockpit, cote tribord seulement
+        ex = np.array([0.0, 2.0, -7.0]) if np.asarray(V)[:, 2].mean() > 0 else np.zeros(3)   # (babord : cache par la paroi)
     data.append((name, col, int(k), trimesh.Trimesh(conv(np.asarray(V, float)), F, process=False), (ex[0], -ex[2], ex[1])))
 IMG = ROOT + '/nf25/img/'
 counts = {}

@@ -1,4 +1,4 @@
-"""Kit d'impression complet v25.1 (sans colle) : STL par couleur, plateaux equilibres (3MF), listes.
+"""Kit d'impression complet v25.2 (sans colle) : STL par couleur, plateaux equilibres (3MF), listes.
 Entrees (dossier v25) : pieces.pkl (pieces reconstruites), coussins_v25.pkl, coques_v25.pkl (coques + cles), eprouvette.pkl."""
 import os as _os
 ROOT = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))   # dossier bowen28 du depot
@@ -8,7 +8,7 @@ import numpy as np, trimesh
 import pieces as P, stl_packages as SP
 
 HERE = ROOT + '/v25'
-KIT = os.path.join(HERE, 'kit', 'Bowen28_kit_impression_v25.1')
+KIT = os.path.join(HERE, 'kit', 'Bowen28_kit_impression_v25.2')
 VERSION = '24'
 BED, S, GAP = 256.0, 240.0, 5.0            # plateau A1 256 x 256 ; zone de pose 240 x 240 centree (marge 8 mm)
 

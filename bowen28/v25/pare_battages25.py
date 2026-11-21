@@ -8,14 +8,16 @@ imprimee), nouee a un anneau a l'interieur du bateau.
     barrette au ras de la paroi ; la ficelle entre par la fente du haut, passe derriere la barrette et ressort par
     celle du bas. Rien ne depasse de la paroi : le boudin se pose toujours par le dessus (regle 1). Imprime avec la
     coque, debout : la barrette fait pont sur 4 mm, le haut de la poche est a 45 deg, sans support ;
-  - CROCHET (alu, imprime a plat ; v25.1, demande d'Andre du 21 novembre) : on le noue au bout de la ficelle, cote
-    exterieur ; le pare-battage s'y accroche par son oeil et s'enleve d'un geste, la ficelle restant nouee a
-    l'anneau. Fil de 0,9 x 1,1 mm (il passe dans le trou de 1,7 mm de l'oeil), U de 2 mm d'ouverture (l'oeil fait
-    1,6 mm d'epaisseur), oeil de 1,2 mm en haut pour la ficelle ;
-  - places : 2 par bord, a x = 80 et 185 mm. Dans la maquette montee, le pare-battage pend contre le flanc, a son
-    crochet, le haut du crochet 1 mm sous le liston ; la ficelle (non dessinee) passe par-dessus le plat-bord, puis
-    sous le coussin, jusqu'a l'anneau.
-  (Premiere version du 20 novembre, remplacee : des crochets blancs glisses sur le liston.)
+  - CROCHET (alu, imprime a plat ; v25.2, demande d'Andre du 21 novembre) : la ficelle est nouee a l'oeil du
+    pare-battage et au crochet, qui s'accroche a la barrette de l'anneau, dans le cockpit. On le presente penche vers
+    la paroi, il mord la barrette (bec dessous, oeil dessus), puis on le redresse : le bec remonte derriere la
+    barrette. Ficelle tendue, il reste droit ; il ne se decroche qu'en le penchant d'environ 50 deg vers la paroi.
+    Son chemin est verifie en 2D sur l'anneau tel qu'il est imprime depuis la v25 (chemin_crochet, regle 1) ;
+  - places : 2 par bord, a x = 80 et 185 mm. Dans la maquette montee, le pare-battage pend contre le flanc, l'oeil
+    1,5 mm sous le liston ; la ficelle (non dessinee) passe par-dessus le plat-bord, puis sous le coussin, jusqu'au
+    crochet.
+  (Versions remplacees : crochets blancs glisses sur le liston, 20 novembre ; crochet au bout de la ficelle cote
+  pare-battage, v25.1 du 21 novembre.)
 Repere : visionneuse (mm, y vers le haut, z vers tribord) pour la mise en place ; le pare-battage est rendu en metres
 reels, repere bateau (comme model.py), pour s1_pieces.py ; les anneaux en mm visionneuse, pour s2_coques.py.
 """
@@ -36,18 +38,18 @@ V1 = R_PB - MEPLAT + L_PB       # centre du bout haut
 V_TROU = V1 + R_PB + OEIL_H     # centre du trou
 H_PB = V_TROU + OEIL_R          # hauteur totale : 32,3 mm
 # ---- mise en place
-# ---- crochet (mm), repere local : p horizontal (pointe cote p > 0), q vers le haut, r = epaisseur ; centre du U en 0
-C_E, C_A = 1.1, 0.9             # epaisseur (hauteur d'impression), largeur du fil
-C_RI = 1.0                      # rayon interieur du U : 2 mm entre la tige et la pointe
-C_POINTE, C_TIGE = 3.0, 5.4     # hauteur de la pointe, de la tige (elle entre dans l'oeil du haut)
-C_OEIL_C, C_OEIL_R, C_OEIL_T = 6.2, 1.3, 0.6   # oeil du haut : centre, rayon, rayon du trou (ficelle de 1 mm au plus)
-C_HAUT = C_OEIL_C + C_OEIL_R    # 7,5 mm au-dessus du centre du U
-C_FIL = C_RI + C_A / 2          # milieu du fil du fond, sous le centre du U
-REPOS = 0.10                    # le trou de l'oeil du pare-battage repose sur ce fil : son centre 0,10 mm plus bas
+# ---- crochet (mm), dans le repere de l'anneau (u depuis la paroi vers le cockpit, v depuis le bas de la poche, w le
+#      long de la paroi), pose finale : bec derriere la barrette, U dessous, tige et oeil devant la paroi
+K_FIL, K_EP = 1.0, 2.4          # largeur du fil ; epaisseur = hauteur d'impression (la poche fait 4 mm de large)
+K_JEU = 2.1                     # du bec a la tige : la barrette (1 mm) et de quoi pivoter autour d'elle
+K_BEC = -1.15                   # face interieure du bec, 0,15 mm derriere la barrette
+K_CV = 2.265                    # centre du U : son interieur passe 0,25 mm sous le coin arriere de la barrette
+K_BEC_H, K_TIGE_H = 3.5, 4.5    # haut du bec (il couvre toute la barrette, 2,0 a 3,4) ; haut de la tige
+K_OEIL_R, K_OEIL_T = 1.0, 0.55  # oeil de la ficelle (ficelle de 1 mm au plus)
+K_MARGE = 0.1                   # marge d'impression pour le controle du chemin
 # ---- mise en place
 LISTON_H = 3.30                 # hauteur du liston (mesuree sur toute la coque)
-JEU_LISTON = 1.0                # le haut du crochet pend 1 mm sous le liston
-SOUS_LISTON = JEU_LISTON + C_HAUT + C_FIL + REPOS - OEIL_R   # haut du pare-battage sous le liston : 8,05 mm
+SOUS_LISTON = 1.5               # le haut de l'oeil du pare-battage pend 1,5 mm sous le liston
 JEU_FLANC = 0.4                 # ecart entre le pare-battage et le flanc
 PLACES = [(80.0, -1), (185.0, -1), (80.0, 1), (185.0, 1)]   # (x, cote : -1 babord, +1 tribord)
 # ---- anneau encastre (mm), repere local : u depuis la paroi vers le cockpit (paroi en u = 0), v vers le haut, w le long
@@ -85,18 +87,68 @@ def barrette_local():
     return Manifold.cube([A_BARRE_E, A_BARRE_H, A_LARG + 0.8]).translate([-A_BARRE_E, A_FENTE, -(A_LARG + 0.8) / 2])
 
 
+def crochet_profil():
+    """Profil 2D du crochet (shapely, u-v de l'anneau) en pose finale."""
+    from shapely.geometry import Point, box
+    from shapely.ops import unary_union
+    from shapely.geometry.polygon import orient
+    ci, ri = K_BEC + K_JEU / 2, K_JEU / 2
+    ro = ri + K_FIL
+    u = Point(ci, K_CV).buffer(ro, 64).difference(Point(ci, K_CV).buffer(ri, 64)).intersection(box(-10, -10, 10, K_CV))
+    xb = K_BEC - K_FIL
+    bec = box(xb, K_CV, K_BEC, K_BEC_H - K_FIL / 2).union(Point(xb + K_FIL / 2, K_BEC_H - K_FIL / 2).buffer(K_FIL / 2, 32))
+    xs = ci + ri
+    tige = box(xs, K_CV, xs + K_FIL, K_TIGE_H)
+    oc = (xs + K_FIL / 2, K_TIGE_H + K_OEIL_R - 0.2)
+    trou = Point(oc).buffer(K_OEIL_T, 32)
+    return orient(unary_union([u, bec, tige, Point(oc).buffer(K_OEIL_R, 48)]).difference(trou), 1.0), (ci, K_CV)
+
+
 def crochet_local():
-    """Le crochet en mm, a plat : U de rayon interieur C_RI centre en (0, 0), tige a gauche (p < 0) jusqu'a l'oeil du
-    haut, pointe arrondie a droite ; epaisseur C_E centree sur r = 0."""
-    ro = C_RI + C_A
-    u = (CrossSection.circle(ro, 64) - CrossSection.circle(C_RI, 64)) ^ CrossSection.square([2 * ro + 2, ro + 1]).translate([-ro - 1, -ro - 1])
-    tige = CrossSection.square([C_A, C_TIGE]).translate([-ro, 0])
-    pointe = CrossSection.square([C_A, C_POINTE]).translate([C_RI, 0]) + CrossSection.circle(C_A / 2, 24).translate([C_RI + C_A / 2, C_POINTE])
-    xo = -C_RI - C_A / 2
-    oeil = CrossSection.circle(C_OEIL_R, 48).translate([xo, C_OEIL_C])
-    trou = CrossSection.circle(C_OEIL_T, 32).translate([xo, C_OEIL_C])
-    cs = (u + tige + pointe + oeil) - trou
-    return Manifold.extrude(cs, C_E).translate([0, 0, -C_E / 2])
+    """Le crochet en mm, dans le repere de l'anneau (u, v, w) : profil extrude sur K_EP, centre sur w = 0."""
+    g, _ = crochet_profil()
+    cs = CrossSection([list(g.exterior.coords)[:-1]] + [list(r.coords)[:-1] for r in g.interiors])
+    return Manifold.extrude(cs, K_EP).translate([0, 0, -K_EP / 2])
+
+
+def chemin_crochet(marge=K_MARGE):
+    """Regle 1 pour le crochet, qui s'accroche en pivotant : cherche en 2D (u, v) un chemin du crochet, de sa pose
+    finale jusqu'a hors de la paroi, en tournant autour du centre du U et en glissant (pas de 2,5 deg et 0,05 mm), sur
+    l'anneau tel qu'il est imprime, grossi de la marge d'impression ; boudin et coussin approches par des
+    polygones. Renvoie la liste des poses (angle, du, dv) ou None."""
+    import collections
+    from shapely.geometry import Polygon, box
+    from shapely.ops import unary_union
+    from shapely.affinity import rotate, translate
+    from shapely.prepared import prep
+    haut = A_DROIT + A_PROF
+    poche = Polygon([(0, 0), (-A_PROF, 0), (-A_PROF, A_DROIT), (0, haut)])
+    barre = box(-A_BARRE_E, A_FENTE, 0, A_FENTE + A_BARRE_H)
+    boudin = box(0, -14, 5.5, 38.4 - A_BAS)
+    coussin = Polygon([(0, 51.0 - A_BAS), (2.4, 49.0 - A_BAS), (8, 49.0 - A_BAS), (8, 24), (0, 24)])
+    obst = prep(unary_union([box(-12, -14, 0, 24).difference(poche), barre, boudin, coussin]).buffer(marge))
+    g0, c = crochet_profil()
+    if obst.intersects(g0): return None
+    TH = np.arange(-90, 90.1, 2.5); DU = np.round(np.arange(-1.0, 5.01, 0.05), 3); DV = np.round(np.arange(-1.5, 3.01, 0.05), 3)
+    s0 = (int(np.argmin(abs(TH))), int(np.argmin(abs(DU))), int(np.argmin(abs(DV))))
+    vu = {}
+    def etat(e):
+        if e not in vu:
+            g = translate(rotate(g0, TH[e[0]], origin=c), DU[e[1]], DV[e[2]])
+            vu[e] = (not obst.intersects(g), g.bounds[0] > 0.3)
+        return vu[e]
+    prec = {s0: None}; q = collections.deque([s0])
+    while q:
+        e = q.popleft()
+        if etat(e)[1]:
+            ch = []
+            while e is not None: ch.append((float(TH[e[0]]), float(DU[e[1]]), float(DV[e[2]]))); e = prec[e]
+            return ch[::-1]
+        for d in ((1, 0, 0), (-1, 0, 0), (0, 1, 0), (0, -1, 0), (0, 0, 1), (0, 0, -1)):
+            n = (e[0] + d[0], e[1] + d[1], e[2] + d[2])
+            if 0 <= n[0] < len(TH) and 0 <= n[1] < len(DU) and 0 <= n[2] < len(DV) and n not in prec and etat(n)[0]:
+                prec[n] = e; q.append(n)
+    return None
 
 
 _H = {}
@@ -155,15 +207,6 @@ def repere_pb(x, s):
     return np.c_[N, D, W, O]
 
 
-def repere_crochet(x, s):
-    """Matrice 3x4 local du crochet (p, q, r) -> visionneuse : dans le plan du flanc et de sa normale, le fil du fond
-    dans l'oeil du pare-battage, la pointe vers l'exterieur, la tige et l'oeil du haut cote coque."""
-    R = repere_pb(x, s)
-    N, D, W, O = R[:, 0], R[:, 1], R[:, 2], R[:, 3]
-    C = O + V_TROU * D + (C_FIL + REPOS) * D
-    return np.c_[N, D, W, C]
-
-
 def paroi(x, s, y):
     """|z| de la paroi interieure (rayon lance depuis le cockpit, a 38 mm de l'axe, vers l'exterieur)."""
     return float(_rayons([[x, y, s * 38.0]], [[0, 0, s * 1.0]])[0])
@@ -198,8 +241,8 @@ def _compose(A, B):
 
 def pieces():
     """{nom: (liste des pieces placees, repere bateau m), piece a imprimer (m), sens 'bas' pour l'impression}."""
-    p, c = pare_battage_local(), crochet_local()
+    p, k = pare_battage_local(), crochet_local()
     Tp = [_compose(V2BM, repere_pb(x, s)) for x, s in PLACES]
-    Tc = [_compose(V2BM, repere_crochet(x, s)) for x, s in PLACES]
+    Tk = [_compose(V2BM, repere_anneau(x, s)) for x, s in PLACES]
     return {'pare_battage': ([p.transform(T) for T in Tp], p.transform(LOC2M), (0, -1, 0)),
-            'crochet_pare_battage': ([c.transform(T) for T in Tc], c.transform(LOC2M), (0, 0, -1))}
+            'crochet_pare_battage': ([k.transform(T) for T in Tk], k.transform(LOC2M), (0, 0, -1))}
