@@ -1,11 +1,11 @@
-"""Controle final du kit v25 (sans colle) : quantites, STL et 3MF relus, couleurs, pieces supprimees, fichiers,
+"""Controle final du kit v25.1 (sans colle) : quantites, STL et 3MF relus, couleurs, pieces supprimees, fichiers,
 et aucune mention de colle ou de goupille dans les consignes (sauf pour dire qu'il n'y en a pas)."""
 import os as _os
 ROOT = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))   # dossier bowen28 du depot
 import os, re, json, glob, pickle, collections
 import numpy as np, trimesh
 HERE = ROOT + '/v25'
-KIT = os.path.join(HERE, 'kit', 'Bowen28_kit_impression_v25')
+KIT = os.path.join(HERE, 'kit', 'Bowen28_kit_impression_v25.1')
 meta = json.load(open(os.path.join(HERE, 'kit_meta.json')))
 v25 = pickle.load(open(os.path.join(HERE, 'v25b.pkl'), 'rb'))
 err = []
@@ -54,7 +54,7 @@ for n in list(stl) + list(asm):
 # 6) fichiers attendus
 for f in ('LISEZMOI.txt', 'FICHE_IMPRESSION.pdf', 'plateaux_apercu.png', 'eprouvette.png'):
     if not os.path.exists(os.path.join(KIT, f)): err.append(('manque', f))
-if not os.path.exists(os.path.join(KIT, 'notice_de_montage_v25.pdf')):
+if not os.path.exists(os.path.join(KIT, 'notice_de_montage_v25.1.pdf')):
     print("note : notice de montage absente (la construire avec : ./construire.sh --notice)")
 # 7) consignes : « colle » / « goupille » seulement pour dire qu'il n'y en a pas
 import sys; sys.path.insert(0, ROOT)

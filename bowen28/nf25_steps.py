@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Contenu de la notice v25 facon Lego, SANS COLLE (tutoiement, phrases courtes). L'ordre des pieces est l'ordre verifie."""
+"""Contenu de la notice v25.1 facon Lego, SANS COLLE (tutoiement, phrases courtes). L'ordre des pieces est l'ordre verifie."""
 BG = (242, 244, 250); PANEL = (255, 255, 255)
 GW = [f"seadeck_plat_bord_{k}_{s}" for k in (1, 2, 3, 4) for s in ("babord", "tribord")]
 AV = ["coussin_avant_retour_babord", "coussin_avant_retour_tribord", "coussin_avant_dossier_babord", "coussin_avant_dossier_tribord",
@@ -10,10 +10,10 @@ def S(title, parts=None, todo=(), glue=None, tip=None, subs=None, **kw):
     return dict(title=title, parts=parts, todo=list(todo), glue=glue, tip=tip, subs=subs, **kw)
 def sub(cap, *parts, **kw): return dict(cap=cap, parts=list(parts), **kw)
 FN = lambda seg: [f"filet_noir_{seg}_babord", f"filet_noir_{seg}_tribord"]
-# v25 : pare-battages pendus a une ficelle ; vue de l'anneau tribord arriere depuis le cockpit, puis vue de dessus
+# v25 : pare-battages pendus a une ficelle ; vue de l'anneau tribord arriere depuis le cockpit, puis du crochet
 CAM_ANNEAU = dict(eye=(50.0, 18.0, 64.0), target=(79.0, -48.0, 45.0), fov=34)
 FLECHE_ANNEAU = [((80.0, -30.0, 57.0), (80.0, -49.4, 44.2))]       # repere du rendu (x avant, y babord, z haut)
-CAM_PB = dict(eye=(-110.0, 0.0, 330.0), target=(150.0, 0.0, 30.0), fov=40)
+CAM_PB = dict(eye=(228.0, -150.0, 78.0), target=(186.0, -70.0, 50.0), fov=34)        # v25.1 : crochet et pare-battage tribord avant
 STEPS = [
     S("La coque", ["berceau_arriere", "berceau_avant", "coque_arriere", "coque_avant", "cle_jonction_fond", "cle_jonction_plat_bord"],
       ["Pousse la coque avant contre la coque arrière : ses 3 tenons losange entrent dans les trous de la coque avant.",
@@ -80,9 +80,9 @@ STEPS = [
        "Mât de pavillon : à travers le tapis n° 1 bâbord, jusque dans le plat-bord."],
       tip="Rien à coller : toute la maquette tient par emboîtement."),
     S("Les pare-battages", cols=2,
-      tip="Une aiguille à coudre aide à passer la ficelle derrière la barrette de l'anneau.",
-      subs=[sub("Les 4 anneaux blancs sont sur les parois du cockpit, entre le boudin et le coussin : 2 par bord, en face des pare-battages.",
+      tip="Une aiguille à coudre aide à passer la ficelle derrière la barrette. Ensuite on ne touche plus aux nœuds : le pare-battage s'accroche et s'enlève par son crochet.",
+      subs=[sub("Noue un bout de ficelle fine (non fournie) à chaque anneau blanc, une fois pour toutes : par la fente du haut, derrière la barrette, puis par celle du bas. 2 anneaux par bord.",
                 vif=True, W=640, H=900, cam=CAM_ANNEAU, fleches=FLECHE_ANNEAU),
-            sub("Noue une ficelle fine (non fournie) dans l'œil de chaque pare-battage, passe-la par-dessus le plat-bord puis sous le coussin, et noue-la à l'anneau.",
-                "pare_battage", W=640, H=900, cam=CAM_PB, k=1.0)]),
+            sub("Passe la ficelle sous le coussin et par-dessus le plat-bord, et noue un crochet alu à son bout. Accroche le pare-battage par son œil.",
+                "crochet_pare_battage", "pare_battage", W=640, H=900, cam=CAM_PB, k=1.0)]),
 ]

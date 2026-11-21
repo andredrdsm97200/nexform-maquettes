@@ -5,7 +5,7 @@ reconstruire un kit d'impression, le modifier ou partir d'une maquette existante
 
 | Maquette | Dossier | Contenu |
 |---|---|---|
-| Bowen 28 au 1:19 (507 mm) | [`bowen28/`](bowen28/) | Programme complet. Kit d'impression **v25, montage sans colle**, reconstruit en une commande |
+| Bowen 28 au 1:19 (507 mm) | [`bowen28/`](bowen28/) | Programme complet. Kit d'impression **v25.1, montage sans colle**, reconstruit en une commande |
 | Boston Whaler 17 Montauk au 1:12 | [`whaler17/`](whaler17/) | Programme du modèle du BAT v2 (affiché dans la vitrine Nexform) |
 | Sunfish 25 cm (1:16,8) | [`sunfish/`](sunfish/) | Les 19 pièces finales de la version 3 (STL) et leurs notes ; programme d'origine à reconstituer |
 | Contrôles communs | [`commun/`](commun/) | Les contrôles de la [ligne de conduite](LIGNE_DE_CONDUITE.md), utilisés par tous les bateaux |
@@ -28,7 +28,7 @@ nouvelle version ici. Rien ne se perd d'une discussion à l'autre.
 3. `./bowen28/construire.sh` (quelques minutes), ou `./bowen28/construire.sh --notice` pour la notice
    illustrée en plus (30 à 40 minutes).
 
-Résultat : `bowen28/Bowen28_kit_impression_v25.zip`, le même kit que celui envoyé à l'imprimeur
+Résultat : `bowen28/Bowen28_kit_impression_v25.1.zip`, le même kit que celui envoyé à l'imprimeur
 (fichiers identiques au bit près).
 
 ## Les règles de la maison

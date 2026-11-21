@@ -93,11 +93,12 @@ ORDRE += tous('capot_moteur', DESSUS, cone=True) + tous('aileron_moteur', ARRIER
 for i in range(2):
     ORDRE += [Pose([f'noir__verin_flap__{i}', f'alu__flap__{i}'], ARRIERE, cone=True)]
 ORDRE += tous('echelle_bain', DESSUS, cone=True)
-# 10-12. Le taud, le toit, le pavillon ; les pare-battages pendent contre le flanc (ficelle nouee a l'anneau de la
-#        paroi) : on les approche par l'exterieur
+# 10-12. Le taud, le toit, le pavillon ; les pare-battages pendent contre le flanc, a leur crochet (v25.1) au bout
+#        de la ficelle nouee a l'anneau de la paroi : on les approche par l'exterieur
 ORDRE += tous('cadre_taud', DESSUS, cone=True) + tous('toit_taud', DESSUS, cone=True) + tous('mat_pavillon', DESSUS, cone=True, doigt=True)
 def dehors(k): return (0, 0, 1) if P[k].bounding_box()[5] > 0 else (0, 0, -1)
 ORDRE += tous('pare_battage', dehors, cone=True)
+ORDRE += tous('crochet_pare_battage', None, hors="passe dans l'oeil du pare-battage en tournant, comme un anneau de porte-cles")
 
 # la notice et ce controle parlent des memes pieces, dans le meme ordre (etapes, et sous-etapes numerotees)
 notice = {p for st in S.STEPS for p in st['parts']}

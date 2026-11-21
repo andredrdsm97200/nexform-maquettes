@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Noms affiches des pieces (kit v25 sans colle)."""
+"""Noms affiches des pieces (kit v25.1 sans colle)."""
 NICE = {
     "coque_arriere": "coque arrière", "coque_avant": "coque avant", "capot_moteur": "capot moteur (blanc)",
     "jupe_moteur": "jupe arrière du moteur (blanche)", "flap": "flap", "verin_flap": "vérin de flap",
@@ -11,7 +11,7 @@ NICE = {
     "ecran_tribord": "écran tribord", "interrupteurs": "tableau d'interrupteurs",
     "cadre_taud": "cadre du taud", "boitier_echelle_babord": "boîtier d'échelle bâbord",
     "boitier_echelle_tribord": "boîtier d'échelle tribord", "arceau_taud": "arceau du taud", "arceau_avant_taud": "arceau avant du taud",
-    "pare_battage": "pare-battage", "echelle_bain": "échelle de bain repliée", "taquet": "taquet escamotable",
+    "pare_battage": "pare-battage", "crochet_pare_battage": "crochet de pare-battage", "echelle_bain": "échelle de bain repliée", "taquet": "taquet escamotable",
     "mat_pavillon": "mât de pavillon", "anneau_tableau": "anneau de tableau",
     "filet_noir_arriere": "filet noir arrière", "filet_noir_avant": "filet noir avant", "filet_noir_tableau": "bande noire du tableau",
     "seadeck_pointe_babord": "SeaDek pointe bâbord", "seadeck_pointe_tribord": "SeaDek pointe tribord",

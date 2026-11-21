@@ -1,4 +1,4 @@
-"""Toutes les pieces du kit v25 (sans colle), orientees pour l'impression : [dict(name, color, qty, V, F, note, eprouvette)]."""
+"""Toutes les pieces du kit v25.1 (sans colle), orientees pour l'impression : [dict(name, color, qty, V, F, note, eprouvette)]."""
 import os as _os
 ROOT = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))   # dossier bowen28 du depot
 import os, pickle

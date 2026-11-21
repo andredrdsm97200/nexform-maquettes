@@ -11,7 +11,7 @@ from reportlab.lib.colors import HexColor
 import re
 
 HERE = ROOT + '/v25'
-KIT = os.path.join(HERE, 'kit', 'Bowen28_kit_impression_v25')
+KIT = os.path.join(HERE, 'kit', 'Bowen28_kit_impression_v25.1')
 meta = json.load(open(os.path.join(HERE, 'kit_meta.json')))
 plates = meta['plates']; pieces = meta['pieces']
 for n, f in (('Exo', 'Exo2-800-italic'), ('Exo9', 'Exo2-900-italic'), ('Sans', 'DMSans-400'), ('SansB', 'DMSans-700'), ('Mono', 'DMMono-500')):
@@ -62,17 +62,17 @@ def grams_txt(g):
 
 def footer(c, page):
     logo(c, M, 15, 18, INK)
-    t(c, "BOWEN 28 · 1:19 · KIT D'IMPRESSION V25 · SANS COLLE", W / 2, 21, 'Mono', 7, MUTED, 'c')
+    t(c, "BOWEN 28 · 1:19 · KIT D'IMPRESSION V25.1 · SANS COLLE", W / 2, 21, 'Mono', 7, MUTED, 'c')
     t(c, f"{page}", W - M, 21, 'Mono', 7, MUTED, 'r')
 
 
 out = os.path.join(KIT, 'FICHE_IMPRESSION.pdf')
-c = canvas.Canvas(out, pagesize=(W, H)); c.setTitle("Bowen 28 – fiche d'impression (kit v25 sans colle)"); c.setAuthor("Nexform 3D Marine")
+c = canvas.Canvas(out, pagesize=(W, H)); c.setTitle("Bowen 28 – fiche d'impression (kit v25.1 sans colle)"); c.setAuthor("Nexform 3D Marine")
 # ---------------- page 1
 c.setFillColor(INK); c.rect(0, H - 112, W, 112, fill=1, stroke=0)
 logo(c, M, H - 52, 30, WHITE, FLUO)
 t(c, "FICHE D'IMPRESSION", M, H - 78, 'Exo9', 24, WHITE)
-t(c, "Bowen 28 center console · maquette au 1:19 · kit v25, montage sans colle · " + datetime.date(2026, 11, 20).strftime('%d/%m/%Y'), M, H - 96, 'Sans', 9.5, HexColor('#C9CED6'))
+t(c, "Bowen 28 center console · maquette au 1:19 · kit v25.1, montage sans colle · " + datetime.date(2026, 11, 21).strftime('%d/%m/%Y'), M, H - 96, 'Sans', 9.5, HexColor('#C9CED6'))
 main = [p for p in plates if not p['eprouvette']]; epr = [p for p in plates if p['eprouvette']]
 npieces = sum(len(p['inst']) for p in main)
 g_pla = sum(p['grams'] for p in main)

@@ -220,8 +220,11 @@ for name, tile, surf in tiles:
     add(name, "teck", M.place_on_surface(tile, surf), proto=tile, down=(0, 0, 1), note="à l'envers : dessus sur le plateau, tenons vers le haut")
 add("dos_dossier_arriere", "taupe", BK.build(), note="debout")
 import pare_battages25 as PBT                  # v25 : 4 pare-battages pendus a une ficelle (anneaux dans la coque)
-for nom, (asm_pb, proto_pb, down_pb) in PBT.pieces().items():
-    add(nom, "noir", asm_pb, proto=proto_pb, down=down_pb, note="debout, œil en haut")
+for nom, (asm_pb, proto_pb, down_pb) in PBT.pieces().items():  # v25.1 : et leurs crochets, au bout de la ficelle
+    if nom == 'crochet_pare_battage':
+        add(nom, "alu", asm_pb, proto=proto_pb, down=down_pb, note="à plat")
+    else:
+        add(nom, "noir", asm_pb, proto=proto_pb, down=down_pb, note="debout, œil en haut")
 light, dark = M.build_bolsters()
 light = light ^ M.build_cockpit_cutter()
 light = light - U([F.socket(p) for p in bol_pts])

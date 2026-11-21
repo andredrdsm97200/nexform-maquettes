@@ -1,8 +1,8 @@
 #!/bin/bash
-# Reconstruit le kit d'impression complet du Bowen 28 au 1:19 (v25, montage sans colle) a partir du programme.
+# Reconstruit le kit d'impression complet du Bowen 28 au 1:19 (v25.1, montage sans colle) a partir du programme.
 #   ./construire.sh            le kit (STL, plateaux 3MF, fiche, LISEZMOI, apercus) : quelques minutes
 #   ./construire.sh --notice   idem + la notice de montage illustree : compter 30 a 40 min de plus
-# Resultat : bowen28/Bowen28_kit_impression_v25.zip
+# Resultat : bowen28/Bowen28_kit_impression_v25.1.zip
 set -e
 cd "$(dirname "$0")"
 python3 v25/s2_coques.py          # coques : cles de jonction, tenons losange, logements
@@ -21,9 +21,9 @@ if [ "$1" == "--notice" ]; then
   python3 nf25_render.py          # images de la notice
   python3 nf25_pdf.py             # notice de montage (PDF)
 fi
-if [ -f nf25/notice_de_montage_bowen28_v25.pdf ]; then
-  cp nf25/notice_de_montage_bowen28_v25.pdf v25/kit/Bowen28_kit_impression_v25/notice_de_montage_v25.pdf
+if [ -f nf25/notice_de_montage_bowen28_v25.1.pdf ]; then
+  cp nf25/notice_de_montage_bowen28_v25.1.pdf v25/kit/Bowen28_kit_impression_v25.1/notice_de_montage_v25.1.pdf
 fi
 python3 v25/s10_controle.py       # controle final
-(cd v25/kit && rm -f ../../Bowen28_kit_impression_v25.zip && zip -qr ../../Bowen28_kit_impression_v25.zip Bowen28_kit_impression_v25)
-echo "Kit pret : bowen28/Bowen28_kit_impression_v25.zip"
+(cd v25/kit && rm -f ../../Bowen28_kit_impression_v25.1.zip && zip -qr ../../Bowen28_kit_impression_v25.1.zip Bowen28_kit_impression_v25.1)
+echo "Kit pret : bowen28/Bowen28_kit_impression_v25.1.zip"
