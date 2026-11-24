@@ -87,9 +87,12 @@ for n in S.AV:
 for k in (1, 2, 3):
     for n in S.PC(k):
         ORDRE += tous(n, vers_axe, cone=True)
-# 9. Les moteurs (dans l'ordre de la notice) ; flap et verin poussees ensemble contre le tableau
-ORDRE += tous('gaine_moteur', ARRIERE, cone=True) + tous('embase_moteur', ARRIERE, cone=True) + tous('jupe_moteur', ARRIERE, cone=True)
-ORDRE += tous('capot_moteur', DESSUS, cone=True) + tous('aileron_moteur', ARRIERE, cone=True)
+# 9. Les moteurs (dans l'ordre de la notice) : chaque moteur est monte sur la table (v25.3 : embase sous le bloc gris,
+#    helice sur la torpille, controle plus bas) puis pousse vers l'avant sur la chaise ; la cheville dans le bloc avant
+#    le capot ; flap et verin pousses ensemble contre le tableau
+MOTEURS = [[par_nom[n][i] for n in ('bloc_moteur', 'embase_moteur', 'helice')] for i in range(2)]
+ORDRE += tous('gaine_moteur', ARRIERE, cone=True) + [Pose(m, ARRIERE, cone=True) for m in MOTEURS] + tous('jupe_moteur', ARRIERE, cone=True)
+ORDRE += tous('cheville_capot', DESSUS, cone=True, doigt=True) + tous('capot_moteur', DESSUS, cone=True) + tous('aileron_moteur', ARRIERE, cone=True)
 for i in range(2):
     ORDRE += [Pose([f'noir__verin_flap__{i}', f'alu__flap__{i}'], ARRIERE, cone=True)]
 ORDRE += tous('echelle_bain', DESSUS, cone=True)
@@ -125,6 +128,10 @@ defauts, hors, oublies = MT.controle_pose(P, ORDRE, base=["blanc__coque_arriere_
 d2, _, _ = MT.controle_pose({k: P[k] for k in VOL}, [Pose(par_nom[n], VOLANT) for n in ('branches_volant', 'jante_volant', 'moyeu_volant')],
                             base=par_nom['pompe_direction'], verbeux='-v' in sys.argv)
 defauts += d2
+# sous-ensembles montes sur la table : l'embase monte sous le bloc gris, l'helice arrive par l'arriere sur la torpille
+for b, e, h in MOTEURS:
+    d3, _, _ = MT.controle_pose({k: P[k] for k in (b, e, h)}, [Pose(e, DESSOUS), Pose(h, ARRIERE)], base=[b], verbeux='-v' in sys.argv)
+    defauts += d3
 for noms, raison in hors:
     print('  non controle :', ', '.join(noms), '-', raison)
 if oublies:

@@ -3,7 +3,8 @@ emboitements v25 (fit25), orientees pour l'impression. Sortie : pieces.pkl (impr
 
 Changements par rapport a la v23.1 :
   - jeu des logements ronds 0,15 -> 0,1 mm (F.FIT) ; tenons qui entrent dans la coque v23 : 2,0 -> 2,1 mm ;
-  - embase moteur : 2 tenons losange a la place des 2 goupilles ; tenon de la jupe en losange ;
+  - moteur : 2 tenons losange a la place des 2 goupilles ; tenon de la jupe en losange ; (v25.3) partie grise en
+    3 pieces (bloc, embase, helice) et cheville du capot, voir moteur25.py ;
   - aileron : U ajuste (jeu 0,32 -> 0,1 mm) ; gaines, flaps, verins : tenons +0,1 mm ;
   - fauteuil : trou du teton 0,2 -> 0,1 mm ; rainures des bandes blanches 0,1 -> 0,03 mm (bandes en force) ;
   - volant : encoches de la jante et trou du moyeu 0,2 -> 0,1 mm ; pompe avec tenon rond devant (dans le croisillon)
@@ -70,25 +71,27 @@ class hull_studs:
 ped_pts, bol_pts = lego_points()
 B = 9.0
 
-# ---- moteurs
+# ---- moteurs (v25.3, demande d'Andre du 24 novembre 2026) : la partie grise en 3 pieces imprimees a plat, voir moteur25.py
+import moteur25 as MO
 def engine_split25():
     Pp = M.build_outboard_parts()
-    grey = Pp["gris"] - Pp["capot"] - Pp["jupe"]
-    grey = grey - U(M.hose_hole_engine_local())                     # trou de gaine : jeu 0,2 (la gaine grossit de 0,1)
     pc, nc = P.cowl_stud_frame()
     pt, nt = P.tail_stud_frame()
-    grey = grey + F.stud(pc, nc)                                     # presque vertical : rond
-    grey = grey + G.dpeg(pt, nt, (0, 0, 1), mm(1.0), mm(1.5))       # couche : losange
-    for zl in M.ENG_PIN_Z:                                           # 2 tenons losange vers la chaise
-        grey = grey + G.dpeg((0.0, 0.0, zl), (-1.0, 0.0, 0.0), (0, 0, 1), mm(1.0), mm(5.0))
-    return Pp["capot"] - F.socket(pc, nc), Pp["jupe"] - G.dhole(pt, nt, (0, 0, 1), mm(1.0), mm(1.8)), grey
+    cowl = Pp["capot"] - F.socket(pc, nc)                            # logement de la cheville (l'ancien tenon du gris)
+    tail = Pp["jupe"] - G.dhole(pt, nt, (0, 0, 1), mm(1.0), mm(1.8))
+    return cowl, tail, MO.pieces(Pp["capot"], Pp["jupe"], U(M.hose_hole_engine_local()))   # trou de gaine : jeu 0,2
 
 
-cowl, tail, grey = engine_split25()
+cowl, tail, (bloc, emb, emb_s, hel, hel_s, chev) = engine_split25()
+place2 = lambda m: [M.place_engine(m, s * M.ENG_Y) for s in (1, -1)]
 nb = M.plane_normal(); down_cowl = (nb[0], 0.0, -nb[2])
 add("capot_moteur", "blanc", [M.place_engine(cowl, s * M.ENG_Y) for s in (1, -1)], down=down_cowl, note="posé sur son plan de joint")
 add("jupe_moteur", "blanc", [M.place_engine(tail, s * M.ENG_Y) for s in (1, -1)], down=(-nb[0], 0.0, nb[2]), note="à l'envers, sur sa face du dessus")
-add("embase_moteur", "alu", [M.place_engine(grey, s * M.ENG_Y) for s in (1, -1)], note="debout, supports arborescents")
+add("bloc_moteur", "alu", place2(bloc), proto=bloc, down=MO.BAS_BLOC, note="à l'envers, sur son plan de joint")
+add("embase_moteur", "alu", place2(emb), proto=emb_s, down=MO.BAS_EMBASE, note="à l'envers, sur la plaque anti-cavitation",
+    serre=place2(emb_s))
+add("helice", "alu", place2(hel), proto=hel_s, down=MO.BAS_HELICE, note="debout sur l'avant du moyeu", serre=place2(hel_s))
+add("cheville_capot", "alu", place2(chev), proto=MO.cheville_local(), note="debout")
 foil = patched([M.build_hydrofoil], {"build_hydrofoil": [("(x1 - x0) / 2 + 0.006, b0 + 0.006", "(x1 - x0) / 2 + 0.0019, b0 + 0.0019")]})["build_hydrofoil"]()
 add("aileron_moteur", "noir", [M.place_engine(foil, s * M.ENG_Y) for s in (1, -1)], proto=foil)
 M.HOSE_PEG_R = 0.016 + mm(0.10)                                       # trous (coque, moteur) : 0,016 + 0,2 mm

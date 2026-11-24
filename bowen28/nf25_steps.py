@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Contenu de la notice v25.2 facon Lego, SANS COLLE (tutoiement, phrases courtes). L'ordre des pieces est l'ordre verifie."""
+"""Contenu de la notice v25.3 facon Lego, SANS COLLE (tutoiement, phrases courtes). L'ordre des pieces est l'ordre verifie."""
 BG = (242, 244, 250); PANEL = (255, 255, 255)
 GW = [f"seadeck_plat_bord_{k}_{s}" for k in (1, 2, 3, 4) for s in ("babord", "tribord")]
 AV = ["coussin_avant_retour_babord", "coussin_avant_retour_tribord", "coussin_avant_dossier_babord", "coussin_avant_dossier_tribord",
@@ -10,7 +10,7 @@ def S(title, parts=None, todo=(), glue=None, tip=None, subs=None, **kw):
     return dict(title=title, parts=parts, todo=list(todo), glue=glue, tip=tip, subs=subs, **kw)
 def sub(cap, *parts, **kw): return dict(cap=cap, parts=list(parts), **kw)
 FN = lambda seg: [f"filet_noir_{seg}_babord", f"filet_noir_{seg}_tribord"]
-# v25.2 : pare-battages a une ficelle dont le crochet s'accroche a l'anneau ; vue de dessus, puis de l'anneau tribord
+# v25.3 : pare-battages a une ficelle dont le crochet s'accroche a l'anneau ; vue de dessus, puis de l'anneau tribord
 CAM_ANNEAU = dict(eye=(50.0, 18.0, 64.0), target=(79.0, -48.0, 45.0), fov=34)
 FLECHE_ANNEAU = [((80.0, -30.0, 57.0), (80.0, -49.4, 44.2))]       # repere du rendu (x avant, y babord, z haut)
 CAM_PB = dict(eye=(-110.0, 0.0, 330.0), target=(150.0, 0.0, 30.0), fov=40)          # les 4 pare-battages, vus de dessus
@@ -65,9 +65,10 @@ STEPS = [
     S("Les moteurs", order=True,
       tip="La gaine avant le moteur, toujours. Après, elle ne passe plus.",
       subs=[sub("Les 2 gaines noires : tenon dans le passe-coque, gaine couchée sur la chaise.", "gaine_moteur"),
-            sub("Chaque embase grise, poussée vers l'avant : ses 2 tenons losange entrent dans la chaise. La gaine entre dans la tête.", "embase_moteur"),
+            sub("Sur la table : l'embase sous le bloc gris (2 tenons), l'hélice au bout de la torpille. Puis pousse le moteur vers l'avant : ses 2 tenons losange entrent dans la chaise, la gaine dans la tête.",
+                "bloc_moteur", "embase_moteur", "helice"),
             sub("Jupe blanche, enfilée par l'arrière sur son tenon.", "jupe_moteur"),
-            sub("Capot blanc par le dessus, aileron noir par l'arrière.", "capot_moteur", "aileron_moteur"),
+            sub("Cheville dans le dessus du bloc gris, capot blanc par le dessus, aileron noir par l'arrière.", "cheville_capot", "capot_moteur", "aileron_moteur"),
             sub("Pied du vérin dans le berceau du flap, puis pousse les deux ensemble contre le tableau.", "verin_flap", "flap"),
             sub("Échelle de bain sur ses 2 tenons.", "echelle_bain")]),
     S("L'armature du taud", ["cadre_taud"],

@@ -24,6 +24,10 @@ def offs(n):
     return [0, 0, 0]
 for n, (V, F) in V23.items():
     col, name, k = n.split('__'); ex = np.array(offs(n), float)
+    if name in ('bloc_moteur', 'embase_moteur', 'helice', 'cheville_capot'):   # v25.3 : moteur en 3 pieces (+ cheville)
+        ex = np.array(OFFS.get(f'alu__embase_moteur__{k}', [-70.0, 0.0, 0.0]), float) + {
+            'bloc_moteur': (0.0, 0.0, 0.0), 'embase_moteur': (0.0, -14.0, 0.0), 'helice': (-18.0, -14.0, 0.0),
+            'cheville_capot': (0.0, 14.0, 0.0)}[name]
     if name == 'pare_battage':                                   # v25.2 : ecartes du flanc, vers l'exterieur (vue de dessus)
         ex = np.array([0.0, 4.0, 12.0 * np.sign(np.asarray(V)[:, 2].mean())])
     if name == 'crochet_pare_battage':                           # v25.2 : tires vers le cockpit, cote tribord seulement

@@ -1,4 +1,4 @@
-"""Kit d'impression complet v25.2 (sans colle) : STL par couleur, plateaux equilibres (3MF), listes.
+"""Kit d'impression complet v25.3 (sans colle) : STL par couleur, plateaux equilibres (3MF), listes.
 Entrees (dossier v25) : pieces.pkl (pieces reconstruites), coussins_v25.pkl, coques_v25.pkl (coques + cles), eprouvette.pkl."""
 import os as _os
 ROOT = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))   # dossier bowen28 du depot
@@ -8,7 +8,7 @@ import numpy as np, trimesh
 import pieces as P, stl_packages as SP
 
 HERE = ROOT + '/v25'
-KIT = os.path.join(HERE, 'kit', 'Bowen28_kit_impression_v25.2')
+KIT = os.path.join(HERE, 'kit', 'Bowen28_kit_impression_v25.3')
 VERSION = '24'
 BED, S, GAP = 256.0, 240.0, 5.0            # plateau A1 256 x 256 ; zone de pose 240 x 240 centree (marge 8 mm)
 
@@ -25,7 +25,7 @@ for e in A:
     E[e['name']] = e
 assert len(E) == len(A)
 
-SUP = {'coque_arriere', 'coque_avant', 'embase_moteur'}
+SUP = {'coque_arriere', 'coque_avant', 'bloc_moteur', 'helice'}   # v25.3 : petits supports caches (moteur25.py)
 COLOR_DIR = {'blanc': '1_blanc', 'alu': '2_alu', 'noir': '3_noir', 'teck': '4_teck', 'taupe': '5_taupe'}
 LAYER = {'noir': 0.08}
 GROUPS = [
@@ -34,7 +34,7 @@ GROUPS = [
     dict(key='coque_avant', color='blanc', title='Coque avant', names={'coque_avant'}),
     dict(key='blanc', color='blanc', title="Capots et jupes moteur, bandes des fauteuils, clés de jonction", names=None),
     dict(key='alu', color='alu', title="Cadres du taud, berceaux, échelle, mât, flaps, taquets…", names=None),
-    dict(key='embases', color='alu', title='Embases moteur', names={'embase_moteur'}),
+    dict(key='embases', color='alu', title='Moteurs : blocs gris, embases, hélices, chevilles', names={'bloc_moteur', 'embase_moteur', 'helice', 'cheville_capot'}),
     dict(key='noir', color='noir', title='Filets de coque, écrans, commandes, ailerons, gaines, vérins', names=None),
     dict(key='toit', color='noir', title='Toit du taud (arceaux intégrés) et pare-battages', names={'toit_taud', 'pare_battage'}, layer=0.12),
     dict(key='teck', color='teck', title='SeaDek, tapis de plats-bords, jante et moyeu du volant', names=None),
@@ -149,7 +149,7 @@ for n, e in E.items():
 # 3MF par plateau
 pdir = os.path.join(KIT, 'plateaux_3mf'); os.makedirs(pdir)
 slug = {'eprouvette': 'eprouvette_reglage', 'coque_arriere': 'coque_arriere', 'coque_avant': 'coque_avant', 'blanc': 'blanc_moteurs_et_petites_pieces',
-        'alu': 'alu_taud_berceaux', 'embases': 'alu_embases_moteur', 'noir': 'noir', 'toit': 'noir_toit_taud', 'teck': 'teck_seadeck', 'taupe': 'taupe_coussins'}
+        'alu': 'alu_taud_berceaux', 'embases': 'alu_moteurs', 'noir': 'noir', 'toit': 'noir_toit_taud', 'teck': 'teck_seadeck', 'taupe': 'taupe_coussins'}
 seen = collections.Counter()
 for num, p in enumerate(plates, 0):
     p['num'] = num; seen[p['key']] += 1

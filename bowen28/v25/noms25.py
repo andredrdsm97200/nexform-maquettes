@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-"""Noms affiches des pieces (kit v25.2 sans colle)."""
+"""Noms affiches des pieces (kit v25.3 sans colle)."""
 NICE = {
     "coque_arriere": "coque arrière", "coque_avant": "coque avant", "capot_moteur": "capot moteur (blanc)",
     "jupe_moteur": "jupe arrière du moteur (blanche)", "flap": "flap", "verin_flap": "vérin de flap",
     "moyeu_volant": "moyeu du volant", "pompe_direction": "pompe de direction",
-    "embase_moteur": "embase moteur (bas de capot gris)", "aileron_moteur": "aileron de moteur", "gaine_moteur": "gaine de commande",
+    "bloc_moteur": "bloc moteur gris (sous le capot)", "embase_moteur": "embase du moteur", "helice": "hélice", "cheville_capot": "cheville du capot", "aileron_moteur": "aileron de moteur", "gaine_moteur": "gaine de commande",
     "fauteuil": "fauteuil", "bande_fauteuil": "bande blanche de fauteuil", "embase_fauteuil": "embase de fauteuil", "filet_caisson": "filet du caisson",
     "jante_volant": "jante du volant", "branches_volant": "croisillon du volant (branches doubles)", "manette_gaz": "manette des gaz double",
     "barre_console": "barre de console", "pare_brise": "pare-brise", "ecran_mfd": "écran multifonction",

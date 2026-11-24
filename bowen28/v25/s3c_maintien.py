@@ -30,6 +30,8 @@ AXES = {
     'manette_gaz': (1, 0, 0),
     'barre_console': (1, 0, 0),
     'pompe_direction': vis(M.WHEEL_N),                        # accrochee au tenon de la console, volant en porte-a-faux
+    'embase_moteur': (0, 1, 0),                               # v25.3 : pend sous le bloc gris, sur 2 tenons verticaux
+    'helice': (1, 0, 0),                                      # v25.3 : sur le tenon losange horizontal de la torpille
 }
 # (le moyeu du volant, lui, tient par son poids : l'axe du volant monte de 30 degres vers le pilote)
 mal = []

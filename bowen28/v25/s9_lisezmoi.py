@@ -1,9 +1,9 @@
-"""LISEZMOI du kit v25.2 (sans colle) : contenu, plateaux, reglages, principe d'emboitement, changements, pieces par plateau."""
+"""LISEZMOI du kit v25.3 (sans colle) : contenu, plateaux, reglages, principe d'emboitement, changements, pieces par plateau."""
 import os as _os
 ROOT = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))   # dossier bowen28 du depot
 import os, json, collections, re, textwrap
 HERE = ROOT + '/v25'
-KIT = os.path.join(HERE, 'kit', 'Bowen28_kit_impression_v25.2')
+KIT = os.path.join(HERE, 'kit', 'Bowen28_kit_impression_v25.3')
 meta = json.load(open(os.path.join(HERE, 'kit_meta.json')))
 plates, pieces = meta['plates'], meta['pieces']
 import sys; sys.path.insert(0, HERE)
@@ -21,14 +21,14 @@ def g(x): return f"{int(round(x / 5.0) * 5)}\u00a0g" if x >= 10 else f"{max(1, r
 main = [p for p in plates if not p['eprouvette']]; epr = [p for p in plates if p['eprouvette']]
 n_main = sum(len(p['inst']) for p in main); n_epr = sum(len(p['inst']) for p in epr)
 L = []
-title = "BOWEN 28 AU 1:19 – KIT D'IMPRESSION v25.2, MONTAGE SANS COLLE"
+title = "BOWEN 28 AU 1:19 – KIT D'IMPRESSION v25.3, MONTAGE SANS COLLE"
 L += [title, "=" * len(title), ""]
 L += wrap(f"Tout ce qu'il faut pour imprimer la maquette : {n_main} pièces réparties sur {len(main)} plateaux, une seule couleur de "
           f"filament par plateau, plus l'éprouvette de réglage P00 ({n_epr} petites pièces) à imprimer en premier. La maquette "
           "s'assemble entièrement par emboîtement, comme des Lego : ni colle, ni goupille, ni toile, uniquement du PLA ou du PLA+. "
           "Ce kit remplace le kit v23.1 : n'utilise plus ses fichiers, tout est ici.")
 L += ["", "CONTENU", "-------",
-      "Bowen28_kit_impression_v25.2/",
+      "Bowen28_kit_impression_v25.3/",
       "├── LISEZMOI.txt              ce fichier",
       "├── FICHE_IMPRESSION.pdf      la fiche à remettre à l'imprimeur : plateaux, réglages, éprouvette, aperçus",
       f"├── plateaux_3mf/             {len(plates)} fichiers 3MF (P00 à P{len(plates) - 1:02d}), pièces orientées et disposées sur le plateau de 256 mm",
@@ -44,7 +44,7 @@ for n, p in pieces.items():
 cols = ['blanc', 'alu', 'noir', 'teck', 'taupe']
 for k, c in enumerate(cols):
     L.append(f"│   {'└' if k == len(cols) - 1 else '├'}── {DIRS[c] + '/':20s}{cnt[c][0]:2d} fichiers, {cnt[c][1]:2d} impressions")
-L.append("└── notice_de_montage_v25.2.pdf la notice illustrée, sans colle")
+L.append("└── notice_de_montage_v25.3.pdf la notice illustrée, sans colle")
 L += [""]
 L += wrap("« _x2 », « _x3 » ou « _x4 » à la fin d'un nom de STL = imprimer la pièce 2, 3 ou 4 fois. Les plateaux 3MF "
           "contiennent déjà le bon nombre d'exemplaires.")
@@ -71,8 +71,8 @@ for t_ in ["4 petites pièces blanches, environ 15 minutes, avec les mêmes rég
 L += ["", "POURQUOI CETTE RÉPARTITION", "--------------------------"]
 for t_ in ["Une couleur par plateau : pas de changement de bobine en cours d'impression, pas d'AMS nécessaire.",
            "Les pièces qui demandent des supports sont seules sur leur plateau : P01 et P02 (les 2 moitiés de coque, "
-           "232 mm de long chacune, une par plateau) et P05 (les 2 embases moteur). Tous les autres plateaux s'impriment "
-           "sans aucun support.",
+           "232 mm de long chacune, une par plateau) et P05 (les moteurs, en 3 pièces chacun : seulement quelques petits "
+           "supports, cachés sous l'étrier, sous la jupe et au bout des pales). Tous les autres plateaux s'impriment sans aucun support.",
            "Le noir a 2 plateaux : P06 en couches de 0,08 mm (filets de coque de 0,6 mm d'épaisseur, écrans, commandes) et "
            "P07, le toit du taud et les 4 pare-battages, en 0,12 mm : le toit à l'envers sans support (ses bords commencent par un "
            "chanfrein à 45°), les pare-battages debout.",
@@ -97,8 +97,20 @@ for t_ in ["Un seul jeu pour tous les tenons, clés et logements : 0,1 mm par c�
            "par le dessus et tirent les 2 faces l'une contre l'autre (2 dans les plats-bords, 2 dans le plancher).",
            "Les coussins s'enfilent sur les nervures blanches de la coque ou se posent sur des tenons : la pesanteur les tient.",
            "Les petites pièces que leur poids ne tient pas (les 2 écrans, la manette, le tableau d'interrupteurs, la pompe du "
-           "volant, la barre de la console) ont en plus de fines côtes sur leur emboîtement : elles serrent en fin de course, "
+           "volant, la barre de la console, l'embase et l'hélice des moteurs) ont en plus de fines côtes sur leur emboîtement : "
+           "elles serrent en fin de course, "
            "pousse-les franchement jusqu'au bout. Elles tiennent alors seules, quelle que soit l'imprimante."]:
+    L += wrap(t_, "- ", "  ")
+L += ["", "CE QUI CHANGE DEPUIS LA v25.2", "-----------------------------"]
+for t_ in ["Moteurs : la partie grise s'imprime en 3 pièces au lieu d'une, chacune posée à plat sur une face plane : le bloc "
+           "gris à l'envers sur son plan de joint, l'embase à l'envers sur la plaque anti-cavitation, l'hélice debout sur son "
+           "moyeu. Fini les grands supports : il en reste quelques petits, cachés sous l'étrier, sous la jupe et au bout des pales.",
+           "L'embase se monte sous le bloc par 2 tenons ronds et l'hélice sur un tenon losange au bout de la torpille ; leurs "
+           "logements ont des côtes de serrage. Une petite cheville relie le bloc au capot blanc (ils s'impriment tous les deux "
+           "sur leur plan de joint). Chaque moteur se monte sur la table, puis se pousse sur la chaise comme avant.",
+           "Si la v25.2 est déjà imprimée, il suffit de réimprimer le plateau P05 (moteurs) ; tout le reste est identique.",
+           f"La v25.3 compte {n_main} pièces sur {len(main)} plateaux, plus l'éprouvette : 6 de plus que la v25.2 (2 embases, "
+           "2 hélices et 2 chevilles)."]:
     L += wrap(t_, "- ", "  ")
 L += ["", "CE QUI CHANGE DEPUIS LA v25", "---------------------------"]
 for t_ in ["4 crochets alu (plateau P04). La ficelle est nouée à l'œil du pare-battage et au crochet, qui s'accroche à "
@@ -106,7 +118,7 @@ for t_ in ["4 crochets alu (plateau P04). La ficelle est nouée à l'œil du par
            "reste droit ; pour enlever le pare-battage, on le penche de nouveau.",
            "Rien d'autre ne change, la coque non plus. Si la v25 est déjà imprimée, il suffit d'imprimer les crochets : "
            "stl/2_alu/crochet_pare_battage_x4.stl (un crochet, à imprimer 4 fois), à plat, en gris alu, couches de 0,12 mm.",
-           f"La v25.2 compte {n_main} pièces sur {len(main)} plateaux, plus l'éprouvette : les 4 crochets en plus."]:
+           "La v25.2 comptait 99 pièces sur 9 plateaux, plus l'éprouvette : les 4 crochets en plus."]:
     L += wrap(t_, "- ", "  ")
 L += ["", "CE QUI CHANGE DEPUIS LA v24", "---------------------------"]
 for t_ in ["Caisson des fauteuils plus fin, comme sur le vrai bateau : 25 mm d'avant en arrière au lieu de 38, et 23 mm "

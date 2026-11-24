@@ -46,7 +46,8 @@ ne bloque pas.
 fauteuils (le fauteuil bâbord barrait son axe) ; les anneaux de pare-battage (v25) sont encastrés dans la paroi :
 en saillie, ils barraient la descente des boudins sur leurs tenons. Le crochet de pare-battage (v25.2) s'accroche en
 pivotant autour de la barrette de l'anneau : pas de ligne droite possible, son chemin est cherché en 2D
-(`chemin_crochet` dans `pare_battages25.py`, appelé par `s3b_chemins.py`).
+(`chemin_crochet` dans `pare_battages25.py`, appelé par `s3b_chemins.py`). Moteurs en 3 pièces (v25.3) : chaque moteur
+se monte sur la table (embase par-dessous, hélice par l'arrière), contrôlé comme le volant, puis se pousse sur la chaise.
 
 ## Règle 2 – Une petite pièce ne tombe pas toute seule
 
@@ -78,4 +79,6 @@ des chevauchements. Pour le Bowen 28 : `bowen28/v25/s3c_maintien.py`, qui doit a
 **Appliqué au Bowen 28** : grand écran (semelle +0,1 mm par côté, 3 côtes dans son trou), petit écran (+0,1 mm
 par côté, une côte par flanc), tableau d'interrupteurs (+0,1 mm par côté, 6 côtes sur ses flancs), manette des gaz
 (4 côtes sur son tenon losange), pompe du volant (4 côtes dans son logement, 3 sur son tenon avant), barre de
-console (3 côtes par patte). Sur une maquette déjà imprimée, il suffit de réimprimer ces 6 pièces.
+console (3 côtes par patte). Sur une maquette déjà imprimée, il suffit de réimprimer ces 6 pièces. Moteurs en 3 pièces
+(v25.3) : l'embase pend sous le bloc gris (3 côtes dans chacun de ses 2 logements), l'hélice tient sur un tenon
+losange horizontal (4 côtes dans son logement).
