@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>__TITRE__ · vision 3D</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@1,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=DM+Mono:wght@500&display=swap">
+<style>
+/* VOICE : un atelier de maquettiste, net et précis : on regarde la maquette sous tous les angles et on note ce qui change.
+   IDEA : la maquette posée sur son socle dans un studio photo, qu'on fait tourner entre ses doigts, carnet de retouches à côté.
+   PICTURE : la scène 3D elle-même, pleine largeur, sur un fond de studio clair.
+   COLOUR and TYPE : charte Nexform : encre #121418, vert fluo #95FA05 en accent ; Exo 2 italique pour les titres, DM Sans.
+   LAYOUT : titre sobre, scène, commandes, puis demandes de modification et validation, ce qui change depuis la version
+   précédente (si CFG.changements), puis chiffres, points et pièces. */
+:root{color-scheme:light dark;--bg:light-dark(#F3F5F7,#121418);--surface:light-dark(#FFFFFF,#1B1E23);--ink:light-dark(#121418,#F3F5F7);
+--muted:light-dark(#5F6670,#9AA2AC);--line:light-dark(#D9DDE2,#2E333A);--fluo:#95FA05;--fluo-ink:#0D0F12;--soft:light-dark(#E9EDF1,#23272E);--warn:light-dark(#B3261E,#FF8F80)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "DM Sans",system-ui,sans-serif;overflow-x:clip}
+button,textarea{font:inherit;color:inherit}
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;padding:16px max(4vw,16px) 14px}
+.logo{height:20px;width:auto;color:var(--ink)}.logo .m{fill:light-dark(var(--ink),var(--fluo))}
+.titre{display:flex;flex-direction:column;flex:1 1 260px}
+h1{font:italic 800 clamp(30px,5vw,44px)/1.05 "Exo 2","Arial Black",sans-serif;margin:0;text-wrap:balance}
+.sous{margin:2px 0 0;color:var(--muted);font-size:15px}
+.statut{background:var(--fluo);color:var(--fluo-ink);font-weight:700;font-size:14px;border-radius:99px;padding:6px 14px;white-space:nowrap}
+.fig{position:relative;height:clamp(380px,66vh,780px);overflow:hidden;touch-action:none;
+background:radial-gradient(120% 90% at 50% 20%,#FCFDFE 0%,#E2E7EC 58%,#C7CFD8 100%)}
+:root[data-theme=dark] .fig{background:radial-gradient(120% 90% at 50% 20%,#97A1AC 0%,#66707B 58%,#3C434B 100%)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .fig{background:radial-gradient(120% 90% at 50% 20%,#97A1AC 0%,#66707B 58%,#3C434B 100%)}}
+.fig canvas{position:absolute;inset:0;width:100%;height:100%;display:block;outline:none}
+.vues{position:absolute;top:12px;left:12px;right:12px;display:flex;flex-wrap:wrap;gap:6px;pointer-events:none}
+.vues button{pointer-events:auto;min-height:44px;padding:0 16px;border-radius:99px;border:1px solid rgba(18,20,24,.14);
+background:rgba(255,255,255,.88);color:#121418;font-weight:500;font-size:15px;cursor:pointer}
+.vues button[aria-pressed=true]{background:#121418;color:#F3F5F7;border-color:#121418}
+.aide{position:absolute;right:14px;bottom:12px;margin:0;font-size:13px;color:#3B424A;background:rgba(255,255,255,.75);padding:4px 10px;border-radius:99px;transition:opacity .4s}
+.fiche{position:absolute;left:12px;bottom:12px;width:min(360px,calc(100% - 24px));background:var(--surface);color:var(--ink);border-radius:16px;
+padding:14px 16px 14px 18px;box-shadow:0 10px 30px rgba(0,0,0,.18);border-left:6px solid var(--fluo)}
+.fiche[hidden],.form[hidden]{display:none}.fiche b{display:block;font-size:17px;line-height:1.25;padding-right:36px}
+.fiche p{margin:4px 0 10px;font-size:14px;color:var(--muted)}.fiche .x{position:absolute;top:4px;right:4px;width:44px;height:44px;border:0;background:none;font-size:22px;cursor:pointer}
+.charge{position:absolute;inset:0;display:grid;place-items:center;font-size:16px;color:#3B424A;text-align:center;padding:24px}
+.barre{display:flex;flex-wrap:wrap;align-items:center;gap:12px 22px;padding:12px max(4vw,16px);border-bottom:1px solid var(--line)}
+.seg{display:flex;background:var(--soft);border-radius:99px;padding:3px}
+.seg button{min-height:40px;padding:0 16px;border:0;border-radius:99px;background:none;cursor:pointer;font-weight:500;font-size:15px}
+.seg button[aria-pressed=true]{background:var(--ink);color:var(--bg)}
+.barre label{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:500}
+.barre input[type=range]{width:min(220px,46vw);accent-color:#121418;height:44px}
+:root[data-theme=dark] .barre input[type=range]{accent-color:var(--fluo)}
+.btn{min-height:44px;padding:0 16px;border-radius:99px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-weight:500;font-size:15px}
+.btn[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn.fort{background:var(--fluo);color:var(--fluo-ink);border-color:var(--fluo);font-weight:700}
+.btn.petit{min-height:36px;padding:0 12px;font-size:14px}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--fluo);outline-offset:2px}
+.band{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:18px;padding:clamp(20px,3vw,40px) max(4vw,16px) 0}
+.large{grid-column:1/-1}
+.carte{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px 20px}
+.tete{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px}
+h2{font:italic 800 22px/1.1 "Exo 2",sans-serif;margin:0}
+.form{border:2px solid var(--ink);border-radius:14px;padding:12px 14px;margin:0 0 14px}
+.form p{margin:0 0 8px;font-weight:700}
+textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg);font-size:16px;resize:vertical}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.note{margin:0;color:var(--muted);font-size:15px}.note.err{color:var(--warn)}
+.demandes{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.demandes li{border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--bg)}
+.demandes li.fait{opacity:.75}
+.dtete{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}.dtete b{flex:1 1 180px}
+.etat{font-size:13px;font-weight:700;border-radius:99px;padding:2px 10px;background:var(--soft);white-space:nowrap}
+.etat.afaire{background:var(--fluo);color:var(--fluo-ink)}
+.demandes .txt{margin:6px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.demandes .rep{margin:8px 0 0;padding:8px 10px;border-radius:10px;background:var(--soft);font-size:15px;white-space:pre-wrap}
+.demandes .meta{margin:6px 0 0;font-size:13px;color:var(--muted)}
+.chiffres{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 16px;margin:0}
+.chiffres div{border-top:2px solid var(--ink);padding-top:6px}.chiffres dt{font:italic 800 clamp(26px,4vw,32px)/1.05 "Exo 2",sans-serif;white-space:nowrap}
+.chiffres dd{margin:2px 0 0;color:var(--muted);font-size:14px;line-height:1.35}
+.points{margin:0;padding:0;list-style:none;counter-reset:p}
+.points li{counter-increment:p;position:relative;padding:0 0 12px 42px}.points li:last-child{padding-bottom:0}
+.points li::before{content:counter(p);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;background:var(--fluo);color:var(--fluo-ink);font-weight:700;display:grid;place-items:center;font-size:14px}
+.points b{display:block;line-height:1.3}.points span{color:var(--muted);font-size:15px}
+.changements{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+.changements li{padding:0 0 0 14px;border-left:4px solid var(--fluo)}.changements b{display:block;line-height:1.3}.changements span{color:var(--muted);font-size:15px}
+.groupe{margin:0 0 12px}.groupe:last-child{margin:0}.gtitre{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;margin:0 0 6px}
+.pastille{width:14px;height:14px;border-radius:50%;border:1px solid light-dark(rgba(0,0,0,.25),rgba(255,255,255,.45));flex:none}
+.liste{display:flex;flex-wrap:wrap;gap:6px}.liste button{min-height:40px;padding:0 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);cursor:pointer;font-size:14px;text-align:left}
+.liste button[aria-pressed=true]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink),inset 6px 0 0 var(--fluo)}
+.liste small{color:var(--muted);font:500 13px "DM Mono",monospace;margin-left:4px}
+footer{padding:24px max(4vw,16px) 28px;color:var(--muted);font-size:14px}footer p{margin:4px 0;max-width:70ch}
+@media (max-width:600px){.vues{gap:5px}.vues button{padding:0 11px;font-size:14px}.aide{display:none}.barre{gap:10px 14px}}
+@media (prefers-reduced-motion:reduce){.aide{transition:none}}
+</style>
+</head>
+<body>
+<header class="top">
+<svg class="logo" role="img" aria-label="Nexform 3D Marine" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2042 358"><path fill="currentColor" fill-rule="evenodd" d="M299,166 545,166 562,126 386,125 386,123 395,105 542,105 558,68 410,64 364,65 340,68ZM1672,166 1740,166 1770,94 1774,89 1805,145 1818,173 1930,89 1931,93 1900,165 1900,168 1957,168 1967,166 1981,131 2035,10 2035,7 1967,6 1870,80 1848,94 1803,6 1738,7ZM1440,6 1463,47 1610,47 1621,48 1625,50 1629,55 1629,60 1622,69 1612,73 1507,72 1508,66 1476,66 1439,69 1393,175 1466,167 1474,153 1491,112 1540,112 1584,166 1660,166 1615,116 1616,112 1637,109 1661,100 1674,91 1688,76 1695,63 1701,46 1701,34 1699,28 1689,17 1671,9 1649,6ZM1125,121 1125,134 1131,148 1141,157 1152,162 1164,165 1192,167 1316,166 1337,162 1349,158 1369,147 1390,126 1402,104 1420,61 1423,47 1422,34 1418,25 1406,14 1397,10 1374,6 1235,6 1207,11 1182,22 1172,29 1159,42 1146,64 1130,103ZM1197,104 1205,82 1213,67 1224,56 1236,50 1251,47 1322,47 1338,50 1343,53 1348,60 1348,70 1332,106 1320,118 1307,124 1286,127 1216,126 1206,123 1199,117 1197,113ZM861,166 930,165 953,110 956,106 1101,105 1116,69 980,69 971,67 979,48 1123,47 1171,7 958,6 926,8ZM912,7 823,7 751,51 749,51 710,6 626,7 627,10 691,83 691,87 576,155 553,170 548,175 585,174 645,168 722,120 725,121 761,165 850,166 782,87 783,84ZM351,47 592,48 595,44 610,7 372,6 368,7ZM6,166 75,165 116,69 119,68 205,166 272,165 338,7 270,7 234,92 229,98 149,7 76,6 74,7Z"/><path class="m" fill-rule="evenodd" d="M1806,307 1918,305 1948,303 1992,276 1866,275 1866,273 1876,260 1952,257 1973,235 1894,234 1903,220 2000,219 2035,194 1873,194 1819,278ZM1616,308 1661,303 1694,249 1700,242 1746,304 1772,305 1786,302 1855,193 1814,193 1808,195 1771,254 1767,258 1721,193 1696,193 1684,195 1650,248ZM1665,193 1619,193 1552,293 1558,307 1592,304 1595,301 1662,200ZM1350,306 1350,308 1398,303 1427,261 1455,261 1461,264 1488,304 1575,352 1548,316 1532,298 1532,295 1512,272 1507,262 1538,258 1564,246 1573,237 1586,217 1587,206 1585,202 1579,197 1553,192 1431,192 1413,219 1508,218 1527,219 1532,224 1524,234 1518,236 1486,237 1445,235 1445,233 1399,236ZM1367,193 1320,192 1305,194 1195,279 1162,309 1216,300 1314,226 1317,228 1311,253 1308,258 1285,258 1242,284 1300,281 1304,282 1299,308 1302,309 1342,302ZM1231,192 1190,192 1169,194 1088,249 1086,247 1077,193 1063,192 1031,194 964,292 960,301 930,346 1007,293 1039,248 1043,247 1050,306 1071,295 1145,247 1146,250 1123,286 1120,299 1106,326 1163,294ZM922,208 915,200 907,196 880,191 793,191 777,193 717,276 703,305 828,298 841,296 861,290 881,278 895,262 922,223ZM873,225 869,235 850,260 838,268 818,272 787,273 764,271 804,218 861,218 870,221ZM760,191 620,192 582,217 691,220 668,228 611,239 621,256 662,258 665,261 665,265 662,269 650,274 567,276 480,320 592,306 661,299 681,293 695,285 705,275 714,260 714,254 712,250 707,247 701,246 697,242 704,241 732,231Z"/></svg>
+<div class="titre"><h1 id="nom"></h1><p class="sous" id="sous"></p></div>
+<span class="statut" id="statut"></span>
+</header>
+<main>
+<section class="fig" id="scene" aria-label="Maquette en 3D">
+<div class="charge" id="charge">Chargement de la maquette…</div>
+<div class="vues" id="vues"></div>
+<p class="aide" id="aide">Glisse pour tourner · pince pour zoomer · touche une pièce</p>
+<div class="fiche" id="fiche" hidden aria-live="polite"><button class="x" id="fermer" aria-label="Fermer">×</button><b id="fnom"></b><p id="finfo"></p>
+<button class="btn fort petit" id="fdemande" type="button">Demander une modification</button></div>
+</section>
+<div class="barre">
+<div class="seg" id="voiles" role="group" aria-label="Voiles"></div>
+<label for="eclate">Vue éclatée <input type="range" id="eclate" min="0" max="100" value="0"></label>
+<button class="btn" id="socle" type="button" aria-pressed="true">Socle</button>
+<button class="btn" id="recentrer" type="button">Recentrer</button>
+</div>
+<section class="band">
+<div class="carte large" id="carte-demandes">
+<div class="tete"><h2>Demandes de modification</h2><button class="btn petit" id="nouvelle" type="button">Nouvelle demande</button></div>
+<form class="form" id="form" hidden><p id="fpiece"></p>
+<label class="note" for="ftexte">Ce qui doit changer :</label>
+<textarea id="ftexte" maxlength="1500" placeholder="__EXEMPLE__"></textarea>
+<div class="actions"><button class="btn fort" type="submit">Envoyer</button><button class="btn" type="button" id="fannuler">Annuler</button></div>
+<p class="note" id="fmsg"></p></form>
+<p class="note" id="dnote">Connexion au carnet de demandes…</p>
+<ul class="demandes" id="demandes"></ul>
+</div>
+<div class="carte" id="carte-validation"><div class="tete"><h2>Validation</h2></div>
+<p class="note" id="vtxt">Chargement…</p><div class="actions"><button class="btn fort" type="button" id="valider" hidden>Valider cette version</button></div></div>
+<div class="carte" id="carte-changements" hidden><h2 style="margin-bottom:12px" id="ctitre">Ce qui change</h2><ul class="changements" id="changements"></ul></div>
+<div class="carte"><h2 style="margin-bottom:12px">La maquette</h2><dl class="chiffres" id="chiffres"></dl></div>
+<div class="carte"><h2 style="margin-bottom:12px">Points à valider</h2><ol class="points" id="points"></ol></div>
+<div class="carte large"><h2 style="margin-bottom:12px">Les pièces</h2><div id="pieces"></div></div>
+</section>
+</main>
+<footer id="pied"></footer>
+<script type="application/json" id="cfg">__CFG__</script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {toCreasedNormals} from 'three/addons/utils/BufferGeometryUtils.js';
+{
+const CFG = JSON.parse(document.getElementById('cfg').textContent);
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
+const calme = matchMedia('(prefers-reduced-motion: reduce)').matches;
+$('nom').textContent = CFG.titre; $('sous').textContent = CFG.sous_titre; $('statut').textContent = CFG.statut;
+$('chiffres').innerHTML = CFG.chiffres.map(([v, t]) => `<div><dt>${esc(v)}</dt><dd>${esc(t)}</dd></div>`).join('');
+$('points').innerHTML = CFG.points.map(p => `<li><b>${esc(p.t)}</b><span>${esc(p.d)}</span></li>`).join('');
+$('pied').innerHTML = CFG.pied.map(t => `<p>${esc(t)}</p>`).join('');
+if (CFG.changements && CFG.changements.items && CFG.changements.items.length) {
+  $('ctitre').textContent = CFG.changements.titre || 'Ce qui change';
+  $('changements').innerHTML = CFG.changements.items.map(p => `<li><b>${esc(p.t)}</b><span>${esc(p.d)}</span></li>`).join('');
+  $('carte-changements').hidden = false;
+}
+if (CFG.option) $('voiles').innerHTML = CFG.option.libelles.map((t, i) => `<button type="button" data-i="${i}" aria-pressed="${i === 0}">${esc(t)}</button>`).join('');
+else $('voiles').style.display = 'none';                  // pas d'option (Bowen 28 : pas de voiles)
+// [libellé, direction de l'œil, (pièces à cadrer : débuts d'identifiant)] ; la config peut donner les siennes
+const VUES = CFG.vues || [['3/4 avant', [1, 0.42, 0.95]], ['Profil', [0, 0.05, 1]], ['Dessus', [-0.02, 1, 0]], ['Arrière', [-1, 0.5, -0.85]]];
+$('vues').innerHTML = VUES.map(([t], i) => `<button type="button" data-v="${i}" aria-pressed="${i === 0}">${esc(t)}</button>`).join('');
+
+// ---------------------------------------------------------------- la scene 3D
+const fig = $('scene'), charge = $('charge');
+let renderer;
+try { renderer = new THREE.WebGLRenderer({antialias: true, alpha: true}); }
+catch (err) { charge.textContent = "Ce navigateur n'affiche pas la 3D (WebGL indisponible)."; throw err; }
+renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+renderer.toneMapping = THREE.NeutralToneMapping;
+fig.prepend(renderer.domElement);
+const scene = new THREE.Scene();
+const cam = new THREE.PerspectiveCamera(32, 1, 5, 20000);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8b95a0, 1.7));
+const cle = new THREE.DirectionalLight(0xffffff, 2.0); cle.position.set(900, 1400, 700); scene.add(cle);
+const contre = new THREE.DirectionalLight(0xdde6ff, 0.8); contre.position.set(-900, 600, -800); scene.add(contre);
+const controls = new OrbitControls(cam, renderer.domElement);
+Object.assign(controls, {enableDamping: true, dampingFactor: 0.08, screenSpacePanning: true, minDistance: 60, maxDistance: 4000,
+  autoRotate: !calme, autoRotateSpeed: 0.7});
+const MAT = {}, LUM = {};
+for (const [k, c] of Object.entries(CFG.couleurs)) {
+  MAT[k] = new THREE.MeshStandardMaterial({color: c.rendu, roughness: c.rugosite, metalness: 0});
+  LUM[k] = MAT[k].clone(); LUM[k].emissive = new THREE.Color(0x95FA05); LUM[k].emissiveIntensity = 0.42;
+}
+const b64 = s => { const t = atob(s), u = new Uint8Array(t.length); for (let i = 0; i < t.length; i++) u[i] = t.charCodeAt(i); return u.buffer; };
+function maillage(g, o, s) {
+  const q = new Uint16Array(b64(g.p)), pos = new Float32Array(q.length);
+  for (let i = 0; i < q.length; i += 3) { pos[i] = o[0] + q[i] * s; pos[i + 1] = o[1] + q[i + 1] * s; pos[i + 2] = o[2] + q[i + 2] * s; }
+  let ge = new THREE.BufferGeometry();
+  ge.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  ge.setIndex(new THREE.BufferAttribute(g.b ? new Uint32Array(b64(g.i)) : new Uint16Array(b64(g.i)), 1));
+  ge = toCreasedNormals(ge, Math.PI / 5); ge.computeBoundingBox();
+  const [mat, lum] = materiaux(g);
+  const m = new THREE.Mesh(ge, mat);
+  const sz = ge.boundingBox.getSize(new THREE.Vector3());
+  // sub : partie d'une piece montree a part (lettres du socle), ni comptee ni mesuree a part
+  m.userData = {id: g.id, nm: g.nm, k: g.k, e: new THREE.Vector3(...g.e), dim: [sz.x, sz.z, sz.y], mat, lum, sub: !!g.sub};
+  return m;
+}
+function materiaux(g) {
+  const k = MAT[g.k] ? g.k : Object.keys(MAT)[0];
+  if (!g.r) return [MAT[k], LUM[k]];
+  // r : teinte d'affichage d'une partie (lettres en relief eclaircies pour etre lisibles a l'ecran)
+  const a = new THREE.MeshStandardMaterial({color: g.r, roughness: CFG.couleurs[k].rugosite, metalness: 0}), b = a.clone();
+  b.emissive = new THREE.Color(0x95FA05); b.emissiveIntensity = 0.42;
+  return [a, b];
+}
+const pieces = [], option = [], tous = () => pieces.concat(option);
+let sphere = new THREE.Sphere(), sel = '', affalees = false, socle = true, anim = null, sale = true;
+const commence = (id, prefixes) => prefixes.some(p => id.startsWith(p));
+
+async function charger() {
+  const [a, b] = await Promise.all([CFG.modele, CFG.option ? CFG.option.fichier : null].map(f => f ? fetch(f).then(r => { if (!r.ok) throw new Error(f); return r.json(); }) : {g: []}));
+  charge.textContent = 'Préparation des pièces…';
+  await new Promise(r => setTimeout(r, 30));
+  for (const g of a.g) { const m = maillage(g, a.o, a.s); pieces.push(m); scene.add(m); }
+  for (const g of b.g) { const m = maillage(g, b.o, b.s); m.visible = false; m.userData.opt = true; option.push(m); scene.add(m); }
+  const box = new THREE.Box3(); pieces.forEach(m => box.expandByObject(m));
+  box.getBoundingSphere(sphere);
+  const cv = document.createElement('canvas'); cv.width = cv.height = 128;
+  const cx = cv.getContext('2d'), gr = cx.createRadialGradient(64, 64, 4, 64, 64, 64);
+  gr.addColorStop(0, 'rgba(10,14,20,.34)'); gr.addColorStop(1, 'rgba(10,14,20,0)'); cx.fillStyle = gr; cx.fillRect(0, 0, 128, 128);
+  const ombre = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({map: new THREE.CanvasTexture(cv), transparent: true, depthWrite: false}));
+  ombre.rotation.x = -Math.PI / 2; ombre.scale.set((box.max.x - box.min.x) * 1.25, (box.max.z - box.min.z) * 3.2, 1);
+  ombre.position.set((box.min.x + box.max.x) / 2, box.min.y - 0.5, (box.min.z + box.max.z) / 2); scene.add(ombre);
+  listePieces(); charge.remove(); vue(0, true);
+}
+function listePieces() {
+  const grp = {};
+  for (const m of pieces) { const u = m.userData; if (!u.sub) (grp[u.k] ||= new Map()).set(u.nm, (grp[u.k].get(u.nm) || 0) + 1); }
+  $('pieces').innerHTML = Object.entries(CFG.couleurs).filter(([k]) => grp[k]).map(([k, c]) => {
+    const n = [...grp[k].values()].reduce((x, y) => x + y, 0);
+    return `<div class="groupe"><p class="gtitre"><span class="pastille" style="background:${esc(c.hex)}"></span>${esc(c.nom)} · ${n} pièce${n > 1 ? 's' : ''}</p><div class="liste">` +
+      [...grp[k].entries()].map(([nm, q]) => `<button type="button" data-nm="${esc(nm)}" aria-pressed="false">${esc(nm)}${q > 1 ? `<small>×${q}</small>` : ''}</button>`).join('') + '</div></div>';
+  }).join('') + (option.length ? `<div class="groupe"><p class="gtitre"><span class="pastille" style="background:${esc(CFG.couleurs[option[0].userData.k].hex)}"></span>Option : ${esc(CFG.option.libelles[1].toLowerCase())}</p><div class="liste">` +
+      option.map(m => `<button type="button" data-nm="${esc(m.userData.nm)}" aria-pressed="false">${esc(m.userData.nm)}</button>`).join('') + '</div></div>' : '');
+}
+function echantillon(prefixes) {
+  const pts = [];
+  for (const m of tous()) {
+    if (!m.visible || (prefixes && !commence(m.userData.id, prefixes))) continue;
+    const p = m.geometry.attributes.position, pas = Math.max(1, Math.floor(p.count / 300));
+    for (let i = 0; i < p.count; i += pas) pts.push(new THREE.Vector3().fromBufferAttribute(p, i).add(m.position));
+  }
+  return pts;
+}
+function cadre(dir, prefixes) {
+  // cadrage serre sur la silhouette (et non sur la sphere englobante) : le bateau remplit la scene sous les boutons de vue
+  const pts = echantillon(prefixes), d = new THREE.Vector3(...dir).normalize(), v = new THREE.Vector3();
+  if (!pts.length) return [sphere.center.clone(), sphere.center.clone().addScaledVector(d, sphere.radius * 3)];
+  const c = new THREE.Box3().setFromPoints(pts).getCenter(new THREE.Vector3()), t = cam.clone(), F = [-0.9, 0.9, -0.86, 0.7];
+  const place = (cc, dist) => { t.position.copy(cc).addScaledVector(d, dist); t.lookAt(cc); t.updateMatrixWorld(); };
+  const bornes = () => {
+    let a = Infinity, b = -Infinity, e = Infinity, f = -Infinity;
+    for (const p of pts) { v.copy(p).project(t); if (v.z > 1) return [-9, 9, -9, 9]; a = Math.min(a, v.x); b = Math.max(b, v.x); e = Math.min(e, v.y); f = Math.max(f, v.y); }
+    return [a, b, e, f];
+  };
+  let dist = 1;
+  for (let passe = 0; passe < 2; passe++) {
+    let lo = 1, hi = 20000;
+    for (let k = 0; k < 24; k++) { const m = (lo + hi) / 2; place(c, m); const [a, b, e, f] = bornes(); if (a >= F[0] && b <= F[1] && e >= F[2] && f <= F[3]) hi = m; else lo = m; }
+    dist = hi; place(c, dist);
+    const [a, b, e, f] = bornes(), th = Math.tan(THREE.MathUtils.degToRad(t.fov) / 2);
+    c.addScaledVector(new THREE.Vector3().setFromMatrixColumn(t.matrixWorld, 0), ((a + b) / 2 - (F[0] + F[1]) / 2) * dist * th * t.aspect)
+     .addScaledVector(new THREE.Vector3().setFromMatrixColumn(t.matrixWorld, 1), ((e + f) / 2 - (F[2] + F[3]) / 2) * dist * th);
+  }
+  return [c, c.clone().addScaledVector(d, dist)];
+}
+function aller(cible, oeil, net) {
+  if (net || calme) { controls.target.copy(cible); cam.position.copy(oeil); anim = null; }
+  else anim = {t0: performance.now(), c0: controls.target.clone(), o0: cam.position.clone(), c1: cible.clone(), o1: oeil.clone()};
+  sale = true;
+}
+function marquerVue(i) { document.querySelectorAll('#vues button').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.v === i))); }
+function vue(i, net) {
+  const [, dir, cibles] = VUES[i];
+  // une vue cadree sur le socle le remet en place s'il etait cache
+  if (cibles && !socle && cibles.some(p => CFG.socle.includes(p))) { socle = true; $('socle').setAttribute('aria-pressed', 'true'); regler(); }
+  const [c, o] = cadre(dir, cibles); aller(c, o, net); marquerVue(i);
+}
+function stopTour() { controls.autoRotate = false; $('aide').style.opacity = '0'; }
+function choisir(nm, viser) {
+  sel = nm;
+  for (const m of tous()) m.material = m.userData.nm === nm ? m.userData.lum : m.userData.mat;
+  document.querySelectorAll('#pieces button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.nm === nm)));
+  const lot = tous().filter(m => m.userData.nm === nm && m.visible);
+  if (!nm || !lot.length) { $('fiche').hidden = true; sale = true; return; }
+  const u = (lot.find(m => !m.userData.sub) || lot[0]).userData, c = CFG.couleurs[u.k], n = tous().filter(m => m.userData.nm === nm && !m.userData.sub).length;
+  const f = x => Math.round(x).toLocaleString('fr-FR');
+  $('fnom').textContent = u.nm + (n > 1 ? ` ×${n}` : '');
+  $('finfo').textContent = `${c.nom} · ${f(u.dim[0])} × ${f(u.dim[1])} × ${f(u.dim[2])} mm (long × large × haut, sur la maquette)`;
+  $('fiche').hidden = false;
+  if (viser) {
+    const box = new THREE.Box3(); lot.forEach(m => box.expandByObject(m));
+    const s = box.getBoundingSphere(new THREE.Sphere()), d = cam.position.clone().sub(controls.target).normalize();
+    const vf = THREE.MathUtils.degToRad(cam.fov), hf = 2 * Math.atan(Math.tan(vf / 2) * cam.aspect);
+    aller(s.center, s.center.clone().addScaledVector(d, Math.max(s.radius, 18) / Math.sin(Math.min(vf, hf) / 2) * 1.3));
+  }
+  sale = true;
+}
+function regler() {
+  const t = +$('eclate').value / 100 * CFG.eclate;
+  for (const m of tous()) {
+    const u = m.userData;
+    m.position.copy(u.e).multiplyScalar(t);
+    m.visible = u.opt ? affalees : !(affalees && CFG.option && commence(u.id, CFG.option.caches)) && (socle || !commence(u.id, CFG.socle));
+  }
+  if (sel && !tous().some(m => m.userData.nm === sel && m.visible)) choisir('', false);
+  sale = true;
+}
+function mettreVoiles(i) {
+  affalees = i === 1;
+  document.querySelectorAll('#voiles button').forEach(x => x.setAttribute('aria-pressed', String(+x.dataset.i === i))); regler();
+}
+$('vues').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { stopTour(); vue(+b.dataset.v); } });
+$('voiles').addEventListener('click', e => { const b = e.target.closest('button'); if (b) mettreVoiles(+b.dataset.i); });
+$('eclate').addEventListener('input', regler);
+$('socle').addEventListener('click', e => { socle = !socle; e.currentTarget.setAttribute('aria-pressed', String(socle)); regler(); });
+$('recentrer').addEventListener('click', () => { stopTour(); choisir('', false); vue(0); });
+$('fermer').addEventListener('click', () => choisir('', false));
+$('pieces').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  const nm = b.dataset.nm;
+  if (option.some(m => m.userData.nm === nm) && !affalees) mettreVoiles(1);
+  stopTour(); choisir(nm, true); fig.scrollIntoView({behavior: calme ? 'auto' : 'smooth', block: 'center'});
+});
+const ray = new THREE.Raycaster(), ptr = new THREE.Vector2();
+let appui = null;
+renderer.domElement.addEventListener('pointerdown', e => { appui = [e.clientX, e.clientY]; stopTour(); anim = null; marquerVue(-1); });
+renderer.domElement.addEventListener('pointerup', e => {
+  if (!appui) return;
+  const dx = e.clientX - appui[0], dy = e.clientY - appui[1]; appui = null;
+  if (dx * dx + dy * dy > 49) return;
+  const r = renderer.domElement.getBoundingClientRect();
+  ptr.set((e.clientX - r.left) / r.width * 2 - 1, -(e.clientY - r.top) / r.height * 2 + 1);
+  ray.setFromCamera(ptr, cam);
+  const hit = ray.intersectObjects(tous().filter(m => m.visible), false)[0];
+  choisir(hit ? hit.object.userData.nm : '', false);
+});
+controls.addEventListener('change', () => { sale = true; });
+const taille = new ResizeObserver(() => {
+  const w = fig.clientWidth, h = fig.clientHeight; if (!w || !h) return;
+  renderer.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); sale = true;
+});
+taille.observe(fig);
+const lisse = x => x < 0.5 ? 4 * x ** 3 : 1 - (-2 * x + 2) ** 3 / 2;
+function boucle(t) {
+  requestAnimationFrame(boucle);
+  if (anim) {
+    const k = Math.min(1, (t - anim.t0) / 700), e = lisse(k);
+    controls.target.lerpVectors(anim.c0, anim.c1, e); cam.position.lerpVectors(anim.o0, anim.o1, e);
+    if (k >= 1) anim = null; sale = true;
+  }
+  if (controls.update() || sale) { renderer.render(scene, cam); sale = false; }
+}
+charger().then(() => requestAnimationFrame(boucle)).catch(err => {
+  charge.textContent = 'La maquette ne se charge pas (' + err.message + ').'; console.error(err);
+});
+
+// ---------------------------------------------------------------- demandes de modification et validation (base de l'artefact)
+let db = null, ouvertes = 0, cible = '', validation = null, confirmer = 0;
+const form = $('form'), dnote = $('dnote'), arr = v => [v.x, v.y, v.z].map(x => Math.round(x * 10) / 10);
+const quand = iso => { const d = new Date(iso); return isNaN(d) ? '' : d.toLocaleString('fr-FR', {day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'}); };
+function ouvrirForm(nm) {
+  cible = nm || '';
+  $('fpiece').textContent = cible ? `Pièce : ${cible}` : 'Toute la maquette';
+  $('fmsg').textContent = ''; form.hidden = false;
+  $('carte-demandes').scrollIntoView({behavior: calme ? 'auto' : 'smooth', block: 'start'});
+  setTimeout(() => $('ftexte').focus({preventScroll: true}), calme ? 0 : 450);
+}
+$('fdemande').addEventListener('click', () => ouvrirForm(sel));
+$('nouvelle').addEventListener('click', () => ouvrirForm(''));
+$('fannuler').addEventListener('click', () => { form.hidden = true; $('ftexte').value = ''; });
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  const texte = $('ftexte').value.trim(); if (!texte) { $('ftexte').focus(); return; }
+  if (!db) { $('fmsg').textContent = "Le carnet n'est pas joignable : écris-moi cette demande dans la conversation."; return; }
+  const btn = form.querySelector('[type=submit]'); btn.disabled = true; $('fmsg').textContent = 'Envoi…';
+  try {
+    await db.collection('demandes').add({piece: cible, texte, date: new Date().toISOString(), etat: 'à faire', version: CFG.version,
+      vue: {cible: arr(controls.target), oeil: arr(cam.position), voiles: affalees ? 'affalées' : 'hautes', eclate: +$('eclate').value}});
+    $('ftexte').value = ''; form.hidden = true; $('fmsg').textContent = '';
+  } catch (err) { $('fmsg').textContent = "La demande n'est pas partie (" + (err && err.code || 'erreur') + '). Réessaie dans un instant.'; }
+  btn.disabled = false;
+});
+function afficherDemandes(docs) {
+  ouvertes = docs.filter(d => d.data().etat !== 'faite').length;
+  dnote.textContent = docs.length ? `${ouvertes} à faire · ${docs.length - ouvertes} faite${docs.length - ouvertes > 1 ? 's' : ''}`
+    : 'Aucune demande pour le moment. Touche une pièce, ou « Nouvelle demande » pour toute la maquette.';
+  $('demandes').innerHTML = docs.map(d => {
+    const v = d.data(), fait = v.etat === 'faite';
+    return `<li class="${fait ? 'fait' : ''}" data-id="${esc(d.id)}"><div class="dtete"><b>${esc(v.piece || 'Toute la maquette')}</b>` +
+      `<span class="etat ${fait ? '' : 'afaire'}">${fait ? 'faite' : 'à faire'}</span></div><p class="txt">${esc(v.texte || '')}</p>` +
+      (v.reponse ? `<p class="rep">${esc(v.reponse)}</p>` : '') +
+      `<p class="meta">${esc(quand(v.date))}${v.version ? ' · ' + esc(v.version) : ''}</p><div class="actions">` +
+      `<button class="btn petit" type="button" data-a="voir">Voir</button><button class="btn petit" type="button" data-a="suppr">Supprimer</button></div></li>`;
+  }).join('');
+  majValidation();
+}
+const docs = new Map();
+$('demandes').addEventListener('click', async e => {
+  const b = e.target.closest('button'), li = e.target.closest('li'); if (!b || !li) return;
+  const d = docs.get(li.dataset.id); if (!d) return;
+  if (b.dataset.a === 'voir') {
+    const v = d.vue || {};
+    mettreVoiles(v.voiles === 'affalées' ? 1 : 0); $('eclate').value = v.eclate || 0; regler(); stopTour(); marquerVue(-1);
+    if (v.cible && v.oeil) aller(new THREE.Vector3(...v.cible), new THREE.Vector3(...v.oeil));
+    choisir(d.piece || '', false); fig.scrollIntoView({behavior: calme ? 'auto' : 'smooth', block: 'center'});
+  } else if (b.dataset.a === 'suppr') {
+    if (b.dataset.ok !== '1') { b.dataset.ok = '1'; b.textContent = 'Confirmer'; setTimeout(() => { b.dataset.ok = ''; b.textContent = 'Supprimer'; }, 4000); return; }
+    b.disabled = true;
+    try { await db.collection('demandes').doc(li.dataset.id).delete(); } catch (err) { b.disabled = false; dnote.textContent = 'Suppression impossible pour le moment.'; }
+  }
+});
+function majValidation() {
+  const vb = $('valider');
+  if (!db) { $('vtxt').textContent = 'Dis-moi dans la conversation si cette version est bonne.'; vb.hidden = true; return; }
+  if (validation) {
+    $('vtxt').textContent = `${CFG.version} validée le ${quand(validation.date)}. Prochaine étape : les fichiers d'impression, la notice et la marina.`;
+    vb.hidden = false; vb.textContent = 'Retirer la validation'; vb.classList.remove('fort');
+  } else {
+    $('vtxt').textContent = `${CFG.version}, pas encore validée` + (ouvertes ? ` : ${ouvertes} demande${ouvertes > 1 ? 's' : ''} à faire.` : '.') +
+      " Une fois validée, je prépare les fichiers d'impression, la notice de montage et la place du bateau dans la marina.";
+    vb.hidden = false; vb.textContent = confirmer ? 'Confirmer la validation' : 'Valider cette version'; vb.classList.add('fort');
+  }
+}
+$('valider').addEventListener('click', async () => {
+  const ref = db.doc('validations/' + CFG.version_id);
+  try {
+    if (validation) { await ref.delete(); return; }
+    if (!confirmer) { confirmer = 1; majValidation(); setTimeout(() => { confirmer = 0; majValidation(); }, 5000); return; }
+    confirmer = 0; await ref.set({version: CFG.version, date: new Date().toISOString(), demandes_a_faire: ouvertes});
+  } catch (err) { $('vtxt').textContent = "L'enregistrement n'a pas abouti. Réessaie dans un instant."; }
+});
+(async () => {
+  const api = window.claude;
+  db = api && api.use ? await api.use('db').catch(() => null) : null;
+  if (!db) { dnote.textContent = "Le carnet de demandes n'est pas disponible ici : écris-moi tes demandes dans la conversation."; majValidation(); return; }
+  let premier = true;
+  const minuteur = setTimeout(() => { if (premier) dnote.textContent = 'Le carnet de demandes ne répond pas encore…'; }, 10000);
+  db.collection('demandes').orderBy('date', 'desc').onSnapshot(s => {
+    if (!s.metadata.fromCache) { premier = false; clearTimeout(minuteur); }
+    docs.clear(); s.docs.forEach(d => docs.set(d.id, d.data())); afficherDemandes(s.docs);
+  }, err => { clearTimeout(minuteur); dnote.textContent = 'Le carnet de demandes est indisponible (' + (err && err.code) + ').'; });
+  db.doc('validations/' + CFG.version_id).onSnapshot(s => { validation = s.exists ? s.data() : null; majValidation(); }, () => {});
+  majValidation();
+})();
+}
+</script>
+</body>
+</html>

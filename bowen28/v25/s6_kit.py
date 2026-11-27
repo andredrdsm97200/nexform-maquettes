@@ -33,12 +33,13 @@ GROUPS = [
     dict(key='coque_arriere', color='blanc', title='Coque arrière', names={'coque_arriere'}),
     dict(key='coque_avant', color='blanc', title='Coque avant', names={'coque_avant'}),
     dict(key='blanc', color='blanc', title="Capots et jupes moteur, bandes des fauteuils, clés de jonction", names=None),
-    dict(key='alu', color='alu', title="Cadres du taud, berceaux, échelle, mât, flaps, taquets…", names=None),
+    dict(key='alu', color='alu', title="Cadres du taud, échelle, mât, flaps, taquets…", names=None),
     dict(key='embases', color='alu', title='Moteurs : blocs gris, embases, hélices, chevilles', names={'bloc_moteur', 'embase_moteur', 'helice', 'cheville_capot'}),
     dict(key='noir', color='noir', title='Filets de coque, écrans, commandes, ailerons, gaines, vérins', names=None),
     dict(key='toit', color='noir', title='Toit du taud (arceaux intégrés) et pare-battages', names={'toit_taud', 'pare_battage'}, layer=0.12),
     dict(key='teck', color='teck', title='SeaDek, tapis de plats-bords, jante et moyeu du volant', names=None),
     dict(key='taupe', color='taupe', title='Coussins, fauteuils, boudins, dos du dossier', names=None),
+    dict(key='socle', color='noir', title='Socle : KANPAÏ 2.O et Nexform 3D Marine', names={'socle'}, layer=0.12),   # v25.4 : seul, a 0,12 mm
 ]
 taken = set().union(*[g['names'] for g in GROUPS if g['names']])
 for g in GROUPS:
@@ -149,7 +150,7 @@ for n, e in E.items():
 # 3MF par plateau
 pdir = os.path.join(KIT, 'plateaux_3mf'); os.makedirs(pdir)
 slug = {'eprouvette': 'eprouvette_reglage', 'coque_arriere': 'coque_arriere', 'coque_avant': 'coque_avant', 'blanc': 'blanc_moteurs_et_petites_pieces',
-        'alu': 'alu_taud_berceaux', 'embases': 'alu_moteurs', 'noir': 'noir', 'toit': 'noir_toit_taud', 'teck': 'teck_seadeck', 'taupe': 'taupe_coussins'}
+        'alu': 'alu_taud_et_petites_pieces', 'embases': 'alu_moteurs', 'noir': 'noir', 'toit': 'noir_toit_taud', 'teck': 'teck_seadeck', 'taupe': 'taupe_coussins', 'socle': 'noir_socle'}
 seen = collections.Counter()
 for num, p in enumerate(plates, 0):
     p['num'] = num; seen[p['key']] += 1

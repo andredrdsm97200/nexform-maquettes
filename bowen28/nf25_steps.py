@@ -15,11 +15,11 @@ CAM_ANNEAU = dict(eye=(50.0, 18.0, 64.0), target=(79.0, -48.0, 45.0), fov=34)
 FLECHE_ANNEAU = [((80.0, -30.0, 57.0), (80.0, -49.4, 44.2))]       # repere du rendu (x avant, y babord, z haut)
 CAM_PB = dict(eye=(-110.0, 0.0, 330.0), target=(150.0, 0.0, 30.0), fov=40)          # les 4 pare-battages, vus de dessus
 STEPS = [
-    S("La coque", ["berceau_arriere", "berceau_avant", "coque_arriere", "coque_avant", "cle_jonction_fond", "cle_jonction_plat_bord"],
+    S("La coque", ["socle", "coque_arriere", "coque_avant", "cle_jonction_fond", "cle_jonction_plat_bord"],
       ["Pousse la coque avant contre la coque arrière : ses 3 tenons losange entrent dans les trous de la coque avant.",
        "Enfonce les 2 clés du plancher par le dessus, jusqu'à ce qu'elles affleurent.",
        "Puis les 2 clés des plats-bords, grosse tête vers l'arrière.",
-       "Pose la coque sur ses 2 berceaux, le plus haut à l'avant."],
+       "Pose la coque sur son socle, l'avant du bateau sur le berceau le plus haut."],
       tip="Les clés serrent les 2 coques l'une contre l'autre : appuie bien droit, avec le pouce."),
     S("Les filets noirs", FN("arriere") + FN("avant") + FN("tableau") + ["anneau_tableau"],
       ["Chaque filet a des petits tenons au dos. Présente-le dans la rainure du flanc et enfonce les tenons un par un, de l'arrière vers l'avant.",

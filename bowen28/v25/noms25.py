@@ -17,7 +17,7 @@ NICE = {
     "seadeck_pointe_babord": "SeaDek pointe bâbord", "seadeck_pointe_tribord": "SeaDek pointe tribord",
     "seadeck_passage_arriere": "SeaDek passage arrière", "boudin_babord": "boudin rayé bâbord", "boudin_tribord": "boudin rayé tribord",
     "dos_dossier_arriere": "dos du dossier arrière",
-    "berceau_arriere": "berceau arrière", "berceau_avant": "berceau avant", "taud_imprime_option": "taud imprimé (option)",
+    "socle": "socle (KANPAÏ 2.O, Nexform 3D Marine)", "taud_imprime_option": "taud imprimé (option)",
     "tissu_taud": "toile du taud (tissu)",
 }
 

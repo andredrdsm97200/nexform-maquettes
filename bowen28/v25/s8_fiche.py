@@ -107,7 +107,7 @@ for p in plates:
     sets = nb(' · '.join(setl))
     l1 = simpleSplit(content, 'SansB', 8.6, cols[2] - cols[1] - 8)
     l3 = simpleSplit(sets, 'Sans', 8, cols[4] - cols[3] - 44)
-    rh = max(len(l1) * 10.5 + 11, len(l3) * 10 + 3, 25) + 6
+    rh = max(len(l1) * 10.5 + 11, len(l3) * 10 + 3, 25) + 3      # v25.4 : 11 plateaux sur la page
     yt = y - 12
     c.setFillColor(FLUO if not p['eprouvette'] else INK); c.roundRect(cols[0], y - 22, 26, 17, 5, fill=1, stroke=0)
     t(c, f"P{p['num']:02d}", cols[0] + 13, y - 17, 'Exo', 9, INK if not p['eprouvette'] else FLUO, 'c')
@@ -130,7 +130,7 @@ box = [
     "PLA ou PLA+ uniquement, buse 0,4 mm, 3 périmètres, remplissage gyroïde 15 %, plateau texturé PEI. Couches de 0,12 mm, sauf le plateau noir P06 en 0,08 mm.",
     "Montage sans colle : tenons, clés et logements ont 0,1 mm de jeu. Imprimer et monter d'abord l'éprouvette P00 (page 2), puis lancer les autres plateaux avec le même réglage.",
     "Supports seulement sur P01, P02 (coques) et P05 (moteurs : quelques petits supports, cachés sous l'étrier, sous la jupe et au bout des pales) : arborescents, « sur le plateau uniquement » ; bordure de 5 mm pour les 2 coques. Tous les autres plateaux, dont le toit P07 imprimé à l'envers : aucun support.",
-    "Coques : retirer les supports avec soin (nervures blanches, pare-brise, 3 tenons losange sur la face de jonction de la coque arrière). Rendre les pièces en 10 sachets étiquetés P00 à P09.",
+    "Coques : retirer les supports avec soin (nervures blanches, pare-brise, 3 tenons losange sur la face de jonction de la coque arrière). Rendre les pièces en " + f"{len(plates)} sachets étiquetés P00 à P{len(plates) - 1:02d}.",
 ]
 bx_h = sum(len(simpleSplit(nb(s), 'Sans', 8.6, W - 2 * M - 34)) * 11.2 + 5 for s in box) + 18
 c.setFillColor(BG); c.roundRect(M, y - bx_h, W - 2 * M, bx_h, 12, fill=1, stroke=0)

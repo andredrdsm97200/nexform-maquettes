@@ -13,7 +13,8 @@ Changements par rapport a la v23.1 :
   - ecran tribord : +0,1 mm par cote ; mat de pavillon : pied +0,1 mm ;
   - filets noirs : mini-tenons au dos, un fichier par cote ; dos du dossier : 3 mini-tenons losange ;
   - taud : cadres (tenons +0,1 mm, encoches 1,2 mm) + toit rigide d'une piece (noir) ; plus d'arceaux separes,
-    de boitiers d'echelle, de taud TPU ni de toile.
+    de boitiers d'echelle, de taud TPU ni de toile ;
+  - (v25.4) socle d'un seul morceau, noir, avec le nom du bateau (socle25.py).
 """
 import os as _os
 ROOT = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))   # dossier bowen28 du depot
@@ -235,8 +236,8 @@ add("boudin_babord", "taupe", light ^ M.box(-B, B, 0, B, -B, B))
 add("boudin_tribord", "taupe", light ^ M.box(-B, B, -B, 0, -B, B))
 shell, _hull = M.build_hull()
 hull_full = shell + M.build_bracket()
-add("berceau_arriere", "alu", M.build_cradle2(1.05, hull_full))
-add("berceau_avant", "alu", M.build_cradle2(5.15, hull_full))
+import socle25 as SO                          # v25.4 : socle d'un seul morceau, noir, nom du bateau et Nexform 3D Marine
+add("socle", "noir", SO.socle(hull_full), note="à plat, tel qu'il est posé")
 print('catalogue v25 sans coque ni coussins :', len(C), 'entrees en', round(time.time() - t0), 's', flush=True)
 
 

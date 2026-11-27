@@ -51,7 +51,7 @@ ORDRE = []
 # 1. La coque : coque avant contre coque arriere, cles par le dessus, puis la coque sur ses berceaux
 ORDRE += [Pose('blanc__coque_avant__0', AVANT)]
 ORDRE += tous('cle_jonction_fond', DESSUS, doigt=True) + tous('cle_jonction_plat_bord', DESSUS, doigt=True)
-ORDRE += tous('berceau_arriere', DESSOUS) + tous('berceau_avant', DESSOUS)
+ORDRE += tous('socle', DESSOUS)                     # v25.4 : socle d'un seul morceau
 # 2. Les filets noirs
 for seg in ('arriere', 'avant'):
     for c in ('babord', 'tribord'):
