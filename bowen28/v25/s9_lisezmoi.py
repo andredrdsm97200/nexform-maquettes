@@ -1,9 +1,9 @@
-"""LISEZMOI du kit v25.3 (sans colle) : contenu, plateaux, reglages, principe d'emboitement, changements, pieces par plateau."""
+"""LISEZMOI du kit v25.4 (sans colle) : contenu, plateaux, reglages, principe d'emboitement, changements, pieces par plateau."""
 import os as _os
 ROOT = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))   # dossier bowen28 du depot
 import os, json, collections, re, textwrap
 HERE = ROOT + '/v25'
-KIT = os.path.join(HERE, 'kit', 'Bowen28_kit_impression_v25.3')
+KIT = os.path.join(HERE, 'kit', 'Bowen28_kit_impression_v25.4')
 meta = json.load(open(os.path.join(HERE, 'kit_meta.json')))
 plates, pieces = meta['plates'], meta['pieces']
 import sys; sys.path.insert(0, HERE)
@@ -21,14 +21,14 @@ def g(x): return f"{int(round(x / 5.0) * 5)}\u00a0g" if x >= 10 else f"{max(1, r
 main = [p for p in plates if not p['eprouvette']]; epr = [p for p in plates if p['eprouvette']]
 n_main = sum(len(p['inst']) for p in main); n_epr = sum(len(p['inst']) for p in epr)
 L = []
-title = "BOWEN 28 AU 1:19 – KIT D'IMPRESSION v25.3, MONTAGE SANS COLLE"
+title = "BOWEN 28 AU 1:19 – KIT D'IMPRESSION v25.4, MONTAGE SANS COLLE"
 L += [title, "=" * len(title), ""]
 L += wrap(f"Tout ce qu'il faut pour imprimer la maquette : {n_main} pièces réparties sur {len(main)} plateaux, une seule couleur de "
           f"filament par plateau, plus l'éprouvette de réglage P00 ({n_epr} petites pièces) à imprimer en premier. La maquette "
           "s'assemble entièrement par emboîtement, comme des Lego : ni colle, ni goupille, ni toile, uniquement du PLA ou du PLA+. "
           "Ce kit remplace le kit v23.1 : n'utilise plus ses fichiers, tout est ici.")
 L += ["", "CONTENU", "-------",
-      "Bowen28_kit_impression_v25.3/",
+      "Bowen28_kit_impression_v25.4/",
       "├── LISEZMOI.txt              ce fichier",
       "├── FICHE_IMPRESSION.pdf      la fiche à remettre à l'imprimeur : plateaux, réglages, éprouvette, aperçus",
       f"├── plateaux_3mf/             {len(plates)} fichiers 3MF (P00 à P{len(plates) - 1:02d}), pièces orientées et disposées sur le plateau de 256 mm",
@@ -44,7 +44,7 @@ for n, p in pieces.items():
 cols = ['blanc', 'alu', 'noir', 'teck', 'taupe']
 for k, c in enumerate(cols):
     L.append(f"│   {'└' if k == len(cols) - 1 else '├'}── {DIRS[c] + '/':20s}{cnt[c][0]:2d} fichiers, {cnt[c][1]:2d} impressions")
-L.append("└── notice_de_montage_v25.3.pdf la notice illustrée, sans colle")
+L.append("└── notice_de_montage_v25.4.pdf la notice illustrée, sans colle")
 L += [""]
 L += wrap("« _x2 », « _x3 » ou « _x4 » à la fin d'un nom de STL = imprimer la pièce 2, 3 ou 4 fois. Les plateaux 3MF "
           "contiennent déjà le bon nombre d'exemplaires.")
@@ -101,6 +101,20 @@ for t_ in ["Un seul jeu pour tous les tenons, clés et logements : 0,1 mm par c�
            "elles serrent en fin de course, "
            "pousse-les franchement jusqu'au bout. Elles tiennent alors seules, quelle que soit l'imprimante."]:
     L += wrap(t_, "- ", "  ")
+L += ["", "CE QUI CHANGE DEPUIS LA v25.3", "-----------------------------"]
+for t_ in ["Socle d'un seul morceau, noir (plateau P10) : les 2 berceaux alu sont reliés par une poutre qui passe 6 mm sous la "
+           "quille. Sur chaque flanc de la poutre, le nom du bateau, KANPAÏ 2.O, et le logo Nexform 3D Marine, en relief de "
+           "0,8 mm. Il s'imprime seul, posé à plat comme sur la table, sans support.",
+           "SeaDek en taupe : les 11 tapis SeaDek (pointe avant, plats-bords, passage arrière) quittent le teck pour le taupe "
+           "des coussins et rejoignent leur plateau (P09). Le plateau teck (P08) ne garde que la jante et le moyeu du volant.",
+           "Coussins de plat-bord ajustés à la paroi : leur face côté coque suit maintenant la courbe du cockpit, à 0,1 mm "
+           "(il restait jusqu'à 1,7 mm de jour au coussin 3, qu'on voyait d'en haut). La coque ne change pas. Les 6 coussins "
+           "de plat-bord s'impriment debout, sur leur dessous aplani, sans support.",
+           "Si la v25.3 est déjà imprimée sauf les coussins et les SeaDek : imprime P09 (taupe), P08 (le volant, s'il n'est "
+           "pas déjà fait) et P10 (le socle). Les 2 berceaux alu de la v25.3 ne servent plus ; tout le reste est identique.",
+           f"La v25.4 compte {n_main} pièces sur {len(main)} plateaux, plus l'éprouvette : une de moins que la v25.3 (un socle "
+           "au lieu de 2 berceaux)."]:
+    L += wrap(t_, "- ", "  ")
 L += ["", "CE QUI CHANGE DEPUIS LA v25.2", "-----------------------------"]
 for t_ in ["Moteurs : la partie grise s'imprime en 3 pièces au lieu d'une, chacune posée à plat sur une face plane : le bloc "
            "gris à l'envers sur son plan de joint, l'embase à l'envers sur la plaque anti-cavitation, l'hélice debout sur son "
@@ -109,7 +123,7 @@ for t_ in ["Moteurs : la partie grise s'imprime en 3 pièces au lieu d'une, chac
            "logements ont des côtes de serrage. Une petite cheville relie le bloc au capot blanc (ils s'impriment tous les deux "
            "sur leur plan de joint). Chaque moteur se monte sur la table, puis se pousse sur la chaise comme avant.",
            "Si la v25.2 est déjà imprimée, il suffit de réimprimer le plateau P05 (moteurs) ; tout le reste est identique.",
-           f"La v25.3 compte {n_main} pièces sur {len(main)} plateaux, plus l'éprouvette : 6 de plus que la v25.2 (2 embases, "
+           "La v25.3 comptait 105 pièces sur 9 plateaux, plus l'éprouvette : 6 de plus que la v25.2 (2 embases, "
            "2 hélices et 2 chevilles)."]:
     L += wrap(t_, "- ", "  ")
 L += ["", "CE QUI CHANGE DEPUIS LA v25", "---------------------------"]

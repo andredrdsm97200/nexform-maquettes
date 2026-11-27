@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Contenu de la notice v25.3 facon Lego, SANS COLLE (tutoiement, phrases courtes). L'ordre des pieces est l'ordre verifie."""
+"""Contenu de la notice v25.4 facon Lego, SANS COLLE (tutoiement, phrases courtes). L'ordre des pieces est l'ordre verifie."""
 BG = (242, 244, 250); PANEL = (255, 255, 255)
 GW = [f"seadeck_plat_bord_{k}_{s}" for k in (1, 2, 3, 4) for s in ("babord", "tribord")]
 AV = ["coussin_avant_retour_babord", "coussin_avant_retour_tribord", "coussin_avant_dossier_babord", "coussin_avant_dossier_tribord",
@@ -28,7 +28,7 @@ STEPS = [
        "Enfonce les 2 anneaux dans leur fente, près du coin arrière."],
       tip="Le filet est souple : une fois ses tenons enfoncés, il suit la courbe de la coque tout seul."),
     S("Le pont", ["seadeck_pointe_babord", "seadeck_pointe_tribord", "seadeck_passage_arriere"] + GW + ["taquet", "boudin_babord", "boudin_tribord"],
-      ["Chaque tuile teck a 2 tenons dessous : pose-la dans son logement et appuie.",
+      ["Chaque tuile SeaDek a 2 tenons dessous : pose-la dans son logement et appuie.",
        "Tapis de plats-bords : n° 1 à 4, de l'arrière vers l'avant. Le n° 4 recouvre la tête des clés.",
        "Les 4 taquets : 2 dans les tuiles de la pointe, 2 entre les tapis arrière.",
        "Les 2 boudins rayés au pied des parois, sur leurs 2 tenons."],

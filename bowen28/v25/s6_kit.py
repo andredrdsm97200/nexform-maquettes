@@ -1,4 +1,4 @@
-"""Kit d'impression complet v25.3 (sans colle) : STL par couleur, plateaux equilibres (3MF), listes.
+"""Kit d'impression complet v25.4 (sans colle) : STL par couleur, plateaux equilibres (3MF), listes.
 Entrees (dossier v25) : pieces.pkl (pieces reconstruites), coussins_v25.pkl, coques_v25.pkl (coques + cles), eprouvette.pkl."""
 import os as _os
 ROOT = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))   # dossier bowen28 du depot
@@ -8,7 +8,7 @@ import numpy as np, trimesh
 import pieces as P, stl_packages as SP
 
 HERE = ROOT + '/v25'
-KIT = os.path.join(HERE, 'kit', 'Bowen28_kit_impression_v25.3')
+KIT = os.path.join(HERE, 'kit', 'Bowen28_kit_impression_v25.4')
 VERSION = '24'
 BED, S, GAP = 256.0, 240.0, 5.0            # plateau A1 256 x 256 ; zone de pose 240 x 240 centree (marge 8 mm)
 
@@ -37,8 +37,8 @@ GROUPS = [
     dict(key='embases', color='alu', title='Moteurs : blocs gris, embases, hélices, chevilles', names={'bloc_moteur', 'embase_moteur', 'helice', 'cheville_capot'}),
     dict(key='noir', color='noir', title='Filets de coque, écrans, commandes, ailerons, gaines, vérins', names=None),
     dict(key='toit', color='noir', title='Toit du taud (arceaux intégrés) et pare-battages', names={'toit_taud', 'pare_battage'}, layer=0.12),
-    dict(key='teck', color='teck', title='SeaDek, tapis de plats-bords, jante et moyeu du volant', names=None),
-    dict(key='taupe', color='taupe', title='Coussins, fauteuils, boudins, dos du dossier', names=None),
+    dict(key='teck', color='teck', title='Jante et moyeu du volant', names=None),
+    dict(key='taupe', color='taupe', title='Coussins, fauteuils, boudins, dos du dossier, SeaDek', names=None),
     dict(key='socle', color='noir', title='Socle : KANPAÏ 2.O et Nexform 3D Marine', names={'socle'}, layer=0.12),   # v25.4 : seul, a 0,12 mm
 ]
 taken = set().union(*[g['names'] for g in GROUPS if g['names']])
@@ -150,7 +150,7 @@ for n, e in E.items():
 # 3MF par plateau
 pdir = os.path.join(KIT, 'plateaux_3mf'); os.makedirs(pdir)
 slug = {'eprouvette': 'eprouvette_reglage', 'coque_arriere': 'coque_arriere', 'coque_avant': 'coque_avant', 'blanc': 'blanc_moteurs_et_petites_pieces',
-        'alu': 'alu_taud_et_petites_pieces', 'embases': 'alu_moteurs', 'noir': 'noir', 'toit': 'noir_toit_taud', 'teck': 'teck_seadeck', 'taupe': 'taupe_coussins', 'socle': 'noir_socle'}
+        'alu': 'alu_taud_et_petites_pieces', 'embases': 'alu_moteurs', 'noir': 'noir', 'toit': 'noir_toit_taud', 'teck': 'teck_volant', 'taupe': 'taupe_coussins', 'socle': 'noir_socle'}
 seen = collections.Counter()
 for num, p in enumerate(plates, 0):
     p['num'] = num; seen[p['key']] += 1

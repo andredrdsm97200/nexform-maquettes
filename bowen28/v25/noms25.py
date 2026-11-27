@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Noms affiches des pieces (kit v25.3 sans colle)."""
+"""Noms affiches des pieces (kit v25.4 sans colle)."""
 NICE = {
     "coque_arriere": "coque arrière", "coque_avant": "coque avant", "capot_moteur": "capot moteur (blanc)",
     "jupe_moteur": "jupe arrière du moteur (blanche)", "flap": "flap", "verin_flap": "vérin de flap",

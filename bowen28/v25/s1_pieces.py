@@ -14,7 +14,7 @@ Changements par rapport a la v23.1 :
   - filets noirs : mini-tenons au dos, un fichier par cote ; dos du dossier : 3 mini-tenons losange ;
   - taud : cadres (tenons +0,1 mm, encoches 1,2 mm) + toit rigide d'une piece (noir) ; plus d'arceaux separes,
     de boitiers d'echelle, de taud TPU ni de toile ;
-  - (v25.4) socle d'un seul morceau, noir, avec le nom du bateau (socle25.py).
+  - (v25.4) socle d'un seul morceau, noir, avec le nom du bateau (socle25.py) ; SeaDek en taupe (le volant reste teck).
 """
 import os as _os
 ROOT = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))   # dossier bowen28 du depot
@@ -220,8 +220,8 @@ for seg in ('arriere', 'avant'):
         add(f"filet_noir_{seg}_{sn}", "noir", ST.side_asm(seg, s), proto=ST.side_flat(seg, s), note="à plat, face visible sur le plateau, tenons vers le haut")
 for s, sn in ((1, 'babord'), (-1, 'tribord')):
     add(f"filet_noir_tableau_{sn}", "noir", ST.transom_asm(s), down=(-1, 0, 0), note="face visible sur le plateau, tenons vers le haut")
-for name, tile, surf in tiles:
-    add(name, "teck", M.place_on_surface(tile, surf), proto=tile, down=(0, 0, 1), note="à l'envers : dessus sur le plateau, tenons vers le haut")
+for name, tile, surf in tiles:                # v25.4 : SeaDek en taupe, comme les coussins (demande d'Andre)
+    add(name, "taupe", M.place_on_surface(tile, surf), proto=tile, down=(0, 0, 1), note="à l'envers : dessus sur le plateau, tenons vers le haut")
 add("dos_dossier_arriere", "taupe", BK.build(), note="debout")
 import pare_battages25 as PBT                  # v25 : 4 pare-battages pendus a une ficelle (anneaux dans la coque)
 for nom, (asm_pb, proto_pb, down_pb) in PBT.pieces().items():  # v25.2 : et leurs crochets, accroches a l'anneau
